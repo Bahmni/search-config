@@ -1,0 +1,1 @@
+This folder holds migrations which are specific to SEARCH implementation.
