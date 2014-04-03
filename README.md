@@ -14,11 +14,16 @@ SEARCH (Gadchiroli Hospital) specific Bahmni configuration and data.
 #### CI Deployment
 The `search-config.zip` is created on the CI Server as part of the **Bahmni_MRS_Master** pipeline (*FunctionalTests* job). You can download the latest ZIP from this URL:
 
+Latest Builds: [Download Link](https://ci-bahmni.thoughtworks.com/go/files/Bahmni_MRS_Master/Latest/BuildStage/Latest/FunctionalTests/deployables/) 
+
+
 ```
 Replace the {Build_Number} variable in the link:
 
 https://ci-bahmni.thoughtworks.com/go/files/Bahmni_MRS_Master/{Build_Number}/BuildStage/Latest/FunctionalTests/deployables/
 ```
+
+
 
 
 #### Configurations 
