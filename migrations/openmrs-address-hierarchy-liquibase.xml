@@ -7,13 +7,45 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <!-- This Liquibase file is meant to contain changesets for Address Hierarchy (Village/Town/Taluka/Center/etc) Only -->
+    <!-- 
+    This Liquibase file is meant to contain changesets for Address Hierarchy (Village/Town/Taluka/Center/etc)
+    and location information only. 
+    -->
         
     <changeSet id="SEARCH-OMRS-ADDRESS-001" author="tw">
-        <comment>Put a comment here indicating what does this change do</comment>
+        <comment>Add location SEARCH Hospital with SEA location attribute</comment>
         <sql>
-            <!-- WRITE YOUR SQL QUERY HERE -->
+
+            INSERT INTO location_attribute_type (name, description, datatype, min_occurs, max_occurs, creator, date_created, uuid)
+              VALUES ('IdentifierSourceName', 'Identifier source name of the source that needs to be used for patients coming from this location', 'org.openmrs.customdatatype.datatype.FreeTextDatatype', 0, 1, 1, curdate(), uuid());
+
+            INSERT INTO location (name, description, creator, date_created, uuid)
+              VALUES ('SEARCH', 'SEARCH hospital', 1, curdate(), uuid());
+
+            SET @lastlocation = last_insert_id();
+            
+            INSERT INTO location_attribute (location_id, attribute_type_id, value_reference, uuid, creator, date_created)
+              (SELECT  @lastlocation, location_attribute_type_id, 'SEA', uuid(), 1, curdate()
+               FROM location_attribute_type
+               WHERE name = 'IdentifierSourceName');
         </sql>
     </changeSet>
+
+    <changeSet id="SEARCH-OMRS-ADDRESS-002" author="tw">
+        <comment>SEA Patient Registration Number, Counter Starting Value, Length and Prefix/Suffix</comment>
+        <sql>
+
+            SELECT patient_identifier_type_id from patient_identifier_type where name = 'Bahmni Id' into @patient_identifier;
+
+            INSERT INTO idgen_identifier_source (uuid, name, description, identifier_type, creator, date_created)
+              VALUES (uuid(), 'SEA', 'ID sequence source for patients whose primary health center is SEARCH', @patient_identifier, 1, curdate());
+            
+            SET @source_id := LAST_INSERT_ID();
+            
+            INSERT INTO idgen_seq_id_gen (id, next_sequence_value, base_character_set, first_identifier_base, prefix, suffix, length) VALUES (@source_id, 200000, '0123456789', '200000', 'SEA', '', 9);
+
+        </sql>
+    </changeSet>
+
 
 </databaseChangeLog>
