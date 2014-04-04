@@ -10,10 +10,51 @@
     <!-- This Liquibase file is meant to contain changesets for Patient Attributes Only -->
         
     <changeSet id="SEARCH-OMRS-PA-001" author="tw">
-        <comment>Put a comment here indicating what does this change do</comment>
-        <sql>
-            <!-- WRITE YOUR SQL QUERY HERE -->
-        </sql>
+        <comment>Add patient attribute: Caste</comment>
+        <insert tableName="person_attribute_type">
+            <column name="name" value="caste" />
+            <column name="description" value="Caste" />
+            <column name="format" value="java.lang.String" />
+            <column name="searchable" valueNumeric="1" />
+            <column name="creator" valueNumeric="1" />
+            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
+            <column name="retired" valueNumeric="0" />
+            <column name="sort_weight" valueNumeric="2" />
+            <column name="uuid" valueComputed="uuid()" />
+        </insert>
     </changeSet>
+
+    <changeSet id="SEARCH-OMRS-PA-002" author="tw">
+        <comment>Add patient attribute: Tribal or Non-Tribal</comment>
+        <insert tableName="person_attribute_type">
+            <column name="name" value="tribal" />
+            <column name="description" value="Tribal or Non-Tribal" />
+            <column name="format" value="java.lang.String" />
+            <column name="searchable" valueNumeric="1" />
+            <column name="creator" valueNumeric="1" />
+            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
+            <column name="retired" valueNumeric="0" />
+            <column name="sort_weight" valueNumeric="3" />
+            <column name="uuid" valueComputed="uuid()" />
+        </insert>
+    </changeSet>
+
+
+    <changeSet id="SEARCH-OMRS-PA-003" author="tw">
+        <comment>Add patient attribute: Health Center</comment>
+        <insert tableName="person_attribute_type">
+            <column name="name" value="Health Center" />
+            <column name="description" value="Health Center of Registered User" />
+            <column name="format" value="org.openmrs.Location" />
+            <column name="searchable" valueNumeric="1" />
+            <column name="creator" valueNumeric="1" />
+            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
+            <column name="retired" valueNumeric="0" />
+            <column name="sort_weight" valueNumeric="4" />
+            <column name="uuid" valueComputed="uuid()" />
+        </insert>
+    </changeSet>
+
+
 
 </databaseChangeLog>
