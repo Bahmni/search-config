@@ -9,11 +9,27 @@
 
     <!-- This Liquibase file is meant to contain changesets for Patient Attributes Only -->
         
+
     <changeSet id="SEARCH-OMRS-PA-001" author="tw">
-        <comment>Add patient attribute: Caste</comment>
+        <comment>Add patient attribute: givenNameLocal</comment>
         <insert tableName="person_attribute_type">
-            <column name="name" value="caste" />
-            <column name="description" value="Caste" />
+            <column name="name" value="givenNameLocal" />
+            <column name="description" value="मरीज़ का नाम" />
+            <column name="format" value="java.lang.String" />
+            <column name="searchable" valueNumeric="1" />
+            <column name="creator" valueNumeric="1" />
+            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
+            <column name="retired" valueNumeric="0" />
+            <column name="sort_weight" valueNumeric="1" />
+            <column name="uuid" valueComputed="uuid()" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="SEARCH-OMRS-PA-002" author="tw">
+        <comment>Add patient attribute: familyNameLocal</comment>
+        <insert tableName="person_attribute_type">
+            <column name="name" value="familyNameLocal" />
+            <column name="description" value="मरीज़ का उपनाम" />
             <column name="format" value="java.lang.String" />
             <column name="searchable" valueNumeric="1" />
             <column name="creator" valueNumeric="1" />
@@ -24,11 +40,12 @@
         </insert>
     </changeSet>
 
-    <changeSet id="SEARCH-OMRS-PA-002" author="tw">
-        <comment>Add patient attribute: Tribal or Non-Tribal</comment>
+
+    <changeSet id="SEARCH-OMRS-PA-003" author="tw">
+        <comment>Add patient attribute: Caste</comment>
         <insert tableName="person_attribute_type">
-            <column name="name" value="tribal" />
-            <column name="description" value="Tribal or Non-Tribal" />
+            <column name="name" value="caste" />
+            <column name="description" value="Caste" />
             <column name="format" value="java.lang.String" />
             <column name="searchable" valueNumeric="1" />
             <column name="creator" valueNumeric="1" />
@@ -38,23 +55,5 @@
             <column name="uuid" valueComputed="uuid()" />
         </insert>
     </changeSet>
-
-
-    <changeSet id="SEARCH-OMRS-PA-003" author="tw">
-        <comment>Add patient attribute: Health Center</comment>
-        <insert tableName="person_attribute_type">
-            <column name="name" value="Health Center" />
-            <column name="description" value="Health Center of Registered User" />
-            <column name="format" value="org.openmrs.Location" />
-            <column name="searchable" valueNumeric="1" />
-            <column name="creator" valueNumeric="1" />
-            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
-            <column name="retired" valueNumeric="0" />
-            <column name="sort_weight" valueNumeric="4" />
-            <column name="uuid" valueComputed="uuid()" />
-        </insert>
-    </changeSet>
-
-
 
 </databaseChangeLog>
