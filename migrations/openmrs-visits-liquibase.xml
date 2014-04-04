@@ -10,10 +10,25 @@
     <!-- This Liquibase file is meant to contain changesets for Visit Related Information Only -->
         
     <changeSet id="SEARCH-OMRS-V-001" author="tw">
-        <comment>Put a comment here indicating what does this change do</comment>
-        <sql>
-            <!-- WRITE YOUR SQL QUERY HERE -->
-        </sql>
+        <comment>Create new visit type for IPD</comment>
+        <insert tableName="visit_type">
+            <column name="name" value="IPD" />
+            <column name="description" value="Visit for patients being admitted" />
+            <column name="creator" value="1" />
+            <column name="uuid" valueComputed="uuid()" />
+            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="SEARCH-OMRS-V-002" author="tw">
+        <comment>Create new visit type for OPD</comment>
+        <insert tableName="visit_type">
+            <column name="name" value="OPD" />
+            <column name="description" value="Visit for patients coming for OPD" />
+            <column name="creator" value="1" />
+            <column name="uuid" valueComputed="uuid()" />
+            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
+        </insert>
     </changeSet>
 
 </databaseChangeLog>
