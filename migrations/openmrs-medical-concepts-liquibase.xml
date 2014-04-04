@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!-- 
+        This Liquibase file is meant to contain OpenMRS Medical Concepts (Diseases, Symptoms, Diagnosis, Complaints, etc). 
+        This file could be large in future, in which case, we could consider splitting it, if needed. Refer to liqiubase.xml
+        to see how to include other liquibase files.
+    -->
+        
+    <changeSet id="SEARCH-OMRS-CONCEPT-001" author="tw">
+        <comment>Put a comment here indicating what does this change do</comment>
+        <sql>
+            <!-- WRITE YOUR SQL QUERY HERE -->
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
