@@ -13,7 +13,7 @@
         what actions.
     -->
         
-    <changeSet id="SEARCH-OMRS-PA-001" author="tw">
+    <changeSet id="SEARCH-OMRS-ROLES-PVG-001" author="tw">
         <comment>Put a comment here indicating what does this change do</comment>
         <sql>
             <!-- WRITE YOUR SQL QUERY HERE -->
