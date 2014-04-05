@@ -12,5 +12,6 @@
     <include file="openmrs-address-hierarchy-liquibase.xml"/>
     <include file="openmrs-medical-concepts-liquibase.xml"/>
     <include file="openmrs-roles-and-privileges-liquibase.xml"/>
-    
+    <include file="openmrs-misc-config-liquibase.xml"/>
+
 </databaseChangeLog>
