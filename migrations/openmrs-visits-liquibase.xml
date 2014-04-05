@@ -31,4 +31,23 @@
         </insert>
     </changeSet>
 
+    <changeSet id="SEARCH-OMRS-V-003" author="tw">
+        <comment>Add global property to configure visit auto expire hours</comment>
+        <sql>
+            INSERT INTO global_property (`property`, `property_value`, `description`, `uuid`)
+            VALUES ('emrapi.visitExpireHours', '24', 'Number of hours after which visit can be auto closed', uuid())
+            ON DUPLICATE KEY UPDATE property_value = '24';
+        </sql>
+    </changeSet>
+
+    <changeSet id="SEARCH-OMRS-V-004" author="tw">
+        <comment>Comma seperated list of visits which much be closed automatically</comment>
+        <sql>
+            INSERT INTO global_property (`property`, `property_value`, `description`, `uuid`)
+            VALUES ('visits.autoCloseVisitType', 'OPD', 'comma-separated list of the visit type(s) to automatically close', uuid())
+            ON DUPLICATE KEY UPDATE property_value = 'OPD';
+        </sql>
+    </changeSet>
+
+
 </databaseChangeLog>
