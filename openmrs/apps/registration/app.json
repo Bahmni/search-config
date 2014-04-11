@@ -17,14 +17,21 @@
                 "description": "Bahmni Patient Create Page Action"
             }
         ],
-        "contextModel": [ 
+        "contextModel": [
             "patientUuid",
             "activeVisitUuid"
         ],
         "config" : {
             "autoCompleteFields":["familyName", "caste"],
             "defaultIdentifierPrefix": "GAN",
-            "searchByIdForwardUrl": "/patient/{{patientUuid}}?visitType=OPD - RETURNING"
+            "searchByIdForwardUrl": "/patient/{{patientUuid}}?visitType=OPD - RETURNING",
+            "conceptSetUI": {
+                "temparature": {
+                    "showAbnormalIndicator": true
+                }
+            },
+            "registrationConceptSet":"RegConceptSet",
+            "showMiddleName": false
         }
     }
 ]

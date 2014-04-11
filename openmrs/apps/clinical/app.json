@@ -7,15 +7,19 @@
                 "description": "Bahmni Clinical Consultation Page"
             },
             {
+                "id": "org.bahmni.clinical.conceptSetGroup.*",
+                "description": "Define conceptsets part of a conceptset group"
+            },
+            {
                 "id": "org.bahmni.clinical.orders",
                 "description": "Bahmni Orders Page"
             },
             {
                 "id":"org.bahmni.patient.search",
-                "description": "Bahmni Patient search, lookups Page"  
+                "description": "Bahmni Patient search, lookups Page"
             }
         ],
-        "contextModel": [ 
+        "contextModel": [
             "patientUuid",
             "visitUuid"
         ],
@@ -30,8 +34,17 @@
                     "autocomplete": true,
                     "showAbnormalIndicator": true,
                     "required": true
+                },
+                "Chief Complaint": {
+                    "multiselect": true
                 }
-            }
+            },
+            "patientDashboardSections": [
+                {
+                    "description": "Vitals",
+                    "name": "vitals"
+                }
+            ]
         }
     }
 ]
