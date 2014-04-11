@@ -10,12 +10,12 @@
     <!-- This Liquibase file is meant to contain changesets for miscellaneous configuration Only -->
         
     <changeSet id="SEARCH-OMRS-MISC-001" author="tw">
-        <comment>Location on Server where the patient uploaded images will be stored</comment>
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
-                SELECT COUNT(*) FROM global_property where property = 'emr.personImagesDirectory'
+                SELECT COUNT(*) FROM global_property where property = 'emr.personImagesDirectory';
             </sqlCheck>
         </preConditions>
+        <comment>Location on Server where the patient uploaded images will be stored</comment>
         <sql>
             insert into global_property (`property`, `property_value`, `description`, `uuid`)
             values ('emr.personImagesDirectory',
