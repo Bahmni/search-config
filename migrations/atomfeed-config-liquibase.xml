@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!-- This Liquibase file is meant to contain changesets for Atom Feed Related Configuration -->
+        
+    <changeSet id="SEARCH-ATOM-FEED-001" author="tw">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM scheduler_task_config where schedulable_class = 'org.openmrs.module.atomfeed.scheduler.tasks.EventRecordsNumberOffsetMarkerTask'
+            </sqlCheck>
+        </preConditions>
+        <comment>Creates an Event Offset Marker Scheduler in OpenMRS (Runs once in a day)</comment>
+        <sql>
+            INSERT INTO  scheduler_task_config  (name, description, schedulable_class, 
+                   start_time, start_time_pattern, repeat_interval, start_on_startup, started, 
+                   created_by, date_created, changed_by, date_changed, last_execution_time, uuid ) 
+            VALUES ('OpenMRS event offset marker task', NULL, 'org.openmrs.module.atomfeed.scheduler.tasks.EventRecordsNumberOffsetMarkerTask',
+                   '2014-01-14 00:00:00','MM/dd/yyyy HH:mm:ss',86400, 1, 1, 
+                   1, now(), NULL, NULL, NULL, uuid());
+        </sql>
+    </changeSet>
+
+    <changeSet id="SEARCH-ATOM-FEED-002" author="tw">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                Select count(*) from chunking_history;   
+            </sqlCheck>
+        </preConditions>
+        <comment>Configures chunk size for Atom Feed (OpenMRS Atom Server)</comment>
+        <sql>
+            insert into chunking_history (chunk_length, start) values (5, 1);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

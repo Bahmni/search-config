@@ -13,5 +13,6 @@
     <include file="openmrs-medical-concepts-liquibase.xml"/>
     <include file="openmrs-roles-and-privileges-liquibase.xml"/>
     <include file="openmrs-misc-config-liquibase.xml"/>
+    <include file="atomfeed-config-liquibase.xml"/>
 
 </databaseChangeLog>
