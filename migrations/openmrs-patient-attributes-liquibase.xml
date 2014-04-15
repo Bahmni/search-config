@@ -25,21 +25,6 @@
         </insert>
     </changeSet>
 
-    <changeSet id="SEARCH-OMRS-PA-004" author="tw">
-        <comment>Add patient attribute: middleNameLocal</comment>
-        <insert tableName="person_attribute_type">
-            <column name="name" value="middleNameLocal" />
-            <column name="description" value="मरीज़ का मध्यनाम " />
-            <column name="format" value="java.lang.String" />
-            <column name="searchable" valueNumeric="1" />
-            <column name="creator" valueNumeric="1" />
-            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
-            <column name="retired" valueNumeric="0" />
-            <column name="sort_weight" valueNumeric="2" />
-            <column name="uuid" valueComputed="uuid()" />
-        </insert>
-    </changeSet>
-
     <changeSet id="SEARCH-OMRS-PA-002" author="tw">
         <comment>Add patient attribute: familyNameLocal</comment>
         <insert tableName="person_attribute_type">
@@ -67,6 +52,21 @@
             <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
             <column name="retired" valueNumeric="0" />
             <column name="sort_weight" valueNumeric="3" />
+            <column name="uuid" valueComputed="uuid()" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="SEARCH-OMRS-PA-004" author="tw">
+        <comment>Add patient attribute: middleNameLocal</comment>
+        <insert tableName="person_attribute_type">
+            <column name="name" value="middleNameLocal" />
+            <column name="description" value="मरीज़ का मध्यनाम " />
+            <column name="format" value="java.lang.String" />
+            <column name="searchable" valueNumeric="1" />
+            <column name="creator" valueNumeric="1" />
+            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
+            <column name="retired" valueNumeric="0" />
+            <column name="sort_weight" valueNumeric="2" />
             <column name="uuid" valueComputed="uuid()" />
         </insert>
     </changeSet>
