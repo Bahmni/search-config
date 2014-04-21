@@ -42,7 +42,7 @@
             
             SET @source_id := LAST_INSERT_ID();
             
-            INSERT INTO idgen_seq_id_gen (id, next_sequence_value, base_character_set, first_identifier_base, prefix, suffix, length) VALUES (@source_id, 200000, '0123456789', '200000', 'SEA', '', 9);
+            INSERT INTO idgen_seq_id_gen (id, next_sequence_value, base_character_set, first_identifier_base, prefix, suffix, min_length, max_length) VALUES (@source_id, 1, '0123456789', '1', 'SEA', '', 7, 11);
 
         </sql>
     </changeSet>
