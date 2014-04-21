@@ -26,11 +26,11 @@
             "defaultIdentifierPrefix": "SEA",
             "searchByIdForwardUrl": "/patient/{{patientUuid}}?visitType=OPD",
             "conceptSetUI": {
-                "temparature": {
+                "temperature": {
                     "showAbnormalIndicator": true
                 }
             },
-            "registrationConceptSet":"RegConceptSet",
+            "registrationConceptSet":"",
             "showMiddleName": true
         }
     }
