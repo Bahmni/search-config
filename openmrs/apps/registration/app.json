@@ -31,7 +31,8 @@
                 }
             },
             "registrationConceptSet":"",
-            "showMiddleName": true
+            "showMiddleName": true,
+            "registrationCardPrintLayout": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/print.html"
         }
     }
 ]
