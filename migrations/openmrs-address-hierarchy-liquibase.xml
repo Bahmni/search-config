@@ -31,10 +31,14 @@
         </sql>
     </changeSet>
 
-    <changeSet id="SEARCH-OMRS-ADDRESS-002" author="tw">
+    <changeSet id="SEARCH-OMRS-ADDRESS-003" author="tw">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM idgen_identifier_source where name like 'SEA';
+            </sqlCheck>
+        </preConditions>
         <comment>SEA Patient Registration Number, Counter Starting Value, Length and Prefix/Suffix</comment>
         <sql>
-
             SELECT patient_identifier_type_id from patient_identifier_type where name = 'Bahmni Id' into @patient_identifier;
 
             INSERT INTO idgen_identifier_source (uuid, name, description, identifier_type, creator, date_created)
@@ -42,8 +46,7 @@
             
             SET @source_id := LAST_INSERT_ID();
             
-            INSERT INTO idgen_seq_id_gen (id, next_sequence_value, base_character_set, first_identifier_base, prefix, suffix, min_length, max_length) VALUES (@source_id, 1, '0123456789', '1', 'SEA', '', 7, 11);
-
+            INSERT INTO idgen_seq_id_gen (id, next_sequence_value, base_character_set, first_identifier_base, prefix, suffix, min_length, max_length) VALUES (@source_id, 1, '0123456789', '1', 'SEA', '', 7, 12);
         </sql>
     </changeSet>
 
