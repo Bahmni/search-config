@@ -32,7 +32,11 @@
             },
             "registrationConceptSet":"",
             "showMiddleName": true,
-            "registrationCardPrintLayout": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/print.html"
+            "registrationCardPrintLayout": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/print.html",
+            "localNameSearch": true,
+            "localNameLabel": "रुग्णाचे नाव",
+            "localNamePlaceholder": "रुग्णाचे नाव",
+            "localNameAttributesToDisplay": ["givenNameLocal", "middleNameLocal", "familyNameLocal"]
         }
     }
 ]
