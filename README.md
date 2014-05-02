@@ -67,6 +67,7 @@ https://ci-bahmni.thoughtworks.com/go/files/Bahmni_MRS_Master/{Build_Number}/Bui
   },
   "registrationConceptSet":"",
   "showMiddleName": false,
+  "hideFields": ["Height", "Weight", "BMI", "BMI_Status"],  //the fields on screen which should NOT be shown
   "registrationCardPrintLayout": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/print.html",
   "localNameSearch": true,                       // registration search displays parameter for search by local name
   "localNameLabel": "मरीज़ का नाम",                // label to be diplyed for local name search input
