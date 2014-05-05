@@ -40,14 +40,41 @@
         </sql>
     </changeSet>
 
-    <changeSet id="SEARCH-OMRS-V-004" author="tw">
-        <comment>Comma seperated list of visits which much be closed automatically</comment>
+    <changeSet id="SEARCH-OMRS-V-005" author="tw">
+        <comment>Delete OpenMRS property autoCloseVisitType since we don't use that scheduler (to avoid confusion)</comment>
         <sql>
-            INSERT INTO global_property (`property`, `property_value`, `description`, `uuid`)
-            VALUES ('visits.autoCloseVisitType', 'OPD', 'comma-separated list of the visit type(s) to automatically close', uuid())
-            ON DUPLICATE KEY UPDATE property_value = 'OPD';
+            DELETE FROM global_property WHERE property like '%visits.autoCloseVisitType%';
         </sql>
     </changeSet>
 
+    <changeSet id="SEARCH-OMRS-V-006" author="tw">
+        <comment>Delete OpenMRS property visits.autoCloseMinimumNumberOfDays since we don't use that scheduler (to avoid confusion)</comment>
+        <sql>
+            DELETE FROM global_property WHERE property like '%visits.autoCloseMinimumNumberOfDays%';
+        </sql>
+    </changeSet>
+
+    <changeSet id="SEARCH-OMRS-V-007" author="tw">
+        <comment>Delete OpenMRS scheduler AutoCloseVisitsTask since we don't use that scheduler (to avoid confusion)</comment>
+        <delete tableName="scheduler_task_config">
+            <where>schedulable_class = 'org.openmrs.scheduler.tasks.AutoCloseVisitsTask'</where>
+        </delete>
+    </changeSet>
+
+    <changeSet id="SEARCH-OMRS-V-008" author="tw">
+        <comment>Add Bahmni preferred EMR API scheduler which closes stale visits</comment>
+        <insert tableName="scheduler_task_config">
+            <column name="name" value="Close Stale Visits Task" />
+            <column name="description" value="Auto close visit task after number of hours specified by emrapi.visitExpireHours" />
+            <column name="schedulable_class" value="org.openmrs.module.emrapi.adt.CloseStaleVisitsTask" />
+            <column name="start_on_startup" valueBoolean="true" />
+            <column name="start_time_pattern" value="MM/dd/yyyy HH:mm:ss" />
+            <column name="start_time" valueDate="2014-04-30T23:59:59" />
+            <column name="repeat_interval" value="86400" />
+            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
+            <column name="created_by" value="1" />
+            <column name="uuid" valueComputed="uuid()" />
+        </insert>
+    </changeSet>
 
 </databaseChangeLog>
