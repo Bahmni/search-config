@@ -43,7 +43,7 @@ h1, h2, h3 {
 /* line 30, print.scss */
 .print-table-header {
   text-align: center;
-  margin-top: 10px;
+  margin-top: 5px;
   text-align: center;
 }
 
@@ -52,7 +52,7 @@ h1, h2, h3 {
   font-size: 4mm;
   margin-bottom: 0px;
   padding-bottom: 0px;
-  margin-top: 15px;
+  margin-top: 2px;
 }
 
 /* line 41, print.scss */
@@ -78,6 +78,7 @@ h1, h2, h3 {
 /* line 55, print.scss */
 .print-table-right {
   width: 77mm;
+  padding: 0 5mm;
 }
 
 /* line 58, print.scss */
@@ -104,7 +105,7 @@ h1, h2, h3 {
 
 /* line 74, print.scss */
 .registrationCard-details {
-  padding: 0mm 5mm 0mm 5mm;
+  padding: 0mm 5mm 5mm 5mm;
 }
 
 /* line 77, print.scss */
@@ -121,4 +122,14 @@ h1, h2, h3 {
 /* line 84, print.scss */
 .hindi-text {
   vertical-align: bottom;
+}
+
+.footer {
+  border-top: 1px solid #666;
+  margin-top: 5px;
+  padding-top: 5px;
+}
+
+.footer tr {
+  padding: 0;
 }
