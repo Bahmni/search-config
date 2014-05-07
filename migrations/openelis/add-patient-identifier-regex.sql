@@ -1,0 +1,2 @@
+insert into site_information ( id,name, lastupdated, description, value, encrypted, value_type) 
+values ((select MAX(id)+1 from site_information),'stNumberFormat', now(), 'stNumberFormat', '/([a-zA-Z]*)(\d+\/\d+)/', 'f', 'text');
