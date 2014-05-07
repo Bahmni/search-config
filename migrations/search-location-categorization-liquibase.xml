@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!-- 
+        This Liquibase file is meant to contain changesets for SEARCH CUSTOM Tables of Location Category Management & Lookup
+        like list of villages and their classification into Tribal/Non-Tribal/Control Area/etc.
+     -->
+        
+    <changeSet id="SEARCH-LOCATION-CAT-001" author="tw">
+        <comment>Master table which holds all the categories</comment>
+        <sql>
+            CREATE TABLE IF NOT EXISTS SEARCH_LOCATION_CATEGORY_TYPE (
+             Id            INT NOT NULL, 
+             Name          VARCHAR(50) not null,
+             Description   VARCHAR(200),
+             LastUpdatedOn TIMESTAMP not null
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="SEARCH-LOCATION-CAT-002" author="tw">
+        <comment>Master table which holds all villages and their respective categories</comment>
+        <sql>
+            CREATE TABLE IF NOT EXISTS SEARCH_LOCATION_CATEGORY (
+                 Id         INT AUTO_INCREMENT, 
+                 Village    VARCHAR(50) not null,
+                 Tehsil     VARCHAR(50) not null,
+                 District   VARCHAR(50) not null,
+                 Category   INT not null REFERENCES SEARCH_LOCATION_CATEGORY_TYPE(id),
+                 LastUpdatedOn  TIMESTAMP not null,
+                 PRIMARY KEY (Id),
+                 CONSTRAINT UC_Location_Category UNIQUE (Village, Tehsil, District, Category)
+                );
+        </sql>
+    </changeSet>
+
+    <changeSet id="SEARCH-LOCATION-CAT-003" author="tw">
+        <comment>Make an entry for TRIBAL Category</comment>
+        <sql>
+            INSERT INTO SEARCH_LOCATION_CATEGORY_TYPE value (1, "TRIBAL", "Is a tribal village", NOW());
+        </sql>
+    </changeSet>
+
+    <changeSet id="SEARCH-LOCATION-CAT-004" author="tw">
+        <comment>Make an entry for NON-TRIBAL Category</comment>
+        <sql>
+            INSERT INTO SEARCH_LOCATION_CATEGORY_TYPE value (2, "NON-TRIBAL", "Not a tribal village", NOW());
+        </sql>
+    </changeSet>
+
+    <changeSet id="SEARCH-LOCATION-CAT-005" author="tw">
+        <comment>Make an entry for URBAN Category</comment>
+        <sql>
+            INSERT INTO SEARCH_LOCATION_CATEGORY_TYPE value (3, "URBAN", "An Urban Location", NOW());
+        </sql>
+    </changeSet>
+
+    <changeSet id="SEARCH-LOCATION-CAT-006" author="tw">
+        <comment>Make an entry for INTERVENTION Category</comment>
+        <sql>
+            INSERT INTO SEARCH_LOCATION_CATEGORY_TYPE value (4, "INTERVENTION", "Study Area", NOW());
+        </sql>
+    </changeSet>
+
+    <changeSet id="SEARCH-LOCATION-CAT-007" author="tw">
+        <comment>Make an entry for CONTROL Category</comment>
+        <sql>
+            INSERT INTO SEARCH_LOCATION_CATEGORY_TYPE value (5, "CONTROL", "Control Area", NOW());
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
