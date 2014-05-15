@@ -37,7 +37,13 @@
             "localNameSearch": true,
             "localNameLabel": "रुग्णाचे नाव",
             "localNamePlaceholder": "रुग्णाचे नाव",
-            "localNameAttributesToDisplay": ["givenNameLocal", "middleNameLocal", "familyNameLocal"]
+            "localNameAttributesToDisplay": ["givenNameLocal", "middleNameLocal", "familyNameLocal"],
+            "conceptSetUI": {
+                "Example Concept": {
+                    "required": true
+                }
+            },
+            "hideFields": ["BMI", "Height", "Weight"]
         }
     }
 ]
