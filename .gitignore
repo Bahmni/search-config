@@ -4,6 +4,7 @@
 .project
 .settings
 .idea/*
+*/.idea/*
 .tmp
 target
 
