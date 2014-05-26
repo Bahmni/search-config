@@ -12,12 +12,6 @@ import java.net.URL;
 
 public class SearchMigratorTest {
 
-    @Test @Ignore
-    public void test(){
-        SearchMigrator migrator = new SearchMigrator();
-        migrator.checkFile(".", "sampleReg.csv");
-    }
-
     @Test
     public void testMigrator(){
         String csvFileName = "sampleReg.csv";
