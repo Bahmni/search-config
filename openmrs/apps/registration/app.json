@@ -24,6 +24,7 @@
         "config" : {
             "autoCompleteFields":["familyName", "caste"],
             "defaultIdentifierPrefix": "SEA",
+            "defaultVisitType": "OPD",
             "searchByIdForwardUrl": "/patient/{{patientUuid}}?visitType=OPD",
             "conceptSetUI": {
                 "temperature": {
