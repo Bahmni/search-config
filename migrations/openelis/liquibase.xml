@@ -23,4 +23,12 @@
         </update>
     </changeSet>
 
+    <changeSet id="SEARCH-ELIS-3" author="tw" context="search">
+        <insert schemaName="clinlims" tableName="HEALTH_CENTER">
+            <column name="active" type="boolean" valueBoolean="false"/>
+            <column name="name" value="SEA"/>
+            <column name="description" value="SEARCH"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>
