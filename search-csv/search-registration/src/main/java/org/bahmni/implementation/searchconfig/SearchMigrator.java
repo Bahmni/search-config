@@ -2,10 +2,7 @@ package org.bahmni.implementation.searchconfig;
 
 import org.apache.log4j.Logger;
 import org.bahmni.csv.CSVFile;
-import org.bahmni.csv.MigrateResult;
-import org.bahmni.csv.MigratorBuilder;
 import org.bahmni.csv.MultiStageMigrator;
-import org.bahmni.csv.exception.MigrationException;
 
 public class SearchMigrator {
 
@@ -29,6 +26,8 @@ public class SearchMigrator {
 
         MultiStageMigrator multiStageMigrator = new MultiStageMigrator<SearchCSVRow>();
         multiStageMigrator.addStage(new SearchValidatorStage());
+        multiStageMigrator.addStage(new KrishnaTransformerStage());
+        multiStageMigrator.addStage(new PatientMigratorStage());
         multiStageMigrator.migrate(registrationCSVFile, SearchCSVRow.class);
     }
 

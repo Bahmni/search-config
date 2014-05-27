@@ -26,10 +26,9 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
         List<FailedRowResult<SearchCSVRow>> failedValidationList = new ArrayList<FailedRowResult<SearchCSVRow>>();
 
         for (SearchCSVRow csvRow : csvEntityList) {
-            System.out.println(csvRow);
             String errorMessage = validate(csvRow);
-            if(StringUtils.isNotEmpty(errorMessage)){
-                failedValidationList.add(new FailedRowResult<SearchCSVRow>(csvRow, errorMessage));
+            if (StringUtils.isNotEmpty(errorMessage)) {
+                failedValidationList.add(new FailedRowResult<SearchCSVRow>(csvRow, getName() + ":" + errorMessage));
             }
         }
         csvEntityList.removeAll(failedValidationList);
@@ -37,20 +36,20 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
     }
 
     private String validate(SearchCSVRow csvRow) {
-        StringBuilder errorMessage = new StringBuilder();
+        StringBuilder errorMessageBuilder = new StringBuilder();
+        validateCaseNumbers(csvRow, errorMessageBuilder);
+        validateName(csvRow, errorMessageBuilder);
+        validateVisitDate(csvRow, errorMessageBuilder);
+        return errorMessageBuilder.toString();
+    }
 
-        if (StringUtils.isEmpty(csvRow.oldCaseNo) && StringUtils.isEmpty(csvRow.newCaseNo)){
-            errorMessage.append("Old and New Case numbers are Blank.");
+    private void validateCaseNumbers(SearchCSVRow csvRow, StringBuilder errorMessageBuilder) {
+        if (StringUtils.isEmpty(csvRow.oldCaseNo) && StringUtils.isEmpty(csvRow.newCaseNo)) {
+            errorMessageBuilder.append("Old and New Case numbers are Blank.");
         }
+    }
 
-
-        if (StringUtils.isEmpty(csvRow.firstName) && StringUtils.isEmpty(csvRow.middleName) &&
-               StringUtils.isEmpty(csvRow.lastName)
-                ){
-            errorMessage.append( "All name fields are Blank.");
-        }
-
-
+    private void validateVisitDate(SearchCSVRow csvRow, StringBuilder errorMessage) {
         Date visitDate;
         try {
             visitDate = DateUtils.parseDateStrictly(csvRow.visit_date, new String[]{"dd/M/yyyy"});
@@ -61,8 +60,14 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
         } catch (ParseException e) {
             errorMessage.append("visit_date is not valid.");
         }
+    }
 
-
-        return errorMessage.toString();
+    private void validateName(SearchCSVRow csvRow, StringBuilder errorMessage) {
+        if (StringUtils.isEmpty(csvRow.firstName)) {
+            errorMessage.append("FirstName is mandatory");
+        }
+        if (StringUtils.isEmpty(csvRow.lastName)) {
+            errorMessage.append("LastName is mandatory");
+        }
     }
 }
