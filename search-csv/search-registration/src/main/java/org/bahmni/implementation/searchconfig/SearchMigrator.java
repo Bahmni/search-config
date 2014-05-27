@@ -11,7 +11,7 @@ public class SearchMigrator {
     public static void main(String[] args){
         if(args.length < 2) {
             System.out.println("Incorrect command usage.");
-            System.out.println(String.format("Usage %s [validate|migrate] reg-csv-file-path", SearchMigrator.class.getName()));
+            System.out.println(String.format("Usage %s reg-csv-file-path reg-csv-file-name", SearchMigrator.class.getName()));
             System.exit(1);
         }
 

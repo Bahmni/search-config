@@ -26,10 +26,10 @@ import java.util.List;
 public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
     private static ObjectMapper objectMapper = new ObjectMapper();
     private static Logger logger = org.apache.log4j.Logger.getLogger(PatientMigratorStage.class);
-    private OpenMRSRESTConnection openMRSRESTConnection = null;
-    private String openMRSHostName = "192.168.33.10";
-    private String openmrsUserId = "admin";
-    private String openmrsUserPassword = "test";
+    private static OpenMRSRESTConnection openMRSRESTConnection = null;
+    private static String openMRSHostName = "192.168.33.10";
+    private static String openmrsUserId = "admin";
+    private static String openmrsUserPassword = "test";
     private OpenMRSRestService openMRSRestService;
 
 
@@ -40,18 +40,23 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
 
     @Override
     public boolean canRunInParallel() {
-        return false;
+        return true;
     }
 
-    @Override
-    public StageResult execute(List<SearchCSVRow> csvEntityList) throws MigrationException {
+    {
         try {
-            initializeOpenmrsConnection();
+            openMRSRESTConnection = new OpenMRSRESTConnection(openMRSHostName, openmrsUserId, openmrsUserPassword);
+            openMRSRestService = new OpenMRSRestService(openMRSRESTConnection);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public StageResult execute(List<SearchCSVRow> csvEntityList) throws MigrationException {
+
         ArrayList<FailedRowResult<SearchCSVRow>> failedRowResults = new ArrayList<FailedRowResult<SearchCSVRow>>();
         for (SearchCSVRow csvRow : csvEntityList) {
             PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapFrom(csvRow);
@@ -93,11 +98,6 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
         String message = responseBody.substring(startIndex,endIndex);
         //Replacing quotes since the error message will be written to a csv
         return message.replaceAll("\"", "");
-    }
-
-    private void initializeOpenmrsConnection() throws IOException, URISyntaxException {
-        openMRSRESTConnection = new OpenMRSRESTConnection(openMRSHostName, openmrsUserId, openmrsUserPassword);
-        openMRSRestService = new OpenMRSRestService(openMRSRESTConnection);
     }
 
     private HttpHeaders getHttpHeaders() {

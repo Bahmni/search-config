@@ -18,11 +18,12 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
 
     @Override
     public boolean canRunInParallel() {
-        return false;
+        return true;
     }
 
     @Override
     public StageResult execute(List<SearchCSVRow> csvEntityList) throws MigrationException {
+        System.out.println("### STARTING THREAD: "+ Thread.currentThread() + " CSV Count Size: " + csvEntityList.size());
         List<FailedRowResult<SearchCSVRow>> failedValidationList = new ArrayList<FailedRowResult<SearchCSVRow>>();
 
         for (SearchCSVRow csvRow : csvEntityList) {
@@ -32,6 +33,8 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
             }
         }
         csvEntityList.removeAll(failedValidationList);
+        System.out.println("### FINISHED THREAD: "+ Thread.currentThread());
+
         return new StageResult(getName(), failedValidationList, csvEntityList);
     }
 
@@ -64,10 +67,10 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
 
     private void validateName(SearchCSVRow csvRow, StringBuilder errorMessage) {
         if (StringUtils.isEmpty(csvRow.firstName)) {
-            errorMessage.append("FirstName is mandatory");
+            errorMessage.append("FirstName is mandatory.");
         }
         if (StringUtils.isEmpty(csvRow.lastName)) {
-            errorMessage.append("LastName is mandatory");
+            errorMessage.append("LastName is mandatory.");
         }
     }
 }

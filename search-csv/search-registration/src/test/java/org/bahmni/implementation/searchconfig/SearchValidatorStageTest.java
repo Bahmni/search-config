@@ -59,14 +59,14 @@ public class SearchValidatorStageTest {
         validationResult = validatorStage.execute(Arrays.asList(row));
         assertEquals(1, validationResult.getFailureCount());
         FailedRowResult<SearchCSVRow> failedRowResult = validationResult.getFailedCSVEntities().get(0);
-        assertEquals(stageName + "FirstName is mandatory", failedRowResult.getErrorMessage());
+        assertEquals(stageName + "FirstName is mandatory.", failedRowResult.getErrorMessage());
 
         row.firstName = "first";
         row.lastName = "";
         validationResult = validatorStage.execute(Arrays.asList(row));
         assertEquals(1, validationResult.getFailureCount());
         failedRowResult = validationResult.getFailedCSVEntities().get(0);
-        assertEquals(stageName + "LastName is mandatory", failedRowResult.getErrorMessage());
+        assertEquals(stageName + "LastName is mandatory.", failedRowResult.getErrorMessage());
     }
 
     private SearchCSVRow searchCsvBuilder() {
