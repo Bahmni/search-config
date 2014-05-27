@@ -31,20 +31,19 @@
                     "showAbnormalIndicator": true
                 }
             },
-            "registrationConceptSet":"",
+            "registrationConceptSet":"Visit Details",
             "showMiddleName": true,
-            "hideFields": ["Height", "Weight", "BMI", "BMI_Status"],
+            "hideFields": ["REGISTRATION FEES","Comments","Height", "Weight", "BMI", "BMI_Status"],
             "registrationCardPrintLayout": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/print.html",
             "localNameSearch": true,
             "localNameLabel": "रुग्णाचे नाव",
             "localNamePlaceholder": "रुग्णाचे नाव",
             "localNameAttributesToDisplay": ["givenNameLocal", "middleNameLocal", "familyNameLocal"],
             "conceptSetUI": {
-                "Example Concept": {
-                    "required": true
+                "Special OPD": {
+                    "autocomplete": true
                 }
-            },
-            "hideFields": ["BMI", "Height", "Weight"]
+            }
         }
     }
 ]
