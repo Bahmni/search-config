@@ -1,0 +1,12 @@
+language: java
+jdk:
+  - oraclejdk7
+script: 
+	- cd search-csv
+	- mvn clean install
+notifications:
+  email:
+      recipients:
+        - gluthra@thoughtworks.com
+      on_success: change
+      on_failure: change
