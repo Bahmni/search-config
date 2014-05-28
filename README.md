@@ -1,6 +1,8 @@
 SEARCH (Gadchiroli Hospital) specific Bahmni configuration and data. 
 ======================================================================
 
+[![Build Status](https://travis-ci.org/Bhamni/search-config.svg?branch=master)](https://travis-ci.org/Bhamni/search-config)
+
 #### Deploy
 - under server (apache) www directory
 - alias root (search-config) to bahmni_config
