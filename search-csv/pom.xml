@@ -135,5 +135,10 @@
             <name>Apache Maven Release Repository</name>
             <url>https://repository.apache.org/content/repositories/releases</url>
         </repository>
+        <repository>
+            <id>openmrs-repo</id>
+            <name>OpenMRS Nexus Repository</name>
+            <url>http://mavenrepo.openmrs.org/nexus/content/repositories/public</url>
+        </repository>
     </repositories>
 </project>
