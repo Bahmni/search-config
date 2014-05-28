@@ -8,5 +8,8 @@ notifications:
   email:
       recipients:
         - gluthra@thoughtworks.com
+        - pankajk@thoughtworks.com
+        - mihirkh@thoughtworks.com
+        - sushrao@thoughtworks.com
       on_success: change
       on_failure: change
