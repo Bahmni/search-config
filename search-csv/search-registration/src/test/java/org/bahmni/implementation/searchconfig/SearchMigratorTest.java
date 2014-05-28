@@ -1,5 +1,6 @@
 package org.bahmni.implementation.searchconfig;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -8,7 +9,7 @@ import java.net.URL;
 
 public class SearchMigratorTest {
 
-    @Test
+    @Test @Ignore
     public void testMigrator(){
         String csvFileName = "sampleReg.csv";
 
