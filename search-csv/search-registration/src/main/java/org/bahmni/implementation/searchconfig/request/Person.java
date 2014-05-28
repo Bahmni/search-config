@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 public class Person {
+    String uuid;
     private List<Name> names = new ArrayList<Name>();
     private List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
     private List<PatientAddress> addresses = new ArrayList<PatientAddress>();

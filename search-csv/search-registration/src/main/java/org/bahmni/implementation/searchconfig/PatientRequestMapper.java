@@ -8,30 +8,63 @@ import org.bahmni.implementation.searchconfig.request.PatientAddress;
 import org.bahmni.implementation.searchconfig.request.PatientIdentifier;
 import org.bahmni.implementation.searchconfig.request.PatientProfileRequest;
 import org.bahmni.implementation.searchconfig.request.Person;
+import org.bahmni.implementation.searchconfig.response.PatientResponse;
+import org.bahmni.implementation.searchconfig.response.PersonResponse;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class PatientRequestMapper {
-    public static PatientProfileRequest mapFrom(SearchCSVRow csvRow) {
-        Person person = new Person();
-        mapName(csvRow, person);
-        person.setAddresses(Arrays.asList(new PatientAddress("address1", "address2", "address3", "cityVillage", "state", "country")));
-        person.setBirthdate("2011-05-01");
-        person.setBirthdateEstimated(true);
-        person.setGender("F");
-        Patient patient = new Patient(person, getIdentifiers(csvRow));
+    public static PatientProfileRequest mapPatient(SearchCSVRow csvRow, boolean fromOldCaseNumber) {
+        Person person = mapPerson(csvRow, null);
+        List<PatientIdentifier> identifiers;
+        if (fromOldCaseNumber) {
+            identifiers = getIdentifiers(csvRow.oldCaseNo);
+        } else {
+            identifiers = getIdentifiers(csvRow.newCaseNo);
+        }
+        Patient patient = new Patient(person, identifiers);
         return new PatientProfileRequest(patient);
     }
 
-    private static List<PatientIdentifier> getIdentifiers(SearchCSVRow csvRow) {
-        if (StringUtils.isNotEmpty(csvRow.oldCaseNo)) {
-            return Arrays.asList(new PatientIdentifier("SEA" + csvRow.oldCaseNo, new IdentifierType("Bahmni Id"), true));
-        }
-        return Arrays.asList(new PatientIdentifier("SEA" + csvRow.newCaseNo, new IdentifierType("Bahmni Id"), true));
+    public static PatientProfileRequest mapPatientForUpdate(SearchCSVRow csvRow, PatientResponse patientResponse) {
+        Person person = mapPerson(csvRow, patientResponse.getPerson());
+        List<PatientIdentifier> identifiers;
+        identifiers = getIdentifiers(csvRow.oldCaseNo);
+        Patient patient = new Patient(person, identifiers);
+        return new PatientProfileRequest(patient);
     }
 
-    private static void mapName(SearchCSVRow csvRow, Person person) {
+    private static Person mapPerson(SearchCSVRow csvRow, PersonResponse personResponse) {
+        Person person = mapName(csvRow, personResponse);
+        if (personResponse != null) {
+            person.setUuid(personResponse.getUuid());
+        }
+        mapAddress(person, personResponse);
+        person.setBirthdate("2011-05-01");
+        person.setBirthdateEstimated(true);
+        person.setGender("F");
+        return person;
+    }
+
+    private static void mapAddress(Person person, PersonResponse personResponse) {
+        PatientAddress patientAddress;
+        if(personResponse !=null && personResponse.getPreferredAddress() != null){
+            String personAddressUuid = personResponse.getPreferredAddress().getUuid();
+            patientAddress = new PatientAddress(personAddressUuid, "address1", "address2", "address3", "cityVillage", "state", "country");
+        }else{
+            patientAddress = new PatientAddress("address1", "address2", "address3", "cityVillage", "state", "country");
+        }
+        person.setAddresses(Arrays.asList(patientAddress));
+    }
+
+    private static List<PatientIdentifier> getIdentifiers(String caseNumber) {
+        return Arrays.asList(new PatientIdentifier("SEA" + caseNumber, new IdentifierType("Bahmni Id"), true));
+    }
+
+    private static Person mapName(SearchCSVRow csvRow, PersonResponse personResponse) {
+        Person person = new Person();
+        Name patientName;
         String firstName = csvRow.firstName;
         String middleName = csvRow.middleName;
         String lastName = csvRow.lastName;
@@ -39,7 +72,13 @@ public class PatientRequestMapper {
             lastName = middleName;
             middleName = "";
         }
-        Name patientName = new Name(firstName, middleName, lastName);
+        if (personResponse != null && personResponse.getPreferredName() != null) {
+            String personNameUuid = personResponse.getPreferredName().getUuid();
+            patientName = new Name(personNameUuid, firstName, middleName, lastName);
+        } else {
+            patientName = new Name(firstName, middleName, lastName);
+        }
         person.addName(patientName);
+        return person;
     }
 }

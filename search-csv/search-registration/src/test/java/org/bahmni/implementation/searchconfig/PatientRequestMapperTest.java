@@ -1,7 +1,12 @@
 package org.bahmni.implementation.searchconfig;
 
+import org.bahmni.implementation.searchconfig.request.Name;
 import org.bahmni.implementation.searchconfig.request.Patient;
+import org.bahmni.implementation.searchconfig.request.PatientAddress;
 import org.bahmni.implementation.searchconfig.request.PatientProfileRequest;
+import org.bahmni.implementation.searchconfig.request.Person;
+import org.bahmni.implementation.searchconfig.response.PatientResponse;
+import org.bahmni.implementation.searchconfig.response.PersonResponse;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
@@ -10,39 +15,93 @@ public class PatientRequestMapperTest {
 
     @Test
     public void shouldMapNAmeFromCsvRowWhenAllPartsOfNameExist(){
-        SearchCSVRow csvRow = new SearchCSVRow();
-        String firstName = "first";
-        String middleName = "middle";
-        String lastName = "last";
-        csvRow.firstName = firstName;
-        csvRow.middleName = middleName;
-        csvRow.lastName = lastName;
+        SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
 
-        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapFrom(csvRow);
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false);
         Patient patient = patientProfileRequest.getPatient();
 
         assertEquals(1, patient.getPerson().getNames().size());
-        assertEquals(firstName, patient.getPerson().getNames().get(0).getGivenName());
-        assertEquals(middleName, patient.getPerson().getNames().get(0).getMiddleName());
-        assertEquals(lastName, patient.getPerson().getNames().get(0).getFamilyName());
+        assertEquals(csvRow.firstName, patient.getPerson().getNames().get(0).getGivenName());
+        assertEquals(csvRow.middleName, patient.getPerson().getNames().get(0).getMiddleName());
+        assertEquals(csvRow.lastName, patient.getPerson().getNames().get(0).getFamilyName());
     }
 
     @Test
     public void shouldMapNAme_ByMappingMiddleNameAsLastName_WhenLastNameIsEmpty(){
-        SearchCSVRow csvRow = new SearchCSVRow();
-        String firstName = "first";
-        String middleName = "middle";
-        String lastName = "";
-        csvRow.firstName = firstName;
-        csvRow.middleName = middleName;
-        csvRow.lastName = lastName;
+        SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
+        csvRow.lastName = "";
 
-        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapFrom(csvRow);
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false);
         Patient patient = patientProfileRequest.getPatient();
 
         assertEquals(1, patient.getPerson().getNames().size());
-        assertEquals(firstName, patient.getPerson().getNames().get(0).getGivenName());
+        assertEquals(csvRow.firstName, patient.getPerson().getNames().get(0).getGivenName());
         assertEquals("", patient.getPerson().getNames().get(0).getMiddleName());
-        assertEquals(middleName, patient.getPerson().getNames().get(0).getFamilyName());
+        assertEquals(csvRow.middleName, patient.getPerson().getNames().get(0).getFamilyName());
+    }
+
+    @Test
+    public void shouldMapOldCaseNumberAsPatientIdentifier(){
+        SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
+        csvRow.oldCaseNo = "1234/12";
+        csvRow.newCaseNo = "";
+
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, true);
+        Patient patient = patientProfileRequest.getPatient();
+
+        assertEquals("SEA" + csvRow.oldCaseNo, patient.getIdentifiers().get(0).getIdentifier());
+    }
+
+    @Test
+    public void shouldMapNewCaseNumberAsPatientIdentifier(){
+        SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
+
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false);
+        Patient patient = patientProfileRequest.getPatient();
+
+        assertEquals("SEA" + csvRow.newCaseNo, patient.getIdentifiers().get(0).getIdentifier());
+    }
+
+    @Test
+    public void shouldMapPersonNameUuidFromPersonResponse() {
+        String personNameUuid = "personNameUuid";
+        String personUuid = "patientUuid";
+        PatientResponse patientResponse = new PatientResponse();
+        patientResponse.setUuid(personUuid);
+        PersonResponse person = new PersonResponse();
+        person.setUuid(personUuid);
+        person.setPreferredNameUuid(personNameUuid);
+        patientResponse.setPerson(person);
+        SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
+
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatientForUpdate(csvRow, patientResponse);
+
+        Person mappedPerson = patientProfileRequest.getPatient().getPerson();
+        Name mappedPersonName = mappedPerson.getNames().get(0);
+        assertEquals(personNameUuid, mappedPersonName.getUuid());
+        assertEquals(csvRow.firstName, mappedPersonName.getGivenName());
+        assertEquals(csvRow.middleName, mappedPersonName.getMiddleName());
+        assertEquals(csvRow.lastName, mappedPersonName.getFamilyName());
+        assertEquals(personUuid, mappedPerson.getUuid());
+    }
+
+    @Test
+    public void shouldMapPersonAddressUuidFromPersonResponse() {
+        String personAddressUuid = "personAddressUuid";
+        String personUuid = "patientUuid";
+        PersonResponse person = new PersonResponse();
+        person.setUuid(personUuid);
+        person.setPreferredAddressUuid(personAddressUuid);
+        PatientResponse patientResponse = new PatientResponse();
+        patientResponse.setUuid(personUuid);
+        patientResponse.setPerson(person);
+        SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
+
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatientForUpdate(csvRow, patientResponse);
+
+        Person mappedPerson = patientProfileRequest.getPatient().getPerson();
+        PatientAddress mappedPersonAddress = mappedPerson.getAddresses().get(0);
+        assertEquals(personAddressUuid, mappedPersonAddress.getUuid());
+        assertEquals(personUuid, mappedPerson.getUuid());
     }
 }

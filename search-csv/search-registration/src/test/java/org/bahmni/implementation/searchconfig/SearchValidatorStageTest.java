@@ -18,7 +18,7 @@ public class SearchValidatorStageTest {
     @Before
     public void setUp() throws Exception {
         validatorStage = new SearchValidatorStage();
-        row = searchCsvBuilder();
+        row = TestUtils.searchCsvBuilder();
         stageName = validatorStage.getName() + ":";
     }
 
@@ -54,29 +54,24 @@ public class SearchValidatorStageTest {
     }
 
     @Test
-    public void validate_shouldFailFor_EmptyGivenOrFamilyName() {
+    public void validate_shouldFailFor_EmptyGivenName() {
         row.firstName = "";
         validationResult = validatorStage.execute(Arrays.asList(row));
         assertEquals(1, validationResult.getFailureCount());
         FailedRowResult<SearchCSVRow> failedRowResult = validationResult.getFailedCSVEntities().get(0);
         assertEquals(stageName + "FirstName is mandatory.", failedRowResult.getErrorMessage());
+    }
 
-        row.firstName = "first";
+    @Test
+    public void validate_shouldFailFor_EmptyLastAndMiddle() {
+        row.middleName = "";
         row.lastName = "";
         validationResult = validatorStage.execute(Arrays.asList(row));
         assertEquals(1, validationResult.getFailureCount());
-        failedRowResult = validationResult.getFailedCSVEntities().get(0);
-        assertEquals(stageName + "LastName is mandatory.", failedRowResult.getErrorMessage());
+        FailedRowResult<SearchCSVRow> failedRowResult = validationResult.getFailedCSVEntities().get(0);
+        assertEquals(stageName + "Either Middle name or last name should be present.", failedRowResult.getErrorMessage());
     }
 
-    private SearchCSVRow searchCsvBuilder() {
-        SearchCSVRow searchCSVRow = new SearchCSVRow();
-        searchCSVRow.firstName = "first";
-        searchCSVRow.middleName = "middle";
-        searchCSVRow.lastName = "last";
-        searchCSVRow.newCaseNo = "123/12";
-        searchCSVRow.visit_date = "11/01/2012";
-        return searchCSVRow;
-    }
+
 
 }

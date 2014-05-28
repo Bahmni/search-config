@@ -1,5 +1,7 @@
 package org.bahmni.implementation.searchconfig;
 
+import com.google.gson.Gson;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.bahmni.csv.FailedRowResult;
 import org.bahmni.csv.SimpleStage;
@@ -7,6 +9,8 @@ import org.bahmni.csv.StageResult;
 import org.bahmni.csv.exception.MigrationException;
 import org.bahmni.implementation.searchconfig.request.PatientIdentifier;
 import org.bahmni.implementation.searchconfig.request.PatientProfileRequest;
+import org.bahmni.implementation.searchconfig.response.PatientListResponse;
+import org.bahmni.implementation.searchconfig.response.PatientResponse;
 import org.bahmni.openmrsconnector.OpenMRSRESTConnection;
 import org.bahmni.openmrsconnector.OpenMRSRestService;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -28,9 +32,10 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
     private static Logger logger = org.apache.log4j.Logger.getLogger(PatientMigratorStage.class);
     private static OpenMRSRESTConnection openMRSRESTConnection = null;
     private static String openMRSHostName = "192.168.33.10";
-    private static String openmrsUserId = "admin";
-    private static String openmrsUserPassword = "test";
+    private static String openmrsUserId = "superman";
+    private static String openmrsUserPassword = "Admin123";
     private OpenMRSRestService openMRSRestService;
+    private Gson gson = new Gson();
 
 
     @Override
@@ -56,46 +61,98 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
 
     @Override
     public StageResult execute(List<SearchCSVRow> csvEntityList) throws MigrationException {
-
         ArrayList<FailedRowResult<SearchCSVRow>> failedRowResults = new ArrayList<FailedRowResult<SearchCSVRow>>();
         for (SearchCSVRow csvRow : csvEntityList) {
-            PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapFrom(csvRow);
-            PatientIdentifier  patientIdentifier = patientProfileRequest.getPatient().getIdentifiers().get(0);
-            String jsonRequest = "";
-            try {
-                jsonRequest = objectMapper.writeValueAsString(patientProfileRequest);
-                System.out.println(jsonRequest);
-
-                if (logger.isDebugEnabled()) logger.debug(jsonRequest);
-                HttpHeaders httpHeaders = getHttpHeaders();
-                httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-                HttpEntity entity = new HttpEntity(patientProfileRequest, httpHeaders);
-                String url = openMRSRESTConnection.getRestApiUrl() + "patientprofile";
-                ResponseEntity<String> out = new RestTemplate().exchange(url, HttpMethod.POST, entity, String.class);
-                if (logger.isDebugEnabled()) logger.debug(out.getBody());
-                logger.info(String.format("Successfully created %s", patientIdentifier));
-            } catch (HttpServerErrorException serverErrorException) {
-                logger.info(String.format("Failed to create %s", patientIdentifier));
-                logger.info("Patient request: " + jsonRequest);
-                logger.error("Patient create response: " + serverErrorException.getResponseBodyAsString());
-                String errorMessage = extractErrorMessage(serverErrorException);
-                failedRowResults.add(new FailedRowResult<SearchCSVRow>(csvRow, getName() + ":" + errorMessage));
-            } catch (Exception e) {
-                logger.info(String.format("Failed to create"));
-                logger.info("Patient request: " + jsonRequest);
-                logger.error("Failed to process a patient", e);
-                failedRowResults.add(new FailedRowResult<SearchCSVRow>(csvRow, e));
+            FailedRowResult<SearchCSVRow> failedRowResult;
+            if (isNewPatient(csvRow)) {
+                failedRowResult = createNewPatient(csvRow, false);
+            } else {
+                PatientResponse patientResponse = getPatientFromOpenmrs("SEA" + csvRow.oldCaseNo);
+                if (patientResponse != null) {
+                    failedRowResult = updatePatient(csvRow, patientResponse);
+                } else {
+                    failedRowResult = createNewPatient(csvRow, true);
+                }
+            }
+            if (failedRowResult != null) {
+                failedRowResults.add(failedRowResult);
             }
         }
 
         return new StageResult(getName(), failedRowResults, csvEntityList);
     }
 
+    private boolean isNewPatient(SearchCSVRow csvRow) {
+        return StringUtils.isNotEmpty(csvRow.newCaseNo);
+    }
+
+    private FailedRowResult<SearchCSVRow> createNewPatient(SearchCSVRow csvRow, Boolean fromOldCaseNumber) {
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, fromOldCaseNumber);
+        PatientIdentifier patientIdentifier = patientProfileRequest.getPatient().getIdentifiers().get(0);
+        try {
+            postToOpenmrs("patientprofile", patientProfileRequest);
+            logger.info("Creating Patient: " + patientIdentifier);
+        } catch (HttpServerErrorException serverErrorException) {
+            logger.info(String.format("Failed to create %s", patientIdentifier));
+            logger.error("Patient create response: " + serverErrorException.getResponseBodyAsString());
+            String errorMessage = extractErrorMessage(serverErrorException);
+            return new FailedRowResult<SearchCSVRow>(csvRow, getName() + ":" + errorMessage);
+        } catch (Exception e) {
+            logger.info(String.format("Failed to create %s", patientIdentifier));
+            logger.error("Failed to process a patient", e);
+            return new FailedRowResult<SearchCSVRow>(csvRow, e);
+        }
+        return null;
+    }
+
+    private FailedRowResult<SearchCSVRow> updatePatient(SearchCSVRow csvRow, PatientResponse patientResponse) {
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatientForUpdate(csvRow, patientResponse);
+        PatientIdentifier patientIdentifier = patientProfileRequest.getPatient().getIdentifiers().get(0);
+        try {
+            String patientUuid = patientResponse.getUuid();
+            postToOpenmrs("patientprofile/" + patientUuid, patientProfileRequest);
+            logger.info("Updating Patient: " + patientIdentifier);
+        } catch (HttpServerErrorException serverErrorException) {
+            logger.info(String.format("Failed to update %s", patientIdentifier));
+            logger.error("Patient update response: " + serverErrorException.getResponseBodyAsString());
+            String errorMessage = extractErrorMessage(serverErrorException);
+            return new FailedRowResult<SearchCSVRow>(csvRow, getName() + ":" + errorMessage);
+        } catch (Exception e) {
+            logger.info(String.format("Failed to update %s", patientIdentifier));
+            logger.error("Failed to process a patient", e);
+            return new FailedRowResult<SearchCSVRow>(csvRow, e);
+        }
+        return null;
+    }
+
+    private PatientResponse getPatientFromOpenmrs(String patientIdentifier) {
+        String representation = "custom:(uuid,person:(uuid,preferredAddress:(uuid,preferred),preferredName:(uuid)))";
+        String url = openMRSRESTConnection.getRestApiUrl() + "patient?q=" + patientIdentifier + "&v=" + representation;
+        HttpEntity httpEntity = new HttpEntity(getHttpHeaders());
+        ResponseEntity<String> response = new RestTemplate().exchange(url, HttpMethod.GET, httpEntity, String.class);
+        PatientListResponse patientListResponse = gson.fromJson(response.getBody(), PatientListResponse.class);
+        if (patientListResponse.getResults().size() > 0) {
+            return patientListResponse.getResults().get(0);
+        }
+        return null;
+    }
+
+    private void postToOpenmrs(String openmrsEndpoint, Object request) throws IOException {
+        String jsonRequest = objectMapper.writeValueAsString(request);
+        if (logger.isDebugEnabled()) logger.debug(jsonRequest);
+        HttpHeaders httpHeaders = getHttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(request, httpHeaders);
+        String url = openMRSRESTConnection.getRestApiUrl() + openmrsEndpoint;
+        ResponseEntity<String> out = new RestTemplate().exchange(url, HttpMethod.POST, entity, String.class);
+        if (logger.isDebugEnabled()) logger.debug(out.getBody());
+    }
+
     private String extractErrorMessage(HttpServerErrorException serverErrorException) {
         String responseBody = serverErrorException.getResponseBodyAsString();
         int startIndex = responseBody.indexOf("message");
         int endIndex = responseBody.indexOf(",\"code\"");
-        String message = responseBody.substring(startIndex,endIndex);
+        String message = responseBody.substring(startIndex, endIndex);
         //Replacing quotes since the error message will be written to a csv
         return message.replaceAll("\"", "");
     }

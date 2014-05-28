@@ -23,7 +23,6 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
 
     @Override
     public StageResult execute(List<SearchCSVRow> csvEntityList) throws MigrationException {
-        System.out.println("### STARTING THREAD: "+ Thread.currentThread() + " CSV Count Size: " + csvEntityList.size());
         List<FailedRowResult<SearchCSVRow>> failedValidationList = new ArrayList<FailedRowResult<SearchCSVRow>>();
 
         for (SearchCSVRow csvRow : csvEntityList) {
@@ -33,8 +32,6 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
             }
         }
         csvEntityList.removeAll(failedValidationList);
-        System.out.println("### FINISHED THREAD: "+ Thread.currentThread());
-
         return new StageResult(getName(), failedValidationList, csvEntityList);
     }
 
@@ -69,8 +66,8 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
         if (StringUtils.isEmpty(csvRow.firstName)) {
             errorMessage.append("FirstName is mandatory.");
         }
-        if (StringUtils.isEmpty(csvRow.lastName)) {
-            errorMessage.append("LastName is mandatory.");
+        if (StringUtils.isEmpty(csvRow.lastName) && StringUtils.isEmpty(csvRow.middleName)) {
+            errorMessage.append("Either Middle name or last name should be present.");
         }
     }
 }
