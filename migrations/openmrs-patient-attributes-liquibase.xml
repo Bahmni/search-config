@@ -167,27 +167,27 @@
 
             call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Uneducated - अशिक्षित', 'Uneducated', 'Text', 'Misc', false);
             call add_concept_word(@concept_id, @concept_name_short_id, 'Uneducated', 1);
-            call add_concept_answer(@education_concept_id, @concept_id,0);
+            call add_concept_answer(@education_concept_id, @concept_id,1);
 
             call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, '5th pass and below - ५वी पास पर्यंत', '5th pass and below', 'Text', 'Misc', false);
             call add_concept_word(@concept_id, @concept_name_short_id, '5th pass', 1);
-            call add_concept_answer(@education_concept_id, @concept_id,0);
+            call add_concept_answer(@education_concept_id, @concept_id,2);
 
             call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, '6th - 9th - ६वी ते ९वी', '6th - 9th', 'Text', 'Misc', false);
             call add_concept_word(@concept_id, @concept_name_short_id, '6th - 9th', 1);
-            call add_concept_answer(@education_concept_id, @concept_id,0);
+            call add_concept_answer(@education_concept_id, @concept_id,3);
 
             call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, '10th Pass - १०वी पास', '10th Pass', 'Text', 'Misc', false);
             call add_concept_word(@concept_id, @concept_name_short_id, '10th Pass', 1);
-            call add_concept_answer(@education_concept_id, @concept_id,0);
+            call add_concept_answer(@education_concept_id, @concept_id,4);
 
             call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, '12th Pass - १२वी पास', '12th Pass', 'Text', 'Misc', false);
             call add_concept_word(@concept_id, @concept_name_short_id, '12th Pass', 1);
-            call add_concept_answer(@education_concept_id, @concept_id,0);
+            call add_concept_answer(@education_concept_id, @concept_id,5);
 
             call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Graduate and above - पदवीधर', 'Graduate and above', 'Text', 'Misc', false);
             call add_concept_word(@concept_id, @concept_name_short_id, 'Graduate', 1);
-            call add_concept_answer(@education_concept_id, @concept_id,0);
+            call add_concept_answer(@education_concept_id, @concept_id,6);
 
             insert into person_attribute_type (name, description, format, foreign_key, searchable, creator, date_created, retired, sort_weight, uuid) values ('Education Details', 'Education - शिक्षण', 'org.openmrs.Concept', @education_concept_id, 0, 1, curdate(), 0, 7, uuid());
         </sql>
@@ -212,19 +212,19 @@
 
             call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'OBC - ओ. बी. सी.', 'OBC', 'Text', 'Misc', false);
             call add_concept_word(@concept_id, @concept_name_short_id, 'OBC', 1);
-            call add_concept_answer(@class_concept_id, @concept_id,0);
+            call add_concept_answer(@class_concept_id, @concept_id,1);
 
             call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'SC - अनुसूचित जाती', 'SC', 'Text', 'Misc', false);
             call add_concept_word(@concept_id, @concept_name_short_id, 'SC', 1);
-            call add_concept_answer(@class_concept_id, @concept_id,0);
+            call add_concept_answer(@class_concept_id, @concept_id,2);
 
             call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'ST - अनुसूचित जमाती', 'ST', 'Text', 'Misc', false);
             call add_concept_word(@concept_id, @concept_name_short_id, 'ST', 1);
-            call add_concept_answer(@class_concept_id, @concept_id,0);
+            call add_concept_answer(@class_concept_id, @concept_id,3);
 
             call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Others - इतर', 'Others', 'Text', 'Misc', false);
             call add_concept_word(@concept_id, @concept_name_short_id, 'Others', 1);
-            call add_concept_answer(@class_concept_id, @concept_id,0);
+            call add_concept_answer(@class_concept_id, @concept_id,4);
 
             insert into person_attribute_type (name, description, format, foreign_key, searchable, creator, date_created, retired, sort_weight, uuid) values ('Class', 'Class - क्लास', 'org.openmrs.Concept', @class_concept_id, 0, 1, curdate(), 0, 4, uuid());
         </sql>
@@ -249,37 +249,37 @@
 
             call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Unemployed - बेरोजगार', 'Unemployed', 'Text', 'Misc', false);
             call add_concept_word(@concept_id, @concept_name_short_id, 'Unemployed', 1);
-            call add_concept_answer(@occupation_concept_id, @concept_id,0);
+            call add_concept_answer(@occupation_concept_id, @concept_id,1);
 
             call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Labourer - मजूरी', 'Labourer', 'Text', 'Misc', false);
             call add_concept_word(@concept_id, @concept_name_short_id, 'Labourer', 1);
-            call add_concept_answer(@occupation_concept_id, @concept_id,0);
+            call add_concept_answer(@occupation_concept_id, @concept_id,2);
 
             call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Agriculture - शेती', 'Agriculture', 'Text', 'Misc', false);
             call add_concept_word(@concept_id, @concept_name_short_id, 'Agriculture', 1);
-            call add_concept_answer(@occupation_concept_id, @concept_id,0);
+            call add_concept_answer(@occupation_concept_id, @concept_id,3);
 
             call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Business - धंदा', 'Business', 'Text', 'Misc', false);
             call add_concept_word(@concept_id, @concept_name_short_id, 'Business', 1);
-            call add_concept_answer(@occupation_concept_id, @concept_id,0);
+            call add_concept_answer(@occupation_concept_id, @concept_id,4);
 
             call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Housewife - गृहिणी', 'Housewife', 'Text', 'Misc', false);
             call add_concept_word(@concept_id, @concept_name_short_id, 'Housewife', 1);
-            call add_concept_answer(@occupation_concept_id, @concept_id,0);
+            call add_concept_answer(@occupation_concept_id, @concept_id,5);
 
             call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Service (Govt) - सरकारी नौकरी', 'Service (Govt)', 'Text', 'Misc', false);
             call add_concept_word(@concept_id, @concept_name_short_id, 'Service (Govt)', 1);
             call add_concept_word(@concept_id, @concept_name_short_id, 'Govt', 1);
-            call add_concept_answer(@occupation_concept_id, @concept_id,0);
+            call add_concept_answer(@occupation_concept_id, @concept_id,6);
 
             call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Service (Private) - नौकरी खाजगी', 'Service (Private)', 'Text', 'Misc', false);
             call add_concept_word(@concept_id, @concept_name_short_id, 'Service', 1);
             call add_concept_word(@concept_id, @concept_name_short_id, 'Private', 1);
-            call add_concept_answer(@occupation_concept_id, @concept_id,0);
+            call add_concept_answer(@occupation_concept_id, @concept_id,7);
 
             call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Other - इतर', 'Other', 'Text', 'Misc', false);
             call add_concept_word(@concept_id, @concept_name_short_id, 'Other', 1);
-            call add_concept_answer(@occupation_concept_id, @concept_id,0);
+            call add_concept_answer(@occupation_concept_id, @concept_id,8);
 
             insert into person_attribute_type (name, description, format, foreign_key, searchable, creator, date_created, retired, sort_weight, uuid) values ('Occupation', 'Occupation - व्यवसाय', 'org.openmrs.Concept', @occupation_concept_id, 0, 1, curdate(), 0, 4, uuid());
         </sql>
