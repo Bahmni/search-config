@@ -93,6 +93,43 @@
 
         </sql>
     </changeSet>
+    <changeSet id="SEARCH-OMRS-CONCEPT-005" author="tw">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM concept_name where name = 'Other Details';
+            </sqlCheck>
+        </preConditions>
+        <comment>Adding concept Other Details for Registration</comment>
+        <sql>
+            set @concept_id = 0;
+            set @concept_name_short_id = 0;
+            set @concept_name_full_id = 0;
+            set @other_details_concept_id = 0;
+            set @special_opd_concept_id = 0;
 
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Other Details', 'Other Details', 'N/A', 'Misc', true);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Other', 1);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Details', 1);
+            set @other_details_concept_id = @concept_id;
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Special OPD', 'Special OPD', 'Coded', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Special', 1);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'OPD', 1);
+            set @special_opd_concept_id = @concept_id;
+            call add_concept_set_members(@other_details_concept_id, @concept_id,0);
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Dental', 'Dental', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Dental', 1);
+            call add_concept_answer(@special_opd_concept_id, @concept_id,0);
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Spine', 'Spine', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Spine', 1);
+            call add_concept_answer(@special_opd_concept_id, @concept_id,0);
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Skin', 'Skin', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Skin', 1);
+            call add_concept_answer(@special_opd_concept_id, @concept_id,0);
+        </sql>
+    </changeSet>
 
 </databaseChangeLog>

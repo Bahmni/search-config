@@ -98,8 +98,8 @@
         </preConditions>
         <comment>Add patient attribute: primaryContact</comment>
         <insert tableName="person_attribute_type">
-            <column name="name" value="Primary Contact" />
-            <column name="description" value="Mobile" />
+            <column name="name" value="Mobile" />
+            <column name="description" value="Mobile - मोबाइल" />
             <column name="format" value="java.lang.String" />
             <column name="creator" valueNumeric="1" />
             <column name="date_created" valueDate="CURRENT_TIMESTAMP" />

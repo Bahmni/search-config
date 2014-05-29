@@ -77,6 +77,11 @@
         </insert>
     </changeSet>
     <changeSet id="SEARCH-OMRS-V-009" author="tw">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM visit_type where name = 'Special OPD';
+            </sqlCheck>
+        </preConditions>
         <comment>Create new visit type for Special OPD</comment>
         <insert tableName="visit_type">
             <column name="name" value="Special OPD" />
