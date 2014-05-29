@@ -76,11 +76,12 @@
         "requiredPrivilege": "Add Visits"
     },
     {
-        "id": "bahmni.registration.conceptSetGroup.observations.vitals",
+        "id": "bahmni.registration.conceptSetGroup.observations.otherDetails",
         "extensionPointId": "org.bahmni.registration.conceptSetGroup.observations",
         "type": "config",
         "extensionParams": {
-            "conceptName": "Visit Details"
+            "conceptName": "Other Details",
+            "showIf": [ "return context.visitType.name === 'Special OPD';"]
         },
         "order": 1,
         "requiredPrivilege": "app:registration"

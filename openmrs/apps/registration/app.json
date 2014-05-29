@@ -33,7 +33,7 @@
             },
             "registrationConceptSet":"Visit Details",
             "showMiddleName": true,
-            "hideFields": ["REGISTRATION FEES","Comments","Height", "Weight", "BMI", "BMI_Status"],
+            "hideFields": ["Height", "Weight", "BMI", "BMI_Status"],
             "registrationCardPrintLayout": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/print.html",
             "localNameSearch": true,
             "localNameLabel": "रुग्णाचे नाव",
