@@ -13,22 +13,30 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PatientRequestMapper {
-    public static PatientProfileRequest mapFrom(SearchCSVRow csvRow) {
+    public static PatientProfileRequest mapPatient(SearchCSVRow csvRow, boolean fromOldCaseNumber) {
+        Person person = mapPerson(csvRow);
+        List<PatientIdentifier> identifiers;
+        if(fromOldCaseNumber){
+            identifiers = getIdentifiers(csvRow.oldCaseNo);
+        } else{
+            identifiers = getIdentifiers(csvRow.newCaseNo);
+        }
+        Patient patient = new Patient(person, identifiers);
+        return new PatientProfileRequest(patient);
+    }
+
+    private static Person mapPerson(SearchCSVRow csvRow) {
         Person person = new Person();
         mapName(csvRow, person);
         person.setAddresses(Arrays.asList(new PatientAddress("address1", "address2", "address3", "cityVillage", "state", "country")));
         person.setBirthdate("2011-05-01");
         person.setBirthdateEstimated(true);
         person.setGender("F");
-        Patient patient = new Patient(person, getIdentifiers(csvRow));
-        return new PatientProfileRequest(patient);
+        return person;
     }
 
-    private static List<PatientIdentifier> getIdentifiers(SearchCSVRow csvRow) {
-        if (StringUtils.isNotEmpty(csvRow.oldCaseNo)) {
-            return Arrays.asList(new PatientIdentifier("SEA" + csvRow.oldCaseNo, new IdentifierType("Bahmni Id"), true));
-        }
-        return Arrays.asList(new PatientIdentifier("SEA" + csvRow.newCaseNo, new IdentifierType("Bahmni Id"), true));
+    private static List<PatientIdentifier> getIdentifiers(String caseNumber) {
+        return Arrays.asList(new PatientIdentifier("SEA" + caseNumber, new IdentifierType("Bahmni Id"), true));
     }
 
     private static void mapName(SearchCSVRow csvRow, Person person) {
