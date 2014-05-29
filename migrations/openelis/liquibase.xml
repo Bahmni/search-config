@@ -24,6 +24,12 @@
     </changeSet>
 
     <changeSet id="SEARCH-ELIS-3" author="tw" context="search">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM HEALTH_CENTER where name like 'SEA';
+            </sqlCheck>
+        </preConditions>
+        <comment>Insert SEA health center</comment>
         <insert schemaName="clinlims" tableName="HEALTH_CENTER">
             <column name="active" type="boolean" valueBoolean="false"/>
             <column name="name" value="SEA"/>
