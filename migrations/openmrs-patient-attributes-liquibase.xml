@@ -71,4 +71,242 @@
         </insert>
     </changeSet>
 
+    <changeSet id="SEARCH-OMRS-PA-005" author="tw">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM person_attribute_type where name = 'primaryRelative';
+            </sqlCheck>
+        </preConditions>
+        <comment>Add patient attribute: primaryRelative</comment>
+        <insert tableName="person_attribute_type">
+            <column name="name" value="primaryRelative" />
+            <column name="description" value="Father's/Husband's Name" />
+            <column name="format" value="java.lang.String" />
+            <column name="creator" valueNumeric="1" />
+            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
+            <column name="retired" valueNumeric="0" />
+            <column name="sort_weight" valueNumeric="5" />
+            <column name="uuid" valueComputed="uuid()" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="SEARCH-OMRS-PA-006" author="tw">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM person_attribute_type where name = 'Primary Contact';
+            </sqlCheck>
+        </preConditions>
+        <comment>Add patient attribute: primaryContact</comment>
+        <insert tableName="person_attribute_type">
+            <column name="name" value="Primary Contact" />
+            <column name="description" value="Mobile" />
+            <column name="format" value="java.lang.String" />
+            <column name="creator" valueNumeric="1" />
+            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
+            <column name="retired" valueNumeric="0" />
+            <column name="sort_weight" valueNumeric="9" />
+            <column name="uuid" valueComputed="uuid()" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="SEARCH-OMRS-PA-007" author="tw">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM person_attribute_type where name = 'Secondary Contact';
+            </sqlCheck>
+        </preConditions>
+        <comment>Add patient attribute: Secondary Contact</comment>
+        <insert tableName="person_attribute_type">
+            <column name="name" value="Secondary Contact" />
+            <column name="description" value="Secondary Contact" />
+            <column name="format" value="java.lang.String" />
+            <column name="creator" valueNumeric="1" />
+            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
+            <column name="retired" valueNumeric="0" />
+            <column name="sort_weight" valueNumeric="10" />
+            <column name="uuid" valueComputed="uuid()" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="SEARCH-OMRS-PA-008" author="tw">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM person_attribute_type where name = 'SecondaryID';
+            </sqlCheck>
+        </preConditions>
+        <comment>Add patient attribute: SecondaryID</comment>
+        <insert tableName="person_attribute_type">
+            <column name="name" value="SecondaryID" />
+            <column name="description" value="Secondary Identifier" />
+            <column name="format" value="java.lang.String" />
+            <column name="searchable" valueNumeric="1" />
+            <column name="creator" valueNumeric="1" />
+            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
+            <column name="retired" valueNumeric="0" />
+            <column name="sort_weight" valueNumeric="6" />
+            <column name="uuid" valueComputed="uuid()" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="SEARCH-OMRS-PA-009" author="tw">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM person_attribute_type where name = 'Education Details';
+            </sqlCheck>
+        </preConditions>
+        <comment>Add patient attribute: Education</comment>
+        <sql>
+            set @concept_id = 0;
+            set @concept_name_short_id = 0;
+            set @concept_name_full_id = 0;
+            set @education_concept_id = 0;
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Education', 'Education', 'Coded', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Education', 1);
+            set @education_concept_id = @concept_id;
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Uneducated - अशिक्षित', 'Uneducated', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Uneducated', 1);
+            call add_concept_answer(@education_concept_id, @concept_id,0);
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, '5th pass and below - ५वी पास पर्यंत', '5th pass and below', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, '5th pass', 1);
+            call add_concept_answer(@education_concept_id, @concept_id,0);
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, '6th - 9th - ६वी ते ९वी', '6th - 9th', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, '6th - 9th', 1);
+            call add_concept_answer(@education_concept_id, @concept_id,0);
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, '10th Pass - १०वी पास', '10th Pass', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, '10th Pass', 1);
+            call add_concept_answer(@education_concept_id, @concept_id,0);
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, '12th Pass - १२वी पास', '12th Pass', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, '12th Pass', 1);
+            call add_concept_answer(@education_concept_id, @concept_id,0);
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Graduate and above - पदवीधर', 'Graduate and above', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Graduate', 1);
+            call add_concept_answer(@education_concept_id, @concept_id,0);
+
+            insert into person_attribute_type (name, description, format, foreign_key, searchable, creator, date_created, retired, sort_weight, uuid) values ('Education Details', 'Education - शिक्षण', 'org.openmrs.Concept', @education_concept_id, 0, 1, curdate(), 0, 7, uuid());
+        </sql>
+    </changeSet>
+
+    <changeSet id="SEARCH-OMRS-PA-010" author="tw">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM person_attribute_type where name = 'Class';
+            </sqlCheck>
+        </preConditions>
+        <comment>Add patient attribute: Class</comment>
+        <sql>
+            set @concept_id = 0;
+            set @concept_name_short_id = 0;
+            set @concept_name_full_id = 0;
+            set @class_concept_id = 0;
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Class - क्लास', 'class', 'Coded', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Class', 1);
+            set @class_concept_id = @concept_id;
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'OBC - ओ. बी. सी.', 'OBC', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'OBC', 1);
+            call add_concept_answer(@class_concept_id, @concept_id,0);
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'SC - अनुसूचित जाती', 'SC', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'SC', 1);
+            call add_concept_answer(@class_concept_id, @concept_id,0);
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'ST - अनुसूचित जमाती', 'ST', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'ST', 1);
+            call add_concept_answer(@class_concept_id, @concept_id,0);
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Others - इतर', 'Others', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Others', 1);
+            call add_concept_answer(@class_concept_id, @concept_id,0);
+
+            insert into person_attribute_type (name, description, format, foreign_key, searchable, creator, date_created, retired, sort_weight, uuid) values ('Class', 'Class - क्लास', 'org.openmrs.Concept', @class_concept_id, 0, 1, curdate(), 0, 4, uuid());
+        </sql>
+    </changeSet>
+
+    <changeSet id="SEARCH-OMRS-PA-011" author="tw">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM person_attribute_type where name = 'Occupation';
+            </sqlCheck>
+        </preConditions>
+        <comment>Add patient attribute: Occupation</comment>
+        <sql>
+            set @concept_id = 0;
+            set @concept_name_short_id = 0;
+            set @concept_name_full_id = 0;
+            set @occupation_concept_id = 0;
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Occupation - व्यवसाय', 'Occupation', 'Coded', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Occupation', 1);
+            set @occupation_concept_id = @concept_id;
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Unemployed - बेरोजगार', 'Unemployed', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Unemployed', 1);
+            call add_concept_answer(@occupation_concept_id, @concept_id,0);
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Labourer - मजूरी', 'Labourer', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Labourer', 1);
+            call add_concept_answer(@occupation_concept_id, @concept_id,0);
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Agriculture - शेती', 'Agriculture', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Agriculture', 1);
+            call add_concept_answer(@occupation_concept_id, @concept_id,0);
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Business - धंदा', 'Business', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Business', 1);
+            call add_concept_answer(@occupation_concept_id, @concept_id,0);
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Housewife - गृहिणी', 'Housewife', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Housewife', 1);
+            call add_concept_answer(@occupation_concept_id, @concept_id,0);
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Service (Govt) - सरकारी नौकरी', 'Service (Govt)', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Service (Govt)', 1);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Govt', 1);
+            call add_concept_answer(@occupation_concept_id, @concept_id,0);
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Service (Private) - नौकरी खाजगी', 'Service (Private)', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Service', 1);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Private', 1);
+            call add_concept_answer(@occupation_concept_id, @concept_id,0);
+
+            call add_concept(@concept_id, @concept_name_short_id, @concept_name_full_id, 'Other - इतर', 'Other', 'Text', 'Misc', false);
+            call add_concept_word(@concept_id, @concept_name_short_id, 'Other', 1);
+            call add_concept_answer(@occupation_concept_id, @concept_id,0);
+
+            insert into person_attribute_type (name, description, format, foreign_key, searchable, creator, date_created, retired, sort_weight, uuid) values ('Occupation', 'Occupation - व्यवसाय', 'org.openmrs.Concept', @occupation_concept_id, 0, 1, curdate(), 0, 4, uuid());
+        </sql>
+    </changeSet>
+
+    <changeSet id="SEARCH-OMRS-PA-012" author="tw">
+        <comment>Update patient attribute Caste</comment>
+        <sql>
+            update person_attribute_type set description = 'Caste / जात' where name = 'Caste';
+        </sql>
+    </changeSet>
+    <changeSet id="SEARCH-OMRS-PA-013" author="tw">
+        <comment>Update patient attribute caste</comment>
+        <sql>
+            update person_attribute_type set description = 'रुग्णाचे नाव' where name = 'givenNameLocal';
+        </sql>
+    </changeSet>
+    <changeSet id="SEARCH-OMRS-PA-014" author="tw">
+        <comment>Update patient attribute caste</comment>
+        <sql>
+            update person_attribute_type set description = 'वडिल / पतीचे नाव' where name = 'middleNameLocal';
+        </sql>
+    </changeSet>
+    <changeSet id="SEARCH-OMRS-PA-015" author="tw">
+        <comment>Update patient attribute caste</comment>
+        <sql>
+            update person_attribute_type set description = 'आडनाव' where name = 'familyNameLocal';
+        </sql>
+    </changeSet>
 </databaseChangeLog>

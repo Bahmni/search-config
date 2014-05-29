@@ -76,5 +76,15 @@
             <column name="uuid" valueComputed="uuid()" />
         </insert>
     </changeSet>
+    <changeSet id="SEARCH-OMRS-V-009" author="tw">
+        <comment>Create new visit type for Special OPD</comment>
+        <insert tableName="visit_type">
+            <column name="name" value="Special OPD" />
+            <column name="description" value="Visit for patients coming for Dental, Spine, Skin etc" />
+            <column name="creator" value="1" />
+            <column name="uuid" valueComputed="uuid()" />
+            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
+        </insert>
+    </changeSet>
 
 </databaseChangeLog>
