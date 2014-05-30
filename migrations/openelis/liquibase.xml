@@ -36,5 +36,47 @@
             <column name="description" value="SEARCH"/>
         </insert>
     </changeSet>
+    <changeSet id="SEARCH-ELIS-4" author="tw" context="search">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM sample_source where name = 'OPD';
+            </sqlCheck>
+        </preConditions>
+        <comment>Insert OPD sample source</comment>
+        <insert schemaName="clinlims" tableName="sample_source">
+            <column name="active" type="boolean" valueBoolean="true"/>
+            <column name="name" value="OPD"/>
+            <column name="description" value="Outpatient department"/>
+            <column name="display_order" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+    <changeSet id="SEARCH-ELIS-4" author="tw" context="search">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM sample_source where name = 'IPD';
+            </sqlCheck>
+        </preConditions>
+        <comment>Insert IPD sample source</comment>
+        <insert schemaName="clinlims" tableName="sample_source">
+            <column name="active" type="boolean" valueBoolean="true"/>
+            <column name="name" value="IPD"/>
+            <column name="description" value="Inpatient department"/>
+            <column name="display_order" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+    <changeSet id="SEARCH-ELIS-4" author="tw" context="search">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM sample_source where name = 'Field';
+            </sqlCheck>
+        </preConditions>
+        <comment>Insert Field sample source</comment>
+        <insert schemaName="clinlims" tableName="sample_source">
+            <column name="active" type="boolean" valueBoolean="true"/>
+            <column name="name" value="Field"/>
+            <column name="description" value="Field"/>
+            <column name="display_order" valueNumeric="3"/>
+        </insert>
+    </changeSet>
 
 </databaseChangeLog>
