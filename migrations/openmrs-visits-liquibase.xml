@@ -91,5 +91,12 @@
             <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
         </insert>
     </changeSet>
+    <changeSet id="SEARCH-OMRS-V-010" author="tw">
+        <comment>Deleting visit type LAB_VISIT, </comment>
+        <sql>
+            delete from visit_type where name = 'LAB_VISIT';
+            delete from visit_type where name = 'PHARMACY_VISIT';
+        </sql>
+    </changeSet>
 
 </databaseChangeLog>
