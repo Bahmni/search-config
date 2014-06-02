@@ -1,6 +1,7 @@
 package org.bahmni.implementation.searchconfig;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.bahmni.implementation.searchconfig.request.IdentifierType;
 import org.bahmni.implementation.searchconfig.request.Name;
 import org.bahmni.implementation.searchconfig.request.Patient;
@@ -11,18 +12,19 @@ import org.bahmni.implementation.searchconfig.request.Person;
 import org.bahmni.implementation.searchconfig.response.PatientResponse;
 import org.bahmni.implementation.searchconfig.response.PersonResponse;
 
+import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class PatientRequestMapper {
-    public static PatientProfileRequest mapPatient(SearchCSVRow csvRow, boolean fromOldCaseNumber) {
+
+    public static PatientProfileRequest mapPatient(SearchCSVRow csvRow, boolean fromOldCaseNumber) throws ParseException {
         Person person = mapPerson(csvRow, null);
+        person.setPersonDateCreated(getDateCreated(csvRow, fromOldCaseNumber));
         List<PatientIdentifier> identifiers;
-        if (fromOldCaseNumber) {
-            identifiers = getIdentifiers(csvRow.oldCaseNo);
-        } else {
-            identifiers = getIdentifiers(csvRow.newCaseNo);
-        }
+        identifiers = mapPatientIdentifier(csvRow, fromOldCaseNumber);
         Patient patient = new Patient(person, identifiers);
         return new PatientProfileRequest(patient);
     }
@@ -47,12 +49,61 @@ public class PatientRequestMapper {
         return person;
     }
 
+    private static Date getDateCreated(SearchCSVRow csvRow, boolean fromOldCaseNumber) throws ParseException {
+        if (fromOldCaseNumber) {
+            return getDateCreatedFromOldCaseNumber(csvRow);
+
+        } else {
+            return getDateCreatedFromVisitDate(csvRow);
+        }
+    }
+
+    private static Date getDateCreatedFromOldCaseNumber(SearchCSVRow csvRow) {
+        int january = 0;
+        String oldCaseNumber = csvRow.oldCaseNo;
+        String[] caseNumberParts = oldCaseNumber.split("/");
+        String yearOfRegistrationString = "20" + caseNumberParts[1];
+        Integer yearOfRegistration = Integer.parseInt(yearOfRegistrationString);
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, yearOfRegistration);
+        cal.set(Calendar.DATE, 1);
+        cal.set(Calendar.MONTH, january);
+        cal.set(Calendar.HOUR_OF_DAY, 10);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
+
+    private static Date getDateCreatedFromVisitDate(SearchCSVRow csvRow) throws ParseException {
+        Date date = DateUtils.parseDateStrictly(csvRow.visit_date, new String[]{"dd/M/yyyy"});
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 10);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
+
+    private static List<PatientIdentifier> mapPatientIdentifier(SearchCSVRow csvRow, boolean fromOldCaseNumber) {
+        List<PatientIdentifier> identifiers;
+        if (fromOldCaseNumber) {
+            identifiers = getIdentifiers(csvRow.oldCaseNo);
+
+        } else {
+            identifiers = getIdentifiers(csvRow.newCaseNo);
+        }
+        return identifiers;
+    }
+
+
     private static void mapAddress(Person person, PersonResponse personResponse) {
         PatientAddress patientAddress;
-        if(personResponse !=null && personResponse.getPreferredAddress() != null){
+        if (personResponse != null && personResponse.getPreferredAddress() != null) {
             String personAddressUuid = personResponse.getPreferredAddress().getUuid();
             patientAddress = new PatientAddress(personAddressUuid, "address1", "address2", "address3", "cityVillage", "state", "country");
-        }else{
+        } else {
             patientAddress = new PatientAddress("address1", "address2", "address3", "cityVillage", "state", "country");
         }
         person.setAddresses(Arrays.asList(patientAddress));

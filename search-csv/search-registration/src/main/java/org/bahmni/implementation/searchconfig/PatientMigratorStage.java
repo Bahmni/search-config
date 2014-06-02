@@ -87,9 +87,10 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
     }
 
     private FailedRowResult<SearchCSVRow> createNewPatient(SearchCSVRow csvRow, Boolean fromOldCaseNumber) {
-        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, fromOldCaseNumber);
-        PatientIdentifier patientIdentifier = patientProfileRequest.getPatient().getIdentifiers().get(0);
+        PatientIdentifier patientIdentifier = null;
         try {
+            PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, fromOldCaseNumber);
+            patientIdentifier = patientProfileRequest.getPatient().getIdentifiers().get(0);
             postToOpenmrs("patientprofile", patientProfileRequest);
             logger.info("Creating Patient: " + patientIdentifier);
         } catch (HttpServerErrorException serverErrorException) {

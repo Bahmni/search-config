@@ -9,12 +9,14 @@ import org.bahmni.implementation.searchconfig.response.PatientResponse;
 import org.bahmni.implementation.searchconfig.response.PersonResponse;
 import org.junit.Test;
 
+import java.text.ParseException;
+
 import static junit.framework.Assert.assertEquals;
 
 public class PatientRequestMapperTest {
 
     @Test
-    public void shouldMapNAmeFromCsvRowWhenAllPartsOfNameExist(){
+    public void shouldMapNAmeFromCsvRowWhenAllPartsOfNameExist() throws ParseException {
         SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
 
         PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false);
@@ -27,7 +29,7 @@ public class PatientRequestMapperTest {
     }
 
     @Test
-    public void shouldMapNAme_ByMappingMiddleNameAsLastName_WhenLastNameIsEmpty(){
+    public void shouldMapNAme_ByMappingMiddleNameAsLastName_WhenLastNameIsEmpty() throws ParseException {
         SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
         csvRow.lastName = "";
 
@@ -41,7 +43,7 @@ public class PatientRequestMapperTest {
     }
 
     @Test
-    public void shouldMapOldCaseNumberAsPatientIdentifier(){
+    public void shouldMapOldCaseNumberAsPatientIdentifier() throws ParseException {
         SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
         csvRow.oldCaseNo = "1234/12";
         csvRow.newCaseNo = "";
@@ -53,7 +55,7 @@ public class PatientRequestMapperTest {
     }
 
     @Test
-    public void shouldMapNewCaseNumberAsPatientIdentifier(){
+    public void shouldMapNewCaseNumberAsPatientIdentifier() throws ParseException {
         SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
 
         PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false);
@@ -103,5 +105,30 @@ public class PatientRequestMapperTest {
         PatientAddress mappedPersonAddress = mappedPerson.getAddresses().get(0);
         assertEquals(personAddressUuid, mappedPersonAddress.getUuid());
         assertEquals(personUuid, mappedPerson.getUuid());
+    }
+
+    @Test
+    public void shouldMapPersonDateCreatedFromVisitDate() throws ParseException {
+        String visit_date = "30/01/2012";
+        SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
+        csvRow.visit_date = visit_date;
+        String expectedCreatedDate = "2012-01-30 10:00:00";
+
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false);
+
+        Person mappedPerson = patientProfileRequest.getPatient().getPerson();
+        assertEquals(expectedCreatedDate, mappedPerson.getPersonDateCreated());
+    }
+
+    @Test
+    public void shouldMapPersonCreatedDateFromOldCaseNumber() throws ParseException {
+        String oldCaseNumber = "1234/12";
+        String expectedCreatedDate = "2012-01-01 10:00:00";
+        SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
+        csvRow.oldCaseNo = oldCaseNumber;
+
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, true);
+
+        assertEquals(expectedCreatedDate, patientProfileRequest.getPatient().getPerson().getPersonDateCreated());
     }
 }
