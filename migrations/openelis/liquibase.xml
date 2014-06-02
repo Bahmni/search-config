@@ -50,7 +50,7 @@
             <column name="display_order" valueNumeric="1"/>
         </insert>
     </changeSet>
-    <changeSet id="SEARCH-ELIS-4" author="tw" context="search">
+    <changeSet id="SEARCH-ELIS-5" author="tw" context="search">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
                 SELECT COUNT(*) FROM sample_source where name = 'IPD';
@@ -64,7 +64,7 @@
             <column name="display_order" valueNumeric="2"/>
         </insert>
     </changeSet>
-    <changeSet id="SEARCH-ELIS-4" author="tw" context="search">
+    <changeSet id="SEARCH-ELIS-6" author="tw" context="search">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
                 SELECT COUNT(*) FROM sample_source where name = 'Field';
@@ -77,6 +77,41 @@
             <column name="description" value="Field"/>
             <column name="display_order" valueNumeric="3"/>
         </insert>
+    </changeSet>
+    <changeSet id="SEARCH-ELIS-7" author="tw" context="search">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM health_center where name = 'SEA';
+            </sqlCheck>
+        </preConditions>
+        <comment>Adding Health center SEA</comment>
+        <insert schemaName="clinlims" tableName="health_center">
+            <column name="name" value="SEA"/>
+            <column name="description" value="SEARCH Main Center"/>
+            <column name="active" value="t"/>
+            <column name="allow_patient_creation" value="t"/>
+        </insert>
+    </changeSet>
+    <changeSet id="SEARCH-ELIS-8" author="tw" context="search">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM health_center where name = 'FLD';
+            </sqlCheck>
+        </preConditions>
+        <comment>Adding Health center FLD</comment>
+        <insert schemaName="clinlims" tableName="health_center">
+            <column name="name" value="FLD"/>
+            <column name="description" value="SEARCH Feild"/>
+            <column name="active" value="t"/>
+            <column name="allow_patient_creation" value="t"/>
+        </insert>
+    </changeSet>
+    <changeSet id="SEARCH-ELIS-9" author="tw" context="search">
+        <comment>Adding Hospital name and address</comment>
+        <sql>
+            update site_information set value = 'Maa Danteshwari Hospital, SEARCH' where name = 'SiteName';
+            update site_information set value = 'Shodhgram, Gadchiroli' where name = 'additional site info';
+        </sql>
     </changeSet>
 
 </databaseChangeLog>
