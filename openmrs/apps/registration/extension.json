@@ -81,6 +81,7 @@
         "type": "config",
         "extensionParams": {
             "conceptName": "Other Details",
+            "required": true,
             "showIf": [ "return context.visitType.name === 'Special OPD';"]
         },
         "order": 1,
