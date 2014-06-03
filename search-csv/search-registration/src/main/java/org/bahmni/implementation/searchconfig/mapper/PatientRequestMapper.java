@@ -1,7 +1,6 @@
 package org.bahmni.implementation.searchconfig.mapper;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.bahmni.implementation.searchconfig.SearchCSVRow;
 import org.bahmni.implementation.searchconfig.request.IdentifierType;
 import org.bahmni.implementation.searchconfig.request.Name;
@@ -15,7 +14,6 @@ import org.bahmni.implementation.searchconfig.response.PersonResponse;
 
 import java.text.ParseException;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -52,39 +50,11 @@ public class PatientRequestMapper {
 
     private static Date getDateCreated(SearchCSVRow csvRow, boolean fromOldCaseNumber) throws ParseException {
         if (fromOldCaseNumber) {
-            return getDateCreatedFromOldCaseNumber(csvRow);
+            return DateMapper.getDateFromOldCaseNumber(csvRow);
 
         } else {
-            return getDateCreatedFromVisitDate(csvRow);
+            return DateMapper.getDateFromVisitDate(csvRow);
         }
-    }
-
-    private static Date getDateCreatedFromOldCaseNumber(SearchCSVRow csvRow) {
-        int january = 0;
-        String oldCaseNumber = csvRow.oldCaseNo;
-        String[] caseNumberParts = oldCaseNumber.split("/");
-        String yearOfRegistrationString = "20" + caseNumberParts[1];
-        Integer yearOfRegistration = Integer.parseInt(yearOfRegistrationString);
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, yearOfRegistration);
-        cal.set(Calendar.DATE, 1);
-        cal.set(Calendar.MONTH, january);
-        cal.set(Calendar.HOUR_OF_DAY, 10);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTime();
-    }
-
-    private static Date getDateCreatedFromVisitDate(SearchCSVRow csvRow) throws ParseException {
-        Date date = DateUtils.parseDateStrictly(csvRow.visit_date, new String[]{"dd/M/yyyy"});
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.set(Calendar.HOUR_OF_DAY, 10);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTime();
     }
 
     private static List<PatientIdentifier> mapPatientIdentifier(SearchCSVRow csvRow, boolean fromOldCaseNumber) {

@@ -7,6 +7,7 @@ import org.bahmni.csv.FailedRowResult;
 import org.bahmni.csv.SimpleStage;
 import org.bahmni.csv.StageResult;
 import org.bahmni.csv.exception.MigrationException;
+import org.bahmni.implementation.searchconfig.mapper.DateMapper;
 import org.bahmni.implementation.searchconfig.mapper.PatientRequestMapper;
 import org.bahmni.implementation.searchconfig.mapper.VisitRequestMapper;
 import org.bahmni.implementation.searchconfig.request.PatientIdentifier;
@@ -31,6 +32,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -83,29 +85,62 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
 
     @Override
     public StageResult execute(List<SearchCSVRow> csvEntityList) throws MigrationException {
-        JSONObject patientCreateResponse;
         ArrayList<FailedRowResult<SearchCSVRow>> failedRowResults = new ArrayList<FailedRowResult<SearchCSVRow>>();
+        JSONObject patientResponseJson;
         for (SearchCSVRow csvRow : csvEntityList) {
-            FailedRowResult<SearchCSVRow> failedRowResult = null;
+            Date visitDate = DateMapper.getDateFromVisitDate(csvRow);
+
             if (isNewPatient(csvRow)) {
-                createNewPatient(csvRow, false, failedRowResult);
+                patientResponseJson = createNewPatient(csvRow, false, failedRowResults);
+                //create visit with reg and opd encounter for visit_date
+                createVisit(patientResponseJson, Arrays.asList(opdEncounterTypeUuid, registrationEncounterTypeUuid), visitDate, failedRowResults, csvRow);
             } else {
                 PatientResponse patientResponse = getPatientFromOpenmrs("SEA" + csvRow.oldCaseNo);
                 if (patientResponse != null) {
-                    failedRowResult = updatePatient(csvRow, patientResponse);
+                    patientResponseJson = updatePatient(csvRow, patientResponse, failedRowResults);
+                    //create visit with opd encounter for visit_date
+                    createVisit(patientResponseJson, Arrays.asList(opdEncounterTypeUuid), visitDate, failedRowResults, csvRow);
                 } else {
-                    createNewPatient(csvRow, true, failedRowResult);
+                    patientResponseJson = createNewPatient(csvRow, true, failedRowResults);
+                    //create visit with reg and opd encounter for patient created date
+                    createVisit(patientResponseJson, Arrays.asList(registrationEncounterTypeUuid, opdEncounterTypeUuid), DateMapper.getDateFromOldCaseNumber(csvRow), failedRowResults, csvRow);
+                    //create opd encounter for visit_date
+                    createVisit(patientResponseJson, Arrays.asList(opdEncounterTypeUuid), visitDate, failedRowResults, csvRow);
                 }
-            }
-            if (failedRowResult != null) {
-                failedRowResults.add(failedRowResult);
             }
         }
 
         return new StageResult(getName(), failedRowResults, csvEntityList);
     }
 
-    private FailedRowResult<SearchCSVRow> createNewPatient(SearchCSVRow csvRow, Boolean fromOldCaseNumber, FailedRowResult<SearchCSVRow> failedRowResult) {
+    private void createVisit(JSONObject patientResponse, List<String> encounterTypeUuids, Date visitDate, List failedRowResults, SearchCSVRow csvRow) {
+        JSONObject patient = (JSONObject) patientResponse.get("patient");
+        String patientIdentifier = (String) ((ArrayList<JSONObject>) patient.get("identifiers")).get(0).get("identifier");
+        JSONObject person = (JSONObject) patient.get("person");
+        String savedPatientUuid = (String) person.get("uuid");
+        try {
+            String visitUuid = "";
+            for (String encounterTypeUuid : encounterTypeUuids) {
+                BahmniEncounterTransaction bahmniEncounterTransaction = visitRequestMapper.mapVisitRequest(savedPatientUuid, encounterTypeUuid, visitDate);
+                JSONObject visitResponse = postToOpenmrs(getEncounterTransactionUrl(), bahmniEncounterTransaction);
+                visitUuid = (String) visitResponse.get("visitUuid");
+            }
+            //Assuming Bahmni ET will update the active encounter the second time.
+            closeVisit(visitUuid, getVisitStopDatetimeFor(visitDate));
+            logger.info("Created Visit for patient: " + patientIdentifier);
+        } catch (HttpServerErrorException serverErrorException) {
+            logger.info(String.format("Failed to create visit for %s", patientIdentifier));
+            logger.error("Visit create response: " + serverErrorException.getResponseBodyAsString());
+            String errorMessage = extractErrorMessage(serverErrorException);
+            failedRowResults.add(new FailedRowResult<SearchCSVRow>(csvRow, getName() + ":" + errorMessage));
+        } catch (Exception e) {
+            logger.info(String.format("Failed to create visit for %s", patientIdentifier));
+            logger.error("Failed to process a visit", e);
+            failedRowResults.add(new FailedRowResult<SearchCSVRow>(csvRow, e));
+        }
+    }
+
+    private JSONObject createNewPatient(SearchCSVRow csvRow, Boolean fromOldCaseNumber, ArrayList<FailedRowResult<SearchCSVRow>> failedRowResults) {
         PatientIdentifier patientIdentifier = null;
         try {
             PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, fromOldCaseNumber);
@@ -113,42 +148,39 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
             String patientUrl = openMRSRESTConnection.getRestApiUrl() + "patientprofile";
             JSONObject jsonResponse = postToOpenmrs(patientUrl, patientProfileRequest);
             logger.info("Created Patient: " + patientIdentifier);
-            //TODO: revisit move this out of here
-            createVisits(patientProfileRequest, jsonResponse, csvRow);
+            return jsonResponse;
+
         } catch (HttpServerErrorException serverErrorException) {
             logger.info(String.format("Failed to create %s", patientIdentifier));
             logger.error("Patient create response: " + serverErrorException.getResponseBodyAsString());
             String errorMessage = extractErrorMessage(serverErrorException);
-            return new FailedRowResult<SearchCSVRow>(csvRow, getName() + ":" + errorMessage);
+            failedRowResults.add(new FailedRowResult<SearchCSVRow>(csvRow, getName() + ":" + errorMessage));
         } catch (Exception e) {
             logger.info(String.format("Failed to create %s", patientIdentifier));
             logger.error("Failed to process a patient", e);
-            return new FailedRowResult<SearchCSVRow>(csvRow, e);
+            failedRowResults.add(new FailedRowResult<SearchCSVRow>(csvRow, e));
         }
         return null;
     }
 
-    private FailedRowResult<SearchCSVRow> createVisits(PatientProfileRequest patientProfileRequest, JSONObject jsonResponse, SearchCSVRow csvRow) {
-        String patientIdentifier = patientProfileRequest.getPatient().getIdentifiers().get(0).getIdentifier();
+    private JSONObject updatePatient(SearchCSVRow csvRow, PatientResponse patientResponse, ArrayList<FailedRowResult<SearchCSVRow>> failedRowResults) {
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatientForUpdate(csvRow, patientResponse);
+        PatientIdentifier patientIdentifier = patientProfileRequest.getPatient().getIdentifiers().get(0);
         try {
-            String savedPatientUuid = (String) ((JSONObject) ((JSONObject) jsonResponse.get("patient")).get("person")).get("uuid");
-            Date personDateCreatedAsDate = patientProfileRequest.getPatient().getPerson().getPersonDateCreatedAsDate();
-
-            String registrationVisitUuid = createVisit(savedPatientUuid, registrationEncounterTypeUuid, personDateCreatedAsDate);
-            closeVisit(registrationVisitUuid, getVisitStopDatetimeFor(personDateCreatedAsDate));
-
-            String opdVisitUuid = createVisit(savedPatientUuid, opdEncounterTypeUuid, personDateCreatedAsDate);
-            closeVisit(opdVisitUuid, getVisitStopDatetimeFor(personDateCreatedAsDate));
+            String patientUuid = patientResponse.getUuid();
+            String patientUpdateUrl = openMRSRESTConnection.getRestApiUrl() + "patientprofile/" + patientUuid;
+            JSONObject jsonObject = postToOpenmrs(patientUpdateUrl, patientProfileRequest);
+            logger.info("Updating Patient: " + patientIdentifier);
+            return jsonObject;
         } catch (HttpServerErrorException serverErrorException) {
-
-            logger.info(String.format("Failed to create visit for %s", patientIdentifier));
-            logger.error("Patient create response: " + serverErrorException.getResponseBodyAsString());
+            logger.info(String.format("Failed to update %s", patientIdentifier));
+            logger.error("Patient update response: " + serverErrorException.getResponseBodyAsString());
             String errorMessage = extractErrorMessage(serverErrorException);
-            return new FailedRowResult<SearchCSVRow>(csvRow, getName() + ":" + errorMessage);
+            failedRowResults.add(new FailedRowResult<SearchCSVRow>(csvRow, getName() + ":" + errorMessage));
         } catch (Exception e) {
-            logger.info(String.format("Failed to create %s", patientIdentifier));
+            logger.info(String.format("Failed to update %s", patientIdentifier));
             logger.error("Failed to process a patient", e);
-            return new FailedRowResult<SearchCSVRow>(csvRow, e);
+            failedRowResults.add(new FailedRowResult<SearchCSVRow>(csvRow, e));
         }
         return null;
     }
@@ -168,39 +200,12 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
         postToOpenmrs(url, String.format(requestString, stopDatetime));
     }
 
-    private String createVisit(String savedPatientUuid, String encounterTypeUuid, Date visitDateTime) throws java.text.ParseException, IOException, ParseException {
-        BahmniEncounterTransaction bahmniEncounterTransaction = visitRequestMapper.mapVisitRequest(savedPatientUuid, encounterTypeUuid, visitDateTime);
-        JSONObject jsonResponse = postToOpenmrs(getEncounterTransactionUrl(), bahmniEncounterTransaction);
-        return (String) jsonResponse.get("visitUuid");
-    }
-
     private String getEncounterTransactionUrl() {
         return String.format("http://%s:8080/openmrs/ws/rest/emrapi/encounter", openMRSRESTConnection.getServer());
     }
 
     private boolean isNewPatient(SearchCSVRow csvRow) {
         return StringUtils.isNotEmpty(csvRow.newCaseNo);
-    }
-
-    private FailedRowResult<SearchCSVRow> updatePatient(SearchCSVRow csvRow, PatientResponse patientResponse) {
-        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatientForUpdate(csvRow, patientResponse);
-        PatientIdentifier patientIdentifier = patientProfileRequest.getPatient().getIdentifiers().get(0);
-        try {
-            String patientUuid = patientResponse.getUuid();
-            String patientUpdateUrl = openMRSRESTConnection.getRestApiUrl() + "patientprofile/" + patientUuid;
-            postToOpenmrs(patientUpdateUrl, patientProfileRequest);
-            logger.info("Updating Patient: " + patientIdentifier);
-        } catch (HttpServerErrorException serverErrorException) {
-            logger.info(String.format("Failed to update %s", patientIdentifier));
-            logger.error("Patient update response: " + serverErrorException.getResponseBodyAsString());
-            String errorMessage = extractErrorMessage(serverErrorException);
-            return new FailedRowResult<SearchCSVRow>(csvRow, getName() + ":" + errorMessage);
-        } catch (Exception e) {
-            logger.info(String.format("Failed to update %s", patientIdentifier));
-            logger.error("Failed to process a patient", e);
-            return new FailedRowResult<SearchCSVRow>(csvRow, e);
-        }
-        return null;
     }
 
     private String loadMigratorProviderUuid() throws ParseException {
