@@ -33,6 +33,7 @@
             },
             "registrationConceptSet":"Visit Details",
             "showMiddleName": true,
+            "identifierPattern": "[1-9][0-9]{0,5}/[0-9]{2}",
             "hideFields": ["Height", "Weight", "BMI", "BMI_Status"],
             "registrationCardPrintLayout": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/print.html",
             "localNameSearch": true,
