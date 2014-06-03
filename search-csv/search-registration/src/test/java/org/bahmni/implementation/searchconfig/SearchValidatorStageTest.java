@@ -72,6 +72,30 @@ public class SearchValidatorStageTest {
         assertEquals(stageName + "Either Middle name or last name should be present.", failedRowResult.getErrorMessage());
     }
 
+    @Test
+    public void validate_shouldFailWhen_BothOldAndNewCaseNumbersArePresent() {
+        row.oldCaseNo="1234/11";
+        row.newCaseNo="1234/11";
+        validationResult = validatorStage.execute(Arrays.asList(row));
+        assertEquals(1, validationResult.getFailureCount());
+        FailedRowResult<SearchCSVRow> failedRowResult = validationResult.getFailedCSVEntities().get(0);
+        assertEquals(stageName + "Both old and new Case numbers are entered.", failedRowResult.getErrorMessage());
+    }
 
+    @Test
+    public void validate_shouldFailWhen_CaseNumberIsNotInTheFormatRequired() {
+        row.oldCaseNo="12/12222";
+        row.newCaseNo="";
+        validationResult = validatorStage.execute(Arrays.asList(row));
+        assertEquals(1, validationResult.getFailureCount());
+        FailedRowResult<SearchCSVRow> failedRowResult = validationResult.getFailedCSVEntities().get(0);
+        assertEquals(stageName + "Old Case number is not in the correct format.", failedRowResult.getErrorMessage());
 
+        row.newCaseNo="12/12222";
+        row.oldCaseNo="";
+        validationResult = validatorStage.execute(Arrays.asList(row));
+        assertEquals(1, validationResult.getFailureCount());
+        failedRowResult = validationResult.getFailedCSVEntities().get(0);
+        assertEquals(stageName + "New Case number is not in the correct format.", failedRowResult.getErrorMessage());
+    }
 }

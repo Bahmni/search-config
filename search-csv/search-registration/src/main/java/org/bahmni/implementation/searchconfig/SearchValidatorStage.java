@@ -46,7 +46,17 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
     private void validateCaseNumbers(SearchCSVRow csvRow, StringBuilder errorMessageBuilder) {
         if (StringUtils.isEmpty(csvRow.oldCaseNo) && StringUtils.isEmpty(csvRow.newCaseNo)) {
             errorMessageBuilder.append("Old and New Case numbers are Blank.");
+        }else if (StringUtils.isNotEmpty(csvRow.oldCaseNo) && StringUtils.isNotEmpty(csvRow.newCaseNo)) {
+            errorMessageBuilder.append("Both old and new Case numbers are entered.");
+        }else {
+            if(StringUtils.isNotEmpty(csvRow.newCaseNo) && !csvRow.newCaseNo.matches("\\d+\\/\\d\\d")){
+                errorMessageBuilder.append("New Case number is not in the correct format.");
+            }
+            if(StringUtils.isNotEmpty(csvRow.oldCaseNo) && !csvRow.oldCaseNo.matches("\\d+\\/\\d\\d")){
+                errorMessageBuilder.append("Old Case number is not in the correct format.");
+            }
         }
+
     }
 
     private void validateVisitDate(SearchCSVRow csvRow, StringBuilder errorMessage) {
