@@ -113,5 +113,18 @@
             update site_information set value = 'Shodhgram, Gadchiroli' where name = 'additional site info';
         </sql>
     </changeSet>
+    <changeSet id="SEARCH-ELIS-10" author="tw" context="search">
+        <comment>Adding Hospital name and address</comment>
+        <sql>
+            insert into gender (id, gender_type, description, name_key) values ((select nextval('gender_seq')), 'O', 'Other', 'gender.other');
+        </sql>
+    </changeSet>
+    <changeSet id="SEARCH-ELIS-12" author="tw" context="search">
+        <comment>Updating hospital name and address</comment>
+        <sql>
+            update site_information set value = 'Maa Danteshwari Hospital' where name = 'SiteName';
+            update site_information set value = 'SEARCH, Shodhgram, Gadchiroli' where name = 'additional site info';
+        </sql>
+    </changeSet>
 
 </databaseChangeLog>
