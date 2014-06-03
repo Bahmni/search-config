@@ -29,6 +29,9 @@
             "conceptSetUI": {
                 "temperature": {
                     "showAbnormalIndicator": true
+                },
+                "Special OPD": {
+                    "autocomplete": true
                 }
             },
             "registrationConceptSet":"Visit Details",
@@ -39,12 +42,7 @@
             "localNameSearch": true,
             "localNameLabel": "रुग्णाचे नाव",
             "localNamePlaceholder": "रुग्णाचे नाव",
-            "localNameAttributesToDisplay": ["givenNameLocal", "middleNameLocal", "familyNameLocal"],
-            "conceptSetUI": {
-                "Special OPD": {
-                    "autocomplete": true
-                }
-            }
+            "localNameAttributesToDisplay": ["givenNameLocal", "middleNameLocal", "familyNameLocal"]
         }
     }
 ]
