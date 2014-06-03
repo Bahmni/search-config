@@ -1,7 +1,8 @@
-package org.bahmni.implementation.searchconfig;
+package org.bahmni.implementation.searchconfig.mapper;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.bahmni.implementation.searchconfig.SearchCSVRow;
 import org.bahmni.implementation.searchconfig.request.IdentifierType;
 import org.bahmni.implementation.searchconfig.request.Name;
 import org.bahmni.implementation.searchconfig.request.Patient;

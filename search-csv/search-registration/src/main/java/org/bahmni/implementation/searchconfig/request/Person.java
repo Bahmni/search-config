@@ -1,9 +1,10 @@
 package org.bahmni.implementation.searchconfig.request;
 
 import lombok.Data;
+import org.bahmni.implementation.searchconfig.DateUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,9 +27,13 @@ public class Person {
 
     public String getPersonDateCreated() {
         if (personDateCreated != null) {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            return simpleDateFormat.format(personDateCreated);
+            return DateUtils.stringify(personDateCreated);
         }
         return null;
+    }
+
+    @JsonIgnore
+    public Date getPersonDateCreatedAsDate() {
+        return personDateCreated;
     }
 }

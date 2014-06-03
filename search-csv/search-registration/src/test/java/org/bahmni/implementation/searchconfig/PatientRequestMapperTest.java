@@ -1,5 +1,6 @@
 package org.bahmni.implementation.searchconfig;
 
+import org.bahmni.implementation.searchconfig.mapper.PatientRequestMapper;
 import org.bahmni.implementation.searchconfig.request.Name;
 import org.bahmni.implementation.searchconfig.request.Patient;
 import org.bahmni.implementation.searchconfig.request.PatientAddress;
