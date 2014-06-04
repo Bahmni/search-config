@@ -146,4 +146,12 @@ public class PatientRequestMapperTest {
         patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false);
         assertEquals("2012-01-17", patientProfileRequest.getPatient().getPerson().getBirthdate());
     }
+
+    @Test
+    public void shouldMapPrefix() throws ParseException {
+        SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
+        csvRow.prefix = "prefix";
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false);
+        assertEquals("prefix", patientProfileRequest.getPatient().getPerson().getNames().get(0).getPrefix());
+    }
 }

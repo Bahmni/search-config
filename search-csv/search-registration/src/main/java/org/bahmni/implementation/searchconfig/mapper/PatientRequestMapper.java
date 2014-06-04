@@ -111,6 +111,7 @@ public class PatientRequestMapper {
     private static Person mapName(SearchCSVRow csvRow, PersonResponse personResponse) {
         Person person = new Person();
         Name patientName;
+        String prefix = csvRow.prefix;
         String firstName = csvRow.firstName;
         String middleName = csvRow.middleName;
         String lastName = csvRow.lastName;
@@ -120,9 +121,9 @@ public class PatientRequestMapper {
         }
         if (personResponse != null && personResponse.getPreferredName() != null) {
             String personNameUuid = personResponse.getPreferredName().getUuid();
-            patientName = new Name(personNameUuid, firstName, middleName, lastName);
+            patientName = new Name(personNameUuid, prefix, firstName, middleName, lastName);
         } else {
-            patientName = new Name(firstName, middleName, lastName);
+            patientName = new Name(prefix, firstName, middleName, lastName);
         }
         person.addName(patientName);
         return person;
