@@ -44,8 +44,18 @@ public class PatientRequestMapper {
         }
         mapAddress(person, personResponse);
         mapBirthDate(csvRow, person);
-        person.setGender("F");
+        mapGender(csvRow, person);
         return person;
+    }
+
+    private static void mapGender(SearchCSVRow csvRow, Person person) {
+        if(csvRow.gender.equalsIgnoreCase("M")){
+            person.setGender("M");
+        }else if(csvRow.gender.equalsIgnoreCase("F")){
+            person.setGender("F");
+        }if(csvRow.gender.equalsIgnoreCase("O")){
+            person.setGender("O");
+        }
     }
 
     private static void mapBirthDate(SearchCSVRow csvRow, Person person) {

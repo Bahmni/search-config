@@ -161,4 +161,33 @@ public class SearchValidatorStageTest {
         failedRowResult = validationResult.getFailedCSVEntities().get(0);
         assertEquals(stageName + "Age cannot be larger than 100.", failedRowResult.getErrorMessage());
     }
+
+    @Test
+    public void shouldValidateGender() {
+        row.gender = "male";
+        validationResult = validatorStage.execute(Arrays.asList(row));
+        assertEquals(1, validationResult.getFailureCount());
+        FailedRowResult<SearchCSVRow> failedRowResult = validationResult.getFailedCSVEntities().get(0);
+        assertEquals(stageName + "Gender in invalid.", failedRowResult.getErrorMessage());
+
+        row.gender = "f-";
+        validationResult = validatorStage.execute(Arrays.asList(row));
+        assertEquals(1, validationResult.getFailureCount());
+        failedRowResult = validationResult.getFailedCSVEntities().get(0);
+        assertEquals(stageName + "Gender in invalid.", failedRowResult.getErrorMessage());
+
+        row.gender = "";
+        validationResult = validatorStage.execute(Arrays.asList(row));
+        assertEquals(1, validationResult.getFailureCount());
+        failedRowResult = validationResult.getFailedCSVEntities().get(0);
+        assertEquals(stageName + "Gender is mandatory.", failedRowResult.getErrorMessage());
+
+        row.gender = "m";
+        validationResult = validatorStage.execute(Arrays.asList(row));
+        assertEquals(0, validationResult.getFailureCount());
+
+        row.gender = "F";
+        validationResult = validatorStage.execute(Arrays.asList(row));
+        assertEquals(0, validationResult.getFailureCount());
+    }
 }

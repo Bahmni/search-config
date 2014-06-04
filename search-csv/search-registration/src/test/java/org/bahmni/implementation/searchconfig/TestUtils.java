@@ -8,6 +8,7 @@ public class TestUtils {
         searchCSVRow.lastName = "last";
         searchCSVRow.newCaseNo = "123/12";
         searchCSVRow.visit_date = "11/01/2012";
+        searchCSVRow.gender = "F";
         return searchCSVRow;
     }
 }
