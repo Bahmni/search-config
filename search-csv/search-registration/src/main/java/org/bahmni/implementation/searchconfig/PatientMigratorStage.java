@@ -114,6 +114,9 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
     }
 
     private void createVisit(JSONObject patientResponse, List<String> encounterTypeUuids, Date visitDate, List failedRowResults, SearchCSVRow csvRow) {
+        if(patientResponse == null){
+            return;
+        }
         JSONObject patient = (JSONObject) patientResponse.get("patient");
         String patientIdentifier = (String) ((ArrayList<JSONObject>) patient.get("identifiers")).get(0).get("identifier");
         JSONObject person = (JSONObject) patient.get("person");
