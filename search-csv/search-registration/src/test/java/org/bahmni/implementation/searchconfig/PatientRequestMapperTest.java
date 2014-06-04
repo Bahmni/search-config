@@ -132,4 +132,18 @@ public class PatientRequestMapperTest {
 
         assertEquals(expectedCreatedDate, patientProfileRequest.getPatient().getPerson().getPersonDateCreated());
     }
+
+    @Test
+    public void shouldMapBirthDate() throws ParseException {
+        SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
+        csvRow.visit_date = "30/01/2012";
+        csvRow.age = "1y 2m 10d";
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false);
+        assertEquals("2010-11-20", patientProfileRequest.getPatient().getPerson().getBirthdate());
+
+        csvRow.visit_date = "22/12/2014";
+        csvRow.age = "22m 400d";
+        patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false);
+        assertEquals("2012-01-17", patientProfileRequest.getPatient().getPerson().getBirthdate());
+    }
 }

@@ -1,6 +1,7 @@
 package org.bahmni.implementation.searchconfig.mapper;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.bahmni.implementation.searchconfig.SearchCSVRow;
 import org.bahmni.implementation.searchconfig.request.IdentifierType;
 import org.bahmni.implementation.searchconfig.request.Name;
@@ -42,10 +43,33 @@ public class PatientRequestMapper {
             person.setUuid(personResponse.getUuid());
         }
         mapAddress(person, personResponse);
-        person.setBirthdate("2011-05-01");
-        person.setBirthdateEstimated(true);
+        mapBirthDate(csvRow, person);
         person.setGender("F");
         return person;
+    }
+
+    private static void mapBirthDate(SearchCSVRow csvRow, Person person) {
+        if(StringUtils.isEmpty(csvRow.age))
+            return;
+        String[] split = csvRow.age.split("(?<=[ymd])\\s*");
+        Integer years = 0, months = 0, days = 0;
+        for (String s : split) {
+            if(s.endsWith("y")){
+                years = Integer.parseInt(s.replace('y', ' ').trim());
+            }else if(s.endsWith("m")){
+                months = Integer.parseInt(s.replace('m', ' ').trim());
+            }if(s.endsWith("d")){
+                days = Integer.parseInt(s.replace('d', ' ').trim());
+            }
+        }
+        Date dateOfBirth = DateMapper.getDateFromVisitDate(csvRow);
+        dateOfBirth = DateUtils.addDays(dateOfBirth, -days);
+        dateOfBirth = DateUtils.addMonths(dateOfBirth, -months);
+        dateOfBirth = DateUtils.addYears(dateOfBirth, -years);
+
+        String birthDateString = org.bahmni.implementation.searchconfig.DateUtils.stringify(dateOfBirth);
+        person.setBirthdate(org.bahmni.implementation.searchconfig.DateUtils.truncateTimeComponent(birthDateString));
+        person.setBirthdateEstimated(true);
     }
 
     private static Date getDateCreated(SearchCSVRow csvRow, boolean fromOldCaseNumber) throws ParseException {

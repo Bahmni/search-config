@@ -93,19 +93,19 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
             if (isNewPatient(csvRow)) {
                 patientResponseJson = createNewPatient(csvRow, false, failedRowResults);
                 //create visit with reg and opd encounter for visit_date
-                createVisit(patientResponseJson, Arrays.asList(opdEncounterTypeUuid, registrationEncounterTypeUuid), visitDate, failedRowResults, csvRow);
+                createVisit(patientResponseJson, visitDate, failedRowResults, csvRow);
             } else {
                 PatientResponse patientResponse = getPatientFromOpenmrs("SEA" + csvRow.oldCaseNo);
                 if (patientResponse != null) {
                     patientResponseJson = updatePatient(csvRow, patientResponse, failedRowResults);
-                    //create visit with opd encounter for visit_date
-                    createVisit(patientResponseJson, Arrays.asList(opdEncounterTypeUuid), visitDate, failedRowResults, csvRow);
+                    //create visit with opd and reg encounter for visit_date
+                    createVisit(patientResponseJson, visitDate, failedRowResults, csvRow);
                 } else {
                     patientResponseJson = createNewPatient(csvRow, true, failedRowResults);
                     //create visit with reg and opd encounter for patient created date
-                    createVisit(patientResponseJson, Arrays.asList(registrationEncounterTypeUuid, opdEncounterTypeUuid), DateMapper.getDateFromOldCaseNumber(csvRow), failedRowResults, csvRow);
-                    //create opd encounter for visit_date
-                    createVisit(patientResponseJson, Arrays.asList(opdEncounterTypeUuid), visitDate, failedRowResults, csvRow);
+                    createVisit(patientResponseJson, DateMapper.getDateFromOldCaseNumber(csvRow), failedRowResults, csvRow);
+                    //create opd and reg encounter for visit_date
+                    createVisit(patientResponseJson, visitDate, failedRowResults, csvRow);
                 }
             }
         }
@@ -113,7 +113,8 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
         return new StageResult(getName(), failedRowResults, csvEntityList);
     }
 
-    private void createVisit(JSONObject patientResponse, List<String> encounterTypeUuids, Date visitDate, List failedRowResults, SearchCSVRow csvRow) {
+    private void createVisit(JSONObject patientResponse, Date visitDate, List failedRowResults, SearchCSVRow csvRow) {
+        List<String> encounterTypeUuids = Arrays.asList(opdEncounterTypeUuid, registrationEncounterTypeUuid);
         if(patientResponse == null){
             return;
         }

@@ -2,7 +2,9 @@ package org.bahmni.implementation.searchconfig;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
-import org.bahmni.csv.*;
+import org.bahmni.csv.FailedRowResult;
+import org.bahmni.csv.SimpleStage;
+import org.bahmni.csv.StageResult;
 import org.bahmni.csv.exception.MigrationException;
 
 import java.text.ParseException;
@@ -40,7 +42,34 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
         validateCaseNumbers(csvRow, errorMessageBuilder);
         validateName(csvRow, errorMessageBuilder);
         validateVisitDate(csvRow, errorMessageBuilder);
+        validateAge(csvRow, errorMessageBuilder);
         return errorMessageBuilder.toString();
+    }
+
+    private void validateAge(SearchCSVRow csvRow, StringBuilder errorMessageBuilder) {
+        if(StringUtils.isEmpty(csvRow.age))
+            return;
+        csvRow.age = csvRow.age.trim();
+        if(!csvRow.age.matches("(?:\\d+[ymd]\\s*)+")){
+            errorMessageBuilder.append("Age is not in required format.");
+            return;
+        }
+
+        String[] split = csvRow.age.split("(?<=[ymd])\\s*");
+        Integer years = 0, months = 0, days = 0;
+        for (String s : split) {
+            if(s.endsWith("y")){
+                years = Integer.parseInt(s.replace('y', ' ').trim());
+            }else if(s.endsWith("m")){
+                months = Integer.parseInt(s.replace('m', ' ').trim());
+            }if(s.endsWith("d")){
+                days = Integer.parseInt(s.replace('d', ' ').trim());
+            }
+        }
+        days = days + months*30 + years*365;
+        if(days > 36500){
+            errorMessageBuilder.append("Age cannot be larger than 100.");
+        }
     }
 
     private void validateCaseNumbers(SearchCSVRow csvRow, StringBuilder errorMessageBuilder) {
