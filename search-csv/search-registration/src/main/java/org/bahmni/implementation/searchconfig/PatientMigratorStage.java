@@ -31,7 +31,6 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -51,11 +50,13 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
     private String registrationEncounterTypeUuid;
     private String opdEncounterTypeUuid;
     private OpenMRSRestService openMRSRestService;
+    private boolean runInParallel = false;
     private AllPatientAttributeTypes allPatientAttributeTypes;
 
-    public PatientMigratorStage(OpenMRSRESTConnection openMRSRESTConnection, OpenMRSRestService openMRSRestService) {
+    public PatientMigratorStage(OpenMRSRESTConnection openMRSRESTConnection, OpenMRSRestService openMRSRestService, boolean runInParallel) {
         this.openMRSRESTConnection = openMRSRESTConnection;
         this.openMRSRestService = openMRSRestService;
+        this.runInParallel = runInParallel;
         getResources();
     }
 
@@ -71,12 +72,8 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
             migratorProviderUuid = getMigratorProviderUuid();
             registrationFeeConceptUuid = getRegistrationFeeConcept();
             visitRequestMapper = new VisitRequestMapper(migratorProviderUuid, opdVisitTypeUuid, registrationEncounterTypeUuid, registrationFeeConceptUuid);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            logger.error("Could not initialize resources for migration" + e);
         }
     }
 
@@ -87,7 +84,7 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
 
     @Override
     public boolean canRunInParallel() {
-        return true;
+        return runInParallel;
     }
 
     @Override

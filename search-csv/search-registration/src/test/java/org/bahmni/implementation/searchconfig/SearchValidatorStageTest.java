@@ -100,6 +100,31 @@ public class SearchValidatorStageTest {
     }
 
     @Test
+    public void validate_shouldPass_WhenCaseNumberIsInTheRightFormat() {
+        row.newCaseNo="1234/12";
+        row.oldCaseNo="";
+        validationResult = validatorStage.execute(Arrays.asList(row));
+        assertEquals(0, validationResult.getFailureCount());
+
+        row.newCaseNo="1234/2";
+        row.oldCaseNo="";
+        validationResult = validatorStage.execute(Arrays.asList(row));
+        assertEquals(0, validationResult.getFailureCount());
+
+        row.oldCaseNo="4321/08";
+        row.newCaseNo="";
+        validationResult = validatorStage.execute(Arrays.asList(row));
+        assertEquals(0, validationResult.getFailureCount());
+
+        row.oldCaseNo="5432/2";
+        row.newCaseNo="";
+        validationResult = validatorStage.execute(Arrays.asList(row));
+        assertEquals(0, validationResult.getFailureCount());
+
+    }
+
+
+    @Test
     public void validate_shouldFailWhen_AgeIsNotInRequiredFormat() {
         row.age = "12";
         validationResult = validatorStage.execute(Arrays.asList(row));

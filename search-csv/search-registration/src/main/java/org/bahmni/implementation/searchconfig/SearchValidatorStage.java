@@ -33,7 +33,6 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
                 failedValidationList.add(new FailedRowResult<SearchCSVRow>(csvRow, getName() + ":" + errorMessage));
             }
         }
-        csvEntityList.removeAll(failedValidationList);
         return new StageResult(getName(), failedValidationList, csvEntityList);
     }
 
@@ -44,7 +43,14 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
         validateVisitDate(csvRow, errorMessageBuilder);
         validateAge(csvRow, errorMessageBuilder);
         validateGender(csvRow, errorMessageBuilder);
+        validateRegistrationFee(csvRow, errorMessageBuilder);
         return errorMessageBuilder.toString();
+    }
+
+    private void validateRegistrationFee(SearchCSVRow csvRow, StringBuilder errorMessageBuilder) {
+        if(StringUtils.isNotEmpty(csvRow.fees) && !csvRow.fees.matches("\\d+")){
+            errorMessageBuilder.append("Fee should be a number.");
+        }
     }
 
     private void validateGender(SearchCSVRow csvRow, StringBuilder errorMessageBuilder) {
@@ -62,6 +68,7 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
         if(StringUtils.isEmpty(csvRow.age))
             return;
         csvRow.age = csvRow.age.trim();
+        csvRow.age.replaceAll(" ", "");
         if(!csvRow.age.matches("(?:\\d+[ymd]\\s*)+")){
             errorMessageBuilder.append("Age is not in required format.");
             return;
@@ -90,10 +97,10 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
         }else if (StringUtils.isNotEmpty(csvRow.oldCaseNo) && StringUtils.isNotEmpty(csvRow.newCaseNo)) {
             errorMessageBuilder.append("Both old and new Case numbers are entered.");
         }else {
-            if(StringUtils.isNotEmpty(csvRow.newCaseNo) && !csvRow.newCaseNo.matches("\\d+\\/\\d\\d")){
+            if(StringUtils.isNotEmpty(csvRow.newCaseNo) && !csvRow.newCaseNo.matches("\\d+\\/\\d{1,2}")){
                 errorMessageBuilder.append("New Case number is not in the correct format.");
             }
-            if(StringUtils.isNotEmpty(csvRow.oldCaseNo) && !csvRow.oldCaseNo.matches("\\d+\\/\\d\\d")){
+            if(StringUtils.isNotEmpty(csvRow.oldCaseNo) && !csvRow.oldCaseNo.matches("\\d+\\/\\d{1,2}")){
                 errorMessageBuilder.append("Old Case number is not in the correct format.");
             }
         }
