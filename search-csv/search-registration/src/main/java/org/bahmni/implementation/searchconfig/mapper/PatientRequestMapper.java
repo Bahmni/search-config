@@ -2,16 +2,19 @@ package org.bahmni.implementation.searchconfig.mapper;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.log4j.Logger;
 import org.bahmni.implementation.searchconfig.SearchCSVRow;
 import org.bahmni.implementation.searchconfig.request.IdentifierType;
 import org.bahmni.implementation.searchconfig.request.Name;
 import org.bahmni.implementation.searchconfig.request.Patient;
 import org.bahmni.implementation.searchconfig.request.PatientAddress;
+import org.bahmni.implementation.searchconfig.request.PatientAttribute;
 import org.bahmni.implementation.searchconfig.request.PatientIdentifier;
 import org.bahmni.implementation.searchconfig.request.PatientProfileRequest;
 import org.bahmni.implementation.searchconfig.request.Person;
 import org.bahmni.implementation.searchconfig.response.PatientResponse;
 import org.bahmni.implementation.searchconfig.response.PersonResponse;
+import org.bahmni.openmrsconnector.AllPatientAttributeTypes;
 
 import java.text.ParseException;
 import java.util.Arrays;
@@ -19,9 +22,10 @@ import java.util.Date;
 import java.util.List;
 
 public class PatientRequestMapper {
+    private static Logger logger= Logger.getLogger(PatientRequestMapper.class.getName());
 
-    public static PatientProfileRequest mapPatient(SearchCSVRow csvRow, boolean fromOldCaseNumber) throws ParseException {
-        Person person = mapPerson(csvRow, null);
+    public static PatientProfileRequest mapPatient(SearchCSVRow csvRow, boolean fromOldCaseNumber, AllPatientAttributeTypes allPatientAttributeTypes) throws ParseException {
+        Person person = mapPerson(csvRow, null, allPatientAttributeTypes);
         person.setPersonDateCreated(getDateCreated(csvRow, fromOldCaseNumber));
         List<PatientIdentifier> identifiers;
         identifiers = mapPatientIdentifier(csvRow, fromOldCaseNumber);
@@ -29,15 +33,15 @@ public class PatientRequestMapper {
         return new PatientProfileRequest(patient);
     }
 
-    public static PatientProfileRequest mapPatientForUpdate(SearchCSVRow csvRow, PatientResponse patientResponse) {
-        Person person = mapPerson(csvRow, patientResponse.getPerson());
+    public static PatientProfileRequest mapPatientForUpdate(SearchCSVRow csvRow, PatientResponse patientResponse, AllPatientAttributeTypes allPatientAttributeTypes) {
+        Person person = mapPerson(csvRow, patientResponse.getPerson(), allPatientAttributeTypes);
         List<PatientIdentifier> identifiers;
         identifiers = getIdentifiers(csvRow.oldCaseNo);
         Patient patient = new Patient(person, identifiers);
         return new PatientProfileRequest(patient);
     }
 
-    private static Person mapPerson(SearchCSVRow csvRow, PersonResponse personResponse) {
+    private static Person mapPerson(SearchCSVRow csvRow, PersonResponse personResponse, AllPatientAttributeTypes allPatientAttributeTypes) {
         Person person = mapName(csvRow, personResponse);
         if (personResponse != null) {
             person.setUuid(personResponse.getUuid());
@@ -45,7 +49,24 @@ public class PatientRequestMapper {
         mapAddress(csvRow, person, personResponse);
         mapBirthDate(csvRow, person);
         mapGender(csvRow, person);
+        mapAttributes(csvRow, person, allPatientAttributeTypes);
         return person;
+    }
+
+    private static void mapAttributes(SearchCSVRow csvRow, Person person, AllPatientAttributeTypes allPatientAttributeTypes) {
+        if(allPatientAttributeTypes == null){
+            logger.error("No patient attributes found");
+            return;
+        }
+        String givenNameLocal = csvRow.firstName;
+        String middleNameLocal = csvRow.middleName;
+        String familyNameLocal = csvRow.lastName;
+        String mobileNumber = csvRow.mobileNumber;
+
+        person.addAttribute(new PatientAttribute(allPatientAttributeTypes.getAttributeUUID("givenNameLocal"), givenNameLocal));
+        person.addAttribute(new PatientAttribute(allPatientAttributeTypes.getAttributeUUID("middleNameLocal"), middleNameLocal));
+        person.addAttribute(new PatientAttribute(allPatientAttributeTypes.getAttributeUUID("familyNameLocal"), familyNameLocal));
+        person.addAttribute(new PatientAttribute(allPatientAttributeTypes.getAttributeUUID("Mobile"), mobileNumber));
     }
 
     private static void mapGender(SearchCSVRow csvRow, Person person) {

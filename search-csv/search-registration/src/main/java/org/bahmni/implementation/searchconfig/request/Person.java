@@ -21,6 +21,7 @@ public class Person {
     private String gender;
     private Date personDateCreated;
 
+
     public void addName(Name patientName) {
         this.names.add(patientName);
     }
@@ -35,5 +36,9 @@ public class Person {
     @JsonIgnore
     public Date getPersonDateCreatedAsDate() {
         return personDateCreated;
+    }
+
+    public void addAttribute(PatientAttribute patientAttribute) {
+        attributes.add(patientAttribute);
     }
 }

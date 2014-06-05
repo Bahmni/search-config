@@ -15,6 +15,7 @@ import org.bahmni.implementation.searchconfig.request.PatientProfileRequest;
 import org.bahmni.implementation.searchconfig.response.PatientListResponse;
 import org.bahmni.implementation.searchconfig.response.PatientResponse;
 import org.bahmni.module.bahmnicore.contract.encounter.request.BahmniEncounterTransaction;
+import org.bahmni.openmrsconnector.AllPatientAttributeTypes;
 import org.bahmni.openmrsconnector.OpenMRSRESTConnection;
 import org.bahmni.openmrsconnector.OpenMRSRestService;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -42,16 +43,23 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
     private static ObjectMapper objectMapper = new ObjectMapper();
     private static Logger logger = org.apache.log4j.Logger.getLogger(PatientMigratorStage.class);
     private static OpenMRSRESTConnection openMRSRESTConnection = null;
-    private static String openMRSHostName = "192.168.33.10";
-    private static String openmrsUserId = "superman";
-    private static String openmrsUserPassword = "Admin123";
+    private static String openMRSHostName;
+    private static String openmrsUserId;
+    private static String openmrsUserPassword;
     private String registrationEncounterTypeUuid;
     private String opdEncounterTypeUuid;
     private OpenMRSRestService openMRSRestService;
+    private AllPatientAttributeTypes allPatientAttributeTypes;
 
     private Gson gson = new Gson();
 
     private static VisitRequestMapper visitRequestMapper;
+
+    public PatientMigratorStage(String hostname, String openmrsUsername, String openmrsPassword) {
+        openMRSHostName = hostname;
+        openmrsUserId = openmrsUsername;
+        openmrsUserPassword = openmrsPassword;
+    }
 
     @Override
     public String getName() {
@@ -74,6 +82,7 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
             String opdVisitTypeUuid = allVisitTypes.get("OPD");
             String migratorProviderUuid = loadMigratorProviderUuid();
             String registrationFeeConceptUuid = loadRegistrationFeeConcept();
+            allPatientAttributeTypes = openMRSRestService.getAllPatientAttributeTypes();
             visitRequestMapper = new VisitRequestMapper(migratorProviderUuid, opdVisitTypeUuid, registrationEncounterTypeUuid, registrationFeeConceptUuid);
         } catch (IOException e) {
             e.printStackTrace();
@@ -148,7 +157,7 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
     private JSONObject createNewPatient(SearchCSVRow csvRow, Boolean fromOldCaseNumber, ArrayList<FailedRowResult<SearchCSVRow>> failedRowResults) {
         PatientIdentifier patientIdentifier = null;
         try {
-            PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, fromOldCaseNumber);
+            PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, fromOldCaseNumber, allPatientAttributeTypes);
             patientIdentifier = patientProfileRequest.getPatient().getIdentifiers().get(0);
             String patientUrl = openMRSRESTConnection.getRestApiUrl() + "patientprofile";
             JSONObject jsonResponse = postToOpenmrs(patientUrl, patientProfileRequest);
@@ -169,7 +178,7 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
     }
 
     private JSONObject updatePatient(SearchCSVRow csvRow, PatientResponse patientResponse, ArrayList<FailedRowResult<SearchCSVRow>> failedRowResults) {
-        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatientForUpdate(csvRow, patientResponse);
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatientForUpdate(csvRow, patientResponse, allPatientAttributeTypes);
         PatientIdentifier patientIdentifier = patientProfileRequest.getPatient().getIdentifiers().get(0);
         try {
             String patientUuid = patientResponse.getUuid();
