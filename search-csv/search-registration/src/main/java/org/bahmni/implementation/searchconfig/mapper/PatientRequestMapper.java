@@ -42,7 +42,7 @@ public class PatientRequestMapper {
         if (personResponse != null) {
             person.setUuid(personResponse.getUuid());
         }
-        mapAddress(person, personResponse);
+        mapAddress(csvRow, person, personResponse);
         mapBirthDate(csvRow, person);
         mapGender(csvRow, person);
         return person;
@@ -103,13 +103,18 @@ public class PatientRequestMapper {
     }
 
 
-    private static void mapAddress(Person person, PersonResponse personResponse) {
+    private static void mapAddress(SearchCSVRow csvRow, Person person, PersonResponse personResponse) {
+        String address3 = csvRow.tehsil;
+        String cityVillage = csvRow.village;
+        String countyDistrict = csvRow.district;
+        String country = "";
+        String stateProvince = "";
         PatientAddress patientAddress;
         if (personResponse != null && personResponse.getPreferredAddress() != null) {
             String personAddressUuid = personResponse.getPreferredAddress().getUuid();
-            patientAddress = new PatientAddress(personAddressUuid, "address1", "address2", "address3", "cityVillage", "state", "country");
+            patientAddress = new PatientAddress(personAddressUuid, address3, cityVillage, countyDistrict, stateProvince, country);
         } else {
-            patientAddress = new PatientAddress("address1", "address2", "address3", "cityVillage", "state", "country");
+            patientAddress = new PatientAddress(address3, cityVillage, countyDistrict, stateProvince, country);
         }
         person.setAddresses(Arrays.asList(patientAddress));
     }

@@ -47,6 +47,9 @@ public class SearchCSVRow extends CSVEntity {
     @CSVHeader(name = "Fees")
     public String fees;
 
+    @CSVHeader(name = "District")
+    public String district;
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
