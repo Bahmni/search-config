@@ -40,25 +40,44 @@ import java.util.List;
 import java.util.Map;
 
 public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
-    private static ObjectMapper objectMapper = new ObjectMapper();
     private static Logger logger = org.apache.log4j.Logger.getLogger(PatientMigratorStage.class);
+
+    private static ObjectMapper objectMapper = new ObjectMapper();
     private static OpenMRSRESTConnection openMRSRESTConnection = null;
-    private static String openMRSHostName;
-    private static String openmrsUserId;
-    private static String openmrsUserPassword;
+    private static String migratorProviderUuid = null;
+    private static String registrationFeeConceptUuid = null;
+
+    private VisitRequestMapper visitRequestMapper;
     private String registrationEncounterTypeUuid;
     private String opdEncounterTypeUuid;
     private OpenMRSRestService openMRSRestService;
     private AllPatientAttributeTypes allPatientAttributeTypes;
 
-    private Gson gson = new Gson();
+    public PatientMigratorStage(OpenMRSRESTConnection openMRSRESTConnection, OpenMRSRestService openMRSRestService) {
+        this.openMRSRESTConnection = openMRSRESTConnection;
+        this.openMRSRestService = openMRSRestService;
+        getResources();
+    }
 
-    private static VisitRequestMapper visitRequestMapper;
+    private void getResources() {
+        try {
+            Map<String, String> allEncounterTypes = openMRSRestService.getAllEncounterTypes();
+            allPatientAttributeTypes = openMRSRestService.getAllPatientAttributeTypes();
+            Map<String, String> allVisitTypes = openMRSRestService.getAllVisitTypes();
+            registrationEncounterTypeUuid = allEncounterTypes.get("REG");
+            opdEncounterTypeUuid = allEncounterTypes.get("OPD");
+            String opdVisitTypeUuid = allVisitTypes.get("OPD");
 
-    public PatientMigratorStage(String hostname, String openmrsUsername, String openmrsPassword) {
-        openMRSHostName = hostname;
-        openmrsUserId = openmrsUsername;
-        openmrsUserPassword = openmrsPassword;
+            migratorProviderUuid = getMigratorProviderUuid();
+            registrationFeeConceptUuid = getRegistrationFeeConcept();
+            visitRequestMapper = new VisitRequestMapper(migratorProviderUuid, opdVisitTypeUuid, registrationEncounterTypeUuid, registrationFeeConceptUuid);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -69,28 +88,6 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
     @Override
     public boolean canRunInParallel() {
         return true;
-    }
-
-    {
-        try {
-            openMRSRESTConnection = new OpenMRSRESTConnection(openMRSHostName, openmrsUserId, openmrsUserPassword);
-            openMRSRestService = new OpenMRSRestService(openMRSRESTConnection);
-            Map<String, String> allEncounterTypes = openMRSRestService.getAllEncounterTypes();
-            Map<String, String> allVisitTypes = openMRSRestService.getAllVisitTypes();
-            registrationEncounterTypeUuid = allEncounterTypes.get("REG");
-            opdEncounterTypeUuid = allEncounterTypes.get("OPD");
-            String opdVisitTypeUuid = allVisitTypes.get("OPD");
-            String migratorProviderUuid = loadMigratorProviderUuid();
-            String registrationFeeConceptUuid = loadRegistrationFeeConcept();
-            allPatientAttributeTypes = openMRSRestService.getAllPatientAttributeTypes();
-            visitRequestMapper = new VisitRequestMapper(migratorProviderUuid, opdVisitTypeUuid, registrationEncounterTypeUuid, registrationFeeConceptUuid);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -125,7 +122,7 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
 
     private void createVisit(JSONObject patientResponse, Date visitDate, List failedRowResults, SearchCSVRow csvRow) {
         List<String> encounterTypeUuids = Arrays.asList(opdEncounterTypeUuid, registrationEncounterTypeUuid);
-        if(patientResponse == null){
+        if (patientResponse == null) {
             return;
         }
         JSONObject patient = (JSONObject) patientResponse.get("patient");
@@ -222,27 +219,33 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
         return StringUtils.isNotEmpty(csvRow.newCaseNo);
     }
 
-    private String loadMigratorProviderUuid() throws ParseException {
-        String url = openMRSRESTConnection.getRestApiUrl() + "provider?v=custom:(uuid,identifier)&q=MIGRATOR";
-        ResponseEntity<String> response = getFromOpenmrs(url);
-        JSONObject parsedResponse = (JSONObject) new JSONParser().parse(response.getBody());
-        List<Map<String, String>> results = (List<Map<String, String>>) parsedResponse.get("results");
-        return results.get(0).get("uuid");
+    private String getMigratorProviderUuid() throws ParseException {
+        if(migratorProviderUuid == null){
+            String url = openMRSRESTConnection.getRestApiUrl() + "provider?v=custom:(uuid,identifier)&q=MIGRATOR";
+            ResponseEntity<String> response = getFromOpenmrs(url);
+            JSONObject parsedResponse = (JSONObject) new JSONParser().parse(response.getBody());
+            List<Map<String, String>> results = (List<Map<String, String>>) parsedResponse.get("results");
+            return results.get(0).get("uuid");
+        }
+        return migratorProviderUuid;
     }
 
-    private String loadRegistrationFeeConcept() throws ParseException {
-        String url = openMRSRESTConnection.getRestApiUrl() + "concept?q='REGISTRATION FEES'";
-        ResponseEntity<String> response = getFromOpenmrs(url);
-        JSONObject parsedResponse = (JSONObject) new JSONParser().parse(response.getBody());
-        List<Map<String, String>> results = (List<Map<String, String>>) parsedResponse.get("results");
-        return results.get(0).get("uuid");
+    private String getRegistrationFeeConcept() throws ParseException {
+        if(registrationFeeConceptUuid == null){
+            String url = openMRSRESTConnection.getRestApiUrl() + "concept?q='REGISTRATION FEES'";
+            ResponseEntity<String> response = getFromOpenmrs(url);
+            JSONObject parsedResponse = (JSONObject) new JSONParser().parse(response.getBody());
+            List<Map<String, String>> results = (List<Map<String, String>>) parsedResponse.get("results");
+            return results.get(0).get("uuid");
+        }
+        return registrationFeeConceptUuid;
     }
 
     private PatientResponse getPatientFromOpenmrs(String patientIdentifier) {
         String representation = "custom:(uuid,person:(uuid,preferredAddress:(uuid,preferred),preferredName:(uuid)))";
         String url = openMRSRESTConnection.getRestApiUrl() + "patient?q=" + patientIdentifier + "&v=" + representation;
         ResponseEntity<String> response = getFromOpenmrs(url);
-        PatientListResponse patientListResponse = gson.fromJson(response.getBody(), PatientListResponse.class);
+        PatientListResponse patientListResponse = new Gson().fromJson(response.getBody(), PatientListResponse.class);
         if (patientListResponse.getResults().size() > 0) {
             return patientListResponse.getResults().get(0);
         }

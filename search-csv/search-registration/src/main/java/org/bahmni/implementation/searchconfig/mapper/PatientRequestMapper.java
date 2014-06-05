@@ -58,9 +58,10 @@ public class PatientRequestMapper {
             logger.error("No patient attributes found");
             return;
         }
-        String givenNameLocal = csvRow.firstName;
-        String middleNameLocal = csvRow.middleName;
-        String familyNameLocal = csvRow.lastName;
+        Name preferredName = person.getNames().get(0);
+        String givenNameLocal = preferredName.getGivenName();
+        String middleNameLocal = preferredName.getMiddleName();
+        String familyNameLocal = preferredName.getFamilyName();
         String mobileNumber = csvRow.mobileNumber;
 
         person.addAttribute(new PatientAttribute(allPatientAttributeTypes.getAttributeUUID("givenNameLocal"), givenNameLocal));

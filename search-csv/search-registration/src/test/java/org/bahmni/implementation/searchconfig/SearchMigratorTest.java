@@ -14,7 +14,7 @@ public class SearchMigratorTest {
         String csvFileName = "sampleReg.csv";
 
         SearchMigrator migrator = new SearchMigrator();
-        migrator.process(getCSVFolderPath(csvFileName), csvFileName, "192.178.33.10", "admin", "test");
+        migrator.process(getCSVFolderPath(csvFileName), csvFileName, "192.168.33.10", "admin", "test");
     }
 
     private String getCSVFolderPath(String testResourceName){
