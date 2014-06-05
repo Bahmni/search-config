@@ -126,5 +126,10 @@
             update site_information set value = 'SEARCH, Shodhgram, Gadchiroli' where name = 'additional site info';
         </sql>
     </changeSet>
-
+    <changeSet id="SEARCH-ELIS-13" author="tw" context="search">
+        <comment>Updating parent directory of uploaded files</comment>
+        <sql>
+            update site_information set value = '/home/bahmni' where name = 'parentOfUploadedFilesDirectory';
+        </sql>
+    </changeSet>
 </databaseChangeLog>
