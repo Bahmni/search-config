@@ -1,5 +1,7 @@
 package org.bahmni.implementation.searchconfig.mapper;
 
+import org.apache.commons.lang3.StringUtils;
+import org.bahmni.implementation.searchconfig.SearchCSVRow;
 import org.bahmni.module.bahmnicore.contract.encounter.request.BahmniEncounterTransaction;
 import org.openmrs.module.emrapi.encounter.domain.EncounterTransaction;
 
@@ -11,20 +13,38 @@ public class VisitRequestMapper {
 
     private final String migratorProviderUuid;
     private final String opdVisitTypeUuid;
+    private String registrationEncounterTypeUuid;
+    private String registrationFeeConceptUuid;
 
-    public VisitRequestMapper(String migratorProviderUuid, String opdVisitTypeUuid) {
+    public VisitRequestMapper(String migratorProviderUuid, String opdVisitTypeUuid, String registrationEncounterTypeUuid, String RegistrationFeeConceptUuid) {
         this.migratorProviderUuid = migratorProviderUuid;
         this.opdVisitTypeUuid = opdVisitTypeUuid;
+        this.registrationEncounterTypeUuid = registrationEncounterTypeUuid;
+        registrationFeeConceptUuid = RegistrationFeeConceptUuid;
     }
 
-    public BahmniEncounterTransaction mapVisitRequest(String patientUuid, String encounterTypeUuid, Date visitDateTime) throws java.text.ParseException {
+    public BahmniEncounterTransaction mapVisitRequest(String patientUuid, String encounterTypeUuid, Date visitDateTime, SearchCSVRow csvRow) throws java.text.ParseException {
         BahmniEncounterTransaction bahmniEncounterTransaction = new BahmniEncounterTransaction();
         bahmniEncounterTransaction.setEncounterTypeUuid(encounterTypeUuid);
         bahmniEncounterTransaction.setProviders(getMigratorProviders());
         bahmniEncounterTransaction.setPatientUuid(patientUuid);
         bahmniEncounterTransaction.setVisitTypeUuid(opdVisitTypeUuid);
         bahmniEncounterTransaction.setEncounterDateTime(visitDateTime);
+        if(encounterTypeUuid.equals(registrationEncounterTypeUuid)){
+            addObservations(bahmniEncounterTransaction, csvRow);
+        }
         return bahmniEncounterTransaction;
+    }
+
+    private void addObservations(BahmniEncounterTransaction bahmniEncounterTransaction, SearchCSVRow csvRow) {
+        if(StringUtils.isNotEmpty(csvRow.fees)){
+            EncounterTransaction.Concept registrationFeeConcept = new EncounterTransaction.Concept();
+            registrationFeeConcept.setUuid(registrationFeeConceptUuid);
+            EncounterTransaction.Observation observation = new EncounterTransaction.Observation();
+            observation.setConcept(registrationFeeConcept);
+            observation.setValue(csvRow.fees);
+            bahmniEncounterTransaction.addObservation(observation);
+        }
     }
 
     private Set<EncounterTransaction.Provider> getMigratorProviders() {

@@ -45,12 +45,12 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
     private static String openMRSHostName = "192.168.33.10";
     private static String openmrsUserId = "superman";
     private static String openmrsUserPassword = "Admin123";
-    private OpenMRSRestService openMRSRestService;
-    private Gson gson = new Gson();
     private String registrationEncounterTypeUuid;
     private String opdEncounterTypeUuid;
-    private String opdVisitTypeUuid;
-    private String migratorProviderUuid;
+    private OpenMRSRestService openMRSRestService;
+
+    private Gson gson = new Gson();
+
     private static VisitRequestMapper visitRequestMapper;
 
     @Override
@@ -71,9 +71,10 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
             Map<String, String> allVisitTypes = openMRSRestService.getAllVisitTypes();
             registrationEncounterTypeUuid = allEncounterTypes.get("REG");
             opdEncounterTypeUuid = allEncounterTypes.get("OPD");
-            opdVisitTypeUuid = allVisitTypes.get("OPD");
-            migratorProviderUuid = loadMigratorProviderUuid();
-            visitRequestMapper = new VisitRequestMapper(migratorProviderUuid, opdVisitTypeUuid);
+            String opdVisitTypeUuid = allVisitTypes.get("OPD");
+            String migratorProviderUuid = loadMigratorProviderUuid();
+            String registrationFeeConceptUuid = loadRegistrationFeeConcept();
+            visitRequestMapper = new VisitRequestMapper(migratorProviderUuid, opdVisitTypeUuid, registrationEncounterTypeUuid, registrationFeeConceptUuid);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {
@@ -125,7 +126,7 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
         try {
             String visitUuid = "";
             for (String encounterTypeUuid : encounterTypeUuids) {
-                BahmniEncounterTransaction bahmniEncounterTransaction = visitRequestMapper.mapVisitRequest(savedPatientUuid, encounterTypeUuid, visitDate);
+                BahmniEncounterTransaction bahmniEncounterTransaction = visitRequestMapper.mapVisitRequest(savedPatientUuid, encounterTypeUuid, visitDate, csvRow);
                 JSONObject visitResponse = postToOpenmrs(getEncounterTransactionUrl(), bahmniEncounterTransaction);
                 visitUuid = (String) visitResponse.get("visitUuid");
             }
@@ -214,6 +215,14 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
 
     private String loadMigratorProviderUuid() throws ParseException {
         String url = openMRSRESTConnection.getRestApiUrl() + "provider?v=custom:(uuid,identifier)&q=MIGRATOR";
+        ResponseEntity<String> response = getFromOpenmrs(url);
+        JSONObject parsedResponse = (JSONObject) new JSONParser().parse(response.getBody());
+        List<Map<String, String>> results = (List<Map<String, String>>) parsedResponse.get("results");
+        return results.get(0).get("uuid");
+    }
+
+    private String loadRegistrationFeeConcept() throws ParseException {
+        String url = openMRSRESTConnection.getRestApiUrl() + "concept?q='REGISTRATION FEES'";
         ResponseEntity<String> response = getFromOpenmrs(url);
         JSONObject parsedResponse = (JSONObject) new JSONParser().parse(response.getBody());
         List<Map<String, String>> results = (List<Map<String, String>>) parsedResponse.get("results");
