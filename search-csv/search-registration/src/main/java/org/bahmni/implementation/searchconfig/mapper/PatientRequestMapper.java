@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 public class PatientRequestMapper {
-    private static Logger logger= Logger.getLogger(PatientRequestMapper.class.getName());
+    private static Logger logger = Logger.getLogger(PatientRequestMapper.class.getName());
 
     public static PatientProfileRequest mapPatient(SearchCSVRow csvRow, boolean fromOldCaseNumber, AllPatientAttributeTypes allPatientAttributeTypes) throws ParseException {
         Person person = mapPerson(csvRow, null, allPatientAttributeTypes);
@@ -54,7 +54,7 @@ public class PatientRequestMapper {
     }
 
     private static void mapAttributes(SearchCSVRow csvRow, Person person, AllPatientAttributeTypes allPatientAttributeTypes) {
-        if(allPatientAttributeTypes == null){
+        if (allPatientAttributeTypes == null) {
             logger.error("No patient attributes found");
             return;
         }
@@ -64,33 +64,45 @@ public class PatientRequestMapper {
         String familyNameLocal = preferredName.getFamilyName();
         String mobileNumber = csvRow.mobileNumber;
 
-        person.addAttribute(new PatientAttribute(allPatientAttributeTypes.getAttributeUUID("givenNameLocal"), givenNameLocal));
-        person.addAttribute(new PatientAttribute(allPatientAttributeTypes.getAttributeUUID("middleNameLocal"), middleNameLocal));
-        person.addAttribute(new PatientAttribute(allPatientAttributeTypes.getAttributeUUID("familyNameLocal"), familyNameLocal));
-        person.addAttribute(new PatientAttribute(allPatientAttributeTypes.getAttributeUUID("Mobile"), mobileNumber));
+        addPersonAttribute(person, allPatientAttributeTypes, givenNameLocal, "givenNameLocal");
+        addPersonAttribute(person, allPatientAttributeTypes, middleNameLocal, "middleNameLocal");
+        addPersonAttribute(person, allPatientAttributeTypes, familyNameLocal, "familyNameLocal");
+        addPersonAttribute(person, allPatientAttributeTypes, mobileNumber, "Mobile");
+    }
+
+    private static void addPersonAttribute(Person person, AllPatientAttributeTypes allPatientAttributeTypes,
+                                           String attributeValue, String attributeTypeName) {
+        String attributeUUID = allPatientAttributeTypes.getAttributeUUID(attributeTypeName);
+        if (StringUtils.isEmpty(attributeUUID)) {
+            logger.error("Patient attribute type not found for: " + attributeTypeName);
+        } else {
+            person.addAttribute(new PatientAttribute(attributeUUID, attributeValue));
+        }
     }
 
     private static void mapGender(SearchCSVRow csvRow, Person person) {
-        if(csvRow.gender.equalsIgnoreCase("M")){
+        if (csvRow.gender.equalsIgnoreCase("M")) {
             person.setGender("M");
-        }else if(csvRow.gender.equalsIgnoreCase("F")){
+        } else if (csvRow.gender.equalsIgnoreCase("F")) {
             person.setGender("F");
-        }if(csvRow.gender.equalsIgnoreCase("O")){
+        }
+        if (csvRow.gender.equalsIgnoreCase("O")) {
             person.setGender("O");
         }
     }
 
     private static void mapBirthDate(SearchCSVRow csvRow, Person person) {
-        if(StringUtils.isEmpty(csvRow.age))
+        if (StringUtils.isEmpty(csvRow.age))
             return;
         String[] split = csvRow.age.split("(?<=[ymd])\\s*");
         Integer years = 0, months = 0, days = 0;
         for (String s : split) {
-            if(s.endsWith("y")){
+            if (s.endsWith("y")) {
                 years = Integer.parseInt(s.replace('y', ' ').trim());
-            }else if(s.endsWith("m")){
+            } else if (s.endsWith("m")) {
                 months = Integer.parseInt(s.replace('m', ' ').trim());
-            }if(s.endsWith("d")){
+            }
+            if (s.endsWith("d")) {
                 days = Integer.parseInt(s.replace('d', ' ').trim());
             }
         }
