@@ -1,103 +1,19 @@
-<link rel="stylesheet" href="/bahmni_config/openmrs/apps/registration/registrationCardLayout/css/print.css"/>
-<table border="1" cellpadding="0" cellspacing="1" class="registrationCard-print-table">
-    <tbody>
-    <tr>
-        <td  class="print-table-left">
-            <table>
-                <tr>
-
-                    <td>
-                        <h3 class="print-table-header">सूचना</h3>
-                        <ul class="print-table-left-body">
-                            <li>
-                                स्त्री रोग, गरोदरपणातील तपासणी, सिकल सेल, क्षयरोग, व्यंधत्व, गुप्तरोग, हृदयरोग, मधूमेह, रक्तदाब, पाठीचे रोग, मानसिक रोग, लैंगीक तपासणी व उपचार होतो.
-                            </li>
-                            <li>
-                                सवलतीच्या दरात उपचार होतो.
-                            </li>
-                            <li>
-                                ई. सी. जी., एक्सरे , सोनोग्राफी (गरोदर स्त्रियांची), रक्त, मल-मूत्र, थुंकी, विर्य तपासणी होते. 
-                            </li>
-                            <li>
-                                औषधे कमी किमतीत मिळतात.
-                            </li>
-                            <li>
-                                अधिकृत गर्भपात व स्त्रियांची कुटूंब नियोजन शस्त्रक्रिया होते. 
-                            </li>
-                            <li>
-                                हायड्रोसिल, हर्निया, मुळव्याध, प्लास्टिक सर्जरी, अपेंडिक्स, मूत्रखडा, गर्भाशयाचे विकार, पाठ कंबर दुखीचे शिबीर होतात.
-                            </li>
-                        </ul>
-                        
-                    </td>
-                </tr>
-            </table>
-        </td>
-        <td class="print-table-right" valign="top">
-            <table>
-                <tr>
-                    <td class="logo">
-                        <p>
-                            <img src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/images/logo.png" style="width: 12mm; height: 12mm; "/>
-                        </p>
-                    </td>
-                    <td class="print-table-right-header">
-                            <h3>
-                                सर्च &nbsp;
-                            </h3>
-                            <h3 class="print-center">माँ दंतेश्‍वरी दवाखाना</h3>
-                            <p class="print-center">शोधग्राम,</p>
-                            <p class="print-center">गडचिरोली - ४४२६०५</p>
-                    </td>
-                    <td class="registrationCard-photo">
-                        <img ng-src="{{patient.image}}" style="width: 20mm; height: 20mm; "
-                             onerror="this.onerror=null;this.src='../images/blank.jpeg';"/>
-                    </td>
-                </tr>
-            </table>
-            <table class="registrationCard-details">
-                <tbody>
-                <tr>
-                    <td class="registrationCard-details-name">
-                        <span class="hindi-text">तारीख</span>
-                    </td>
-                    <td class="registrationCard-details-seperator"> :  </td>
-                    <td>{{patient.registrationDate | date:'dd/MM/yyyy'}} </td>
-                </tr>
-                <tr>
-                    <td class="registrationCard-details-name">
-                        <span class="hindi-text">केस न.</span>
-                    </td>
-                    <td class="registrationCard-details-seperator"> :  </td>
-                    <td>{{patient.identifier}} </td>
-                </tr>
-                <tr>
-                    <td class="registrationCard-details-name">
-                        <span class="hindi-text">नाव </span>
-                    </td>
-                    <td class="registrationCard-details-seperator"> :  </td>
-                    <td>
-                        <span class="hindi-text">{{patient.fullNameLocal()}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="registrationCard-details-name">
-                        <span class="hindi-text">गाव</span>
-                    </td>
-                    <td class="registrationCard-details-seperator"> :  </td>
-                    <td>{{patient.address.cityVillage}} </td>
-                </tr>
-                </tbody>
-            </table>
-            <table class="footer">
-                <tbody> 
-                    <tr><td>कोड (0७१३८) फोन नं.: २५५४०९ / २५५४१० </td></tr>
-                    <tr><td>नाव नोंदणीची वेळ स. ९ ते दु. २ वाजेपर्यंत राहील.</td></tr>
-                    <tr><td>दवाखाना रविवारला बंद राहील.</td></tr>
-                    <tr><td>कृपया हे कार्ड प्रत्येक वेळा सोबत आणावे. अन्यथा ५०/- रु. दंड आकारण्यात येईल.</td></tr>
-                </tbody>
-            </table>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Search Registeration</title>
+  <link rel="stylesheet" type="text/css" href="/bahmni_config/openmrs/apps/registration/registrationCardLayout/css/print.css">
+</head>
+<body>
+  <div class="registration-card">
+    <ul class="patient-details">
+      <li>
+        <span class="date">{{patient.registrationDate | date:'dd/MM/yyyy'}}</span><span class="patient-id">{{patient.identifier}}</span>
+      </li>
+      <li>{{patient.fullNameLocal()}}</li>
+      <li>{{patient.address.cityVillage}}</li>
+    </ul>
+  </div>
+</body>
+</html>
