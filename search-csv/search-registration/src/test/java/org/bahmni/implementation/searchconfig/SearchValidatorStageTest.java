@@ -123,22 +123,21 @@ public class SearchValidatorStageTest {
 
     }
 
-
     @Test
     public void validate_shouldFailWhen_AgeIsNotInRequiredFormat() {
-        row.age = "12";
+        row.age = "12yrs";
         validationResult = validatorStage.execute(Arrays.asList(row));
         assertEquals(1, validationResult.getFailureCount());
         FailedRowResult<SearchCSVRow> failedRowResult = validationResult.getFailedCSVEntities().get(0);
         assertEquals(stageName + "Age is not in required format.", failedRowResult.getErrorMessage());
 
-        row.age = "12yrs";
+        row.age = "12y15months400days";
         validationResult = validatorStage.execute(Arrays.asList(row));
         assertEquals(1, validationResult.getFailureCount());
         failedRowResult = validationResult.getFailedCSVEntities().get(0);
         assertEquals(stageName + "Age is not in required format.", failedRowResult.getErrorMessage());
 
-        row.age = "12y15months400days";
+        row.age = "2.5";
         validationResult = validatorStage.execute(Arrays.asList(row));
         assertEquals(1, validationResult.getFailureCount());
         failedRowResult = validationResult.getFailedCSVEntities().get(0);
@@ -170,6 +169,14 @@ public class SearchValidatorStageTest {
         row.age = "100y";
         validationResult = validatorStage.execute(Arrays.asList(row));
         assertEquals(0, validationResult.getFailureCount());
+
+        row.age = "100";
+        validationResult = validatorStage.execute(Arrays.asList(row));
+        assertEquals(0, validationResult.getFailureCount());
+
+        row.age = "25";
+        validationResult = validatorStage.execute(Arrays.asList(row));
+        assertEquals(0, validationResult.getFailureCount());
     }
 
     @Test
@@ -185,6 +192,12 @@ public class SearchValidatorStageTest {
         assertEquals(1, validationResult.getFailureCount());
         failedRowResult = validationResult.getFailedCSVEntities().get(0);
         assertEquals(stageName + "Age cannot be larger than 100.", failedRowResult.getErrorMessage());
+
+        row.age = "5200";
+        validationResult = validatorStage.execute(Arrays.asList(row));
+        assertEquals(1, validationResult.getFailureCount());
+        failedRowResult = validationResult.getFailedCSVEntities().get(0);
+        assertEquals(stageName + "Age cannot be larger than 100 or lesser than 0.", failedRowResult.getErrorMessage());
     }
 
     @Test

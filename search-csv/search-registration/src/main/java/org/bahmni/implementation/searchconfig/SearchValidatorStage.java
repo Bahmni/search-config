@@ -48,45 +48,53 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
     }
 
     private void validateRegistrationFee(SearchCSVRow csvRow, StringBuilder errorMessageBuilder) {
-        if(StringUtils.isNotEmpty(csvRow.fees) && !csvRow.fees.matches("\\d+")){
+        if (StringUtils.isNotEmpty(csvRow.fees) && !csvRow.fees.matches("\\d+")) {
             errorMessageBuilder.append("Fee should be a number.");
         }
     }
 
     private void validateGender(SearchCSVRow csvRow, StringBuilder errorMessageBuilder) {
-        if(StringUtils.isEmpty(csvRow.gender)){
+        if (StringUtils.isEmpty(csvRow.gender)) {
             errorMessageBuilder.append("Gender is mandatory.");
             return;
         }
-        if(csvRow.gender.equalsIgnoreCase("M") || csvRow.gender.equalsIgnoreCase("F") || csvRow.gender.equalsIgnoreCase("O")){
+        if (csvRow.gender.equalsIgnoreCase("M") || csvRow.gender.equalsIgnoreCase("F") || csvRow.gender.equalsIgnoreCase("O")) {
             return;
         }
         errorMessageBuilder.append("Gender in invalid.");
     }
 
     private void validateAge(SearchCSVRow csvRow, StringBuilder errorMessageBuilder) {
-        if(StringUtils.isEmpty(csvRow.age))
+        if (StringUtils.isEmpty(csvRow.age))
             return;
         csvRow.age = csvRow.age.trim();
         csvRow.age.replaceAll(" ", "");
-        if(!csvRow.age.matches("(?:\\d+[ymd]\\s*)+")){
-            errorMessageBuilder.append("Age is not in required format.");
+        if (!csvRow.age.matches("(?:\\d+[ymd]\\s*)+")) {
+            try {
+                int age = Integer.parseInt(csvRow.age);
+                if (age > 100 || age < 0){
+                    errorMessageBuilder.append("Age cannot be larger than 100 or lesser than 0.");
+                }
+            } catch (NumberFormatException ex) {
+                errorMessageBuilder.append("Age is not in required format.");
+            }
             return;
         }
 
         String[] split = csvRow.age.split("(?<=[ymd])\\s*");
         Integer years = 0, months = 0, days = 0;
         for (String s : split) {
-            if(s.endsWith("y")){
+            if (s.endsWith("y")) {
                 years = Integer.parseInt(s.replace('y', ' ').trim());
-            }else if(s.endsWith("m")){
+            } else if (s.endsWith("m")) {
                 months = Integer.parseInt(s.replace('m', ' ').trim());
-            }if(s.endsWith("d")){
+            }
+            if (s.endsWith("d")) {
                 days = Integer.parseInt(s.replace('d', ' ').trim());
             }
         }
-        days = days + months*30 + years*365;
-        if(days > 36500){
+        days = days + months * 30 + years * 365;
+        if (days > 36500) {
             errorMessageBuilder.append("Age cannot be larger than 100.");
         }
     }
@@ -94,13 +102,13 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
     private void validateCaseNumbers(SearchCSVRow csvRow, StringBuilder errorMessageBuilder) {
         if (StringUtils.isEmpty(csvRow.oldCaseNo) && StringUtils.isEmpty(csvRow.newCaseNo)) {
             errorMessageBuilder.append("Old and New Case numbers are Blank.");
-        }else if (StringUtils.isNotEmpty(csvRow.oldCaseNo) && StringUtils.isNotEmpty(csvRow.newCaseNo)) {
+        } else if (StringUtils.isNotEmpty(csvRow.oldCaseNo) && StringUtils.isNotEmpty(csvRow.newCaseNo)) {
             errorMessageBuilder.append("Both old and new Case numbers are entered.");
-        }else {
-            if(StringUtils.isNotEmpty(csvRow.newCaseNo) && !csvRow.newCaseNo.matches("\\d+\\/\\d{1,2}")){
+        } else {
+            if (StringUtils.isNotEmpty(csvRow.newCaseNo) && !csvRow.newCaseNo.matches("\\d+\\/\\d{1,2}")) {
                 errorMessageBuilder.append("New Case number is not in the correct format.");
             }
-            if(StringUtils.isNotEmpty(csvRow.oldCaseNo) && !csvRow.oldCaseNo.matches("\\d+\\/\\d{1,2}")){
+            if (StringUtils.isNotEmpty(csvRow.oldCaseNo) && !csvRow.oldCaseNo.matches("\\d+\\/\\d{1,2}")) {
                 errorMessageBuilder.append("Old Case number is not in the correct format.");
             }
         }
