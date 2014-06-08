@@ -20,12 +20,13 @@ import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 public class PatientRequestMapper {
     private static Logger logger = Logger.getLogger(PatientRequestMapper.class.getName());
 
-    public static PatientProfileRequest mapPatient(SearchCSVRow csvRow, boolean fromOldCaseNumber, AllPatientAttributeTypes allPatientAttributeTypes) throws ParseException {
-        Person person = mapPerson(csvRow, null, allPatientAttributeTypes);
+    public static PatientProfileRequest mapPatient(SearchCSVRow csvRow, boolean fromOldCaseNumber, AllPatientAttributeTypes allPatientAttributeTypes, Properties TAHSIL_TO_DISTRICT) throws ParseException {
+        Person person = mapPerson(csvRow, null, allPatientAttributeTypes, TAHSIL_TO_DISTRICT);
         person.setPersonDateCreated(getDateCreated(csvRow, fromOldCaseNumber));
         List<PatientIdentifier> identifiers;
         identifiers = mapPatientIdentifier(csvRow, fromOldCaseNumber);
@@ -33,20 +34,20 @@ public class PatientRequestMapper {
         return new PatientProfileRequest(patient);
     }
 
-    public static PatientProfileRequest mapPatientForUpdate(SearchCSVRow csvRow, PatientResponse patientResponse, AllPatientAttributeTypes allPatientAttributeTypes) {
-        Person person = mapPerson(csvRow, patientResponse.getPerson(), allPatientAttributeTypes);
+    public static PatientProfileRequest mapPatientForUpdate(SearchCSVRow csvRow, PatientResponse patientResponse, AllPatientAttributeTypes allPatientAttributeTypes, Properties TAHSIL_TO_DISTRICT) {
+        Person person = mapPerson(csvRow, patientResponse.getPerson(), allPatientAttributeTypes, TAHSIL_TO_DISTRICT);
         List<PatientIdentifier> identifiers;
         identifiers = getIdentifiers(csvRow.oldCaseNo);
         Patient patient = new Patient(person, identifiers);
         return new PatientProfileRequest(patient);
     }
 
-    private static Person mapPerson(SearchCSVRow csvRow, PersonResponse personResponse, AllPatientAttributeTypes allPatientAttributeTypes) {
+    private static Person mapPerson(SearchCSVRow csvRow, PersonResponse personResponse, AllPatientAttributeTypes allPatientAttributeTypes, Properties TAHSIL_TO_DISTRICT) {
         Person person = mapName(csvRow, personResponse);
         if (personResponse != null) {
             person.setUuid(personResponse.getUuid());
         }
-        mapAddress(csvRow, person, personResponse);
+        mapAddress(csvRow, person, personResponse, TAHSIL_TO_DISTRICT);
         mapBirthDate(csvRow, person);
         mapGender(csvRow, person);
         mapAttributes(csvRow, person, allPatientAttributeTypes);
@@ -137,10 +138,13 @@ public class PatientRequestMapper {
     }
 
 
-    private static void mapAddress(SearchCSVRow csvRow, Person person, PersonResponse personResponse) {
+    private static void mapAddress(SearchCSVRow csvRow, Person person, PersonResponse personResponse, Properties TAHSIL_TO_DISTRICT) {
         String address3 = csvRow.tehsil;
         String cityVillage = csvRow.village;
-        String countyDistrict = csvRow.district;
+        String countyDistrict = "";
+        if(TAHSIL_TO_DISTRICT !=null){
+            countyDistrict = TAHSIL_TO_DISTRICT.getProperty(csvRow.tehsil);
+        }
         String country = "";
         String stateProvince = "";
         PatientAddress patientAddress;

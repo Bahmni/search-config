@@ -37,6 +37,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
     private static Logger logger = org.apache.log4j.Logger.getLogger(PatientMigratorStage.class);
@@ -45,6 +46,7 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
     private static OpenMRSRESTConnection openMRSRESTConnection = null;
     private static String migratorProviderUuid = null;
     private static String registrationFeeConceptUuid = null;
+    private static Properties TAHSIL_TO_DISTRICT = new Properties();
 
     private VisitRequestMapper visitRequestMapper;
     private String registrationEncounterTypeUuid;
@@ -72,8 +74,17 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
             migratorProviderUuid = getMigratorProviderUuid();
             registrationFeeConceptUuid = getRegistrationFeeConcept();
             visitRequestMapper = new VisitRequestMapper(migratorProviderUuid, opdVisitTypeUuid, registrationEncounterTypeUuid, registrationFeeConceptUuid);
+            initializeTahsilToDistrictMappingFromProperties();
         } catch (Exception e) {
             logger.error("Could not initialize resources for migration" + e);
+        }
+    }
+
+    private void initializeTahsilToDistrictMappingFromProperties() {
+        try {
+            TAHSIL_TO_DISTRICT.load(getClass().getClassLoader().getResourceAsStream("tahsilDistrictMapping.properties"));
+        } catch (IOException e) {
+            logger.error("Could not load tahsil to district mapping file.");
         }
     }
 
@@ -151,7 +162,7 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
     private JSONObject createNewPatient(SearchCSVRow csvRow, Boolean fromOldCaseNumber, ArrayList<FailedRowResult<SearchCSVRow>> failedRowResults) {
         PatientIdentifier patientIdentifier = null;
         try {
-            PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, fromOldCaseNumber, allPatientAttributeTypes);
+            PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, fromOldCaseNumber, allPatientAttributeTypes, TAHSIL_TO_DISTRICT);
             patientIdentifier = patientProfileRequest.getPatient().getIdentifiers().get(0);
             String patientUrl = openMRSRESTConnection.getRestApiUrl() + "patientprofile";
             JSONObject jsonResponse = postToOpenmrs(patientUrl, patientProfileRequest);
@@ -172,7 +183,7 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
     }
 
     private JSONObject updatePatient(SearchCSVRow csvRow, PatientResponse patientResponse, ArrayList<FailedRowResult<SearchCSVRow>> failedRowResults) {
-        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatientForUpdate(csvRow, patientResponse, allPatientAttributeTypes);
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatientForUpdate(csvRow, patientResponse, allPatientAttributeTypes, TAHSIL_TO_DISTRICT);
         PatientIdentifier patientIdentifier = patientProfileRequest.getPatient().getIdentifiers().get(0);
         try {
             String patientUuid = patientResponse.getUuid();

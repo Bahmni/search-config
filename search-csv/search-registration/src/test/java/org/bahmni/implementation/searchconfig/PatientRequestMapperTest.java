@@ -20,7 +20,7 @@ public class PatientRequestMapperTest {
     public void shouldMapNAmeFromCsvRowWhenAllPartsOfNameExist() throws ParseException {
         SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
 
-        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false, null);
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false, null, null);
         Patient patient = patientProfileRequest.getPatient();
 
         assertEquals(1, patient.getPerson().getNames().size());
@@ -34,7 +34,7 @@ public class PatientRequestMapperTest {
         SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
         csvRow.lastName = "";
 
-        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false, null);
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false, null, null);
         Patient patient = patientProfileRequest.getPatient();
 
         assertEquals(1, patient.getPerson().getNames().size());
@@ -49,7 +49,7 @@ public class PatientRequestMapperTest {
         csvRow.oldCaseNo = "1234/12";
         csvRow.newCaseNo = "";
 
-        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, true, null);
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, true, null, null);
         Patient patient = patientProfileRequest.getPatient();
 
         assertEquals("SEA" + csvRow.oldCaseNo, patient.getIdentifiers().get(0).getIdentifier());
@@ -59,7 +59,7 @@ public class PatientRequestMapperTest {
     public void shouldMapNewCaseNumberAsPatientIdentifier() throws ParseException {
         SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
 
-        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false, null);
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false, null, null);
         Patient patient = patientProfileRequest.getPatient();
 
         assertEquals("SEA" + csvRow.newCaseNo, patient.getIdentifiers().get(0).getIdentifier());
@@ -77,7 +77,7 @@ public class PatientRequestMapperTest {
         patientResponse.setPerson(person);
         SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
 
-        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatientForUpdate(csvRow, patientResponse, null);
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatientForUpdate(csvRow, patientResponse, null, null);
 
         Person mappedPerson = patientProfileRequest.getPatient().getPerson();
         Name mappedPersonName = mappedPerson.getNames().get(0);
@@ -100,7 +100,7 @@ public class PatientRequestMapperTest {
         patientResponse.setPerson(person);
         SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
 
-        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatientForUpdate(csvRow, patientResponse, null);
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatientForUpdate(csvRow, patientResponse, null, null);
 
         Person mappedPerson = patientProfileRequest.getPatient().getPerson();
         PatientAddress mappedPersonAddress = mappedPerson.getAddresses().get(0);
@@ -115,7 +115,7 @@ public class PatientRequestMapperTest {
         csvRow.visit_date = visit_date;
         String expectedCreatedDate = "2012-01-30 10:00:00";
 
-        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false, null);
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false, null, null);
 
         Person mappedPerson = patientProfileRequest.getPatient().getPerson();
         assertEquals(expectedCreatedDate, mappedPerson.getPersonDateCreated());
@@ -128,7 +128,7 @@ public class PatientRequestMapperTest {
         SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
         csvRow.oldCaseNo = oldCaseNumber;
 
-        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, true, null);
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, true, null, null);
 
         assertEquals(expectedCreatedDate, patientProfileRequest.getPatient().getPerson().getPersonDateCreated());
     }
@@ -138,12 +138,12 @@ public class PatientRequestMapperTest {
         SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
         csvRow.visit_date = "30/01/2012";
         csvRow.age = "1y 2m 10d";
-        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false, null);
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false, null, null);
         assertEquals("2010-11-20", patientProfileRequest.getPatient().getPerson().getBirthdate());
 
         csvRow.visit_date = "22/12/2014";
         csvRow.age = "22m 400d";
-        patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false, null);
+        patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false, null, null);
         assertEquals("2012-01-17", patientProfileRequest.getPatient().getPerson().getBirthdate());
     }
 
@@ -151,7 +151,7 @@ public class PatientRequestMapperTest {
     public void shouldMapPrefix() throws ParseException {
         SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
         csvRow.prefix = "prefix";
-        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false, null);
+        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, false, null, null);
         assertEquals("prefix", patientProfileRequest.getPatient().getPerson().getNames().get(0).getPrefix());
     }
 }
