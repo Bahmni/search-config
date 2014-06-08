@@ -54,6 +54,7 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
     }
 
     private void validateGender(SearchCSVRow csvRow, StringBuilder errorMessageBuilder) {
+        csvRow.gender = csvRow.gender.trim();
         if (StringUtils.isEmpty(csvRow.gender)) {
             errorMessageBuilder.append("Gender is mandatory.");
             return;
@@ -67,12 +68,11 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
     private void validateAge(SearchCSVRow csvRow, StringBuilder errorMessageBuilder) {
         if (StringUtils.isEmpty(csvRow.age))
             return;
-        csvRow.age = csvRow.age.trim();
-        csvRow.age.replaceAll(" ", "");
+        csvRow.age = csvRow.age.trim().replaceAll(" ", "");
         if (!csvRow.age.matches("(?:\\d+[ymd]\\s*)+")) {
             try {
                 int age = Integer.parseInt(csvRow.age);
-                if (age > 100 || age < 0){
+                if (age > 100 || age < 0) {
                     errorMessageBuilder.append("Age cannot be larger than 100 or lesser than 0.");
                 }
             } catch (NumberFormatException ex) {
@@ -103,13 +103,24 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
         if (StringUtils.isEmpty(csvRow.oldCaseNo) && StringUtils.isEmpty(csvRow.newCaseNo)) {
             errorMessageBuilder.append("Old and New Case numbers are Blank.");
         } else if (StringUtils.isNotEmpty(csvRow.oldCaseNo) && StringUtils.isNotEmpty(csvRow.newCaseNo)) {
-            errorMessageBuilder.append("Both old and new Case numbers are entered.");
-        } else {
-            if (StringUtils.isNotEmpty(csvRow.newCaseNo) && !csvRow.newCaseNo.matches("\\d+\\/\\d{1,2}")) {
-                errorMessageBuilder.append("New Case number is not in the correct format.");
+            csvRow.oldCaseNo = csvRow.oldCaseNo.trim().replaceAll(" ", "");
+            csvRow.newCaseNo = csvRow.newCaseNo.trim().replaceAll(" ", "");
+            if (StringUtils.isNotEmpty(csvRow.oldCaseNo) && StringUtils.isNotEmpty(csvRow.newCaseNo)) {
+                errorMessageBuilder.append("Both old and new Case numbers are entered.");
             }
-            if (StringUtils.isNotEmpty(csvRow.oldCaseNo) && !csvRow.oldCaseNo.matches("\\d+\\/\\d{1,2}")) {
-                errorMessageBuilder.append("Old Case number is not in the correct format.");
+        } else {
+            String caseNumberFormat = "\\d+\\/\\d{1,2}";
+            if (StringUtils.isNotEmpty(csvRow.newCaseNo)) {
+                csvRow.newCaseNo = csvRow.newCaseNo.trim();
+                if (!csvRow.newCaseNo.matches(caseNumberFormat)) {
+                    errorMessageBuilder.append("New Case number is not in the correct format.");
+                }
+            }
+            if (StringUtils.isNotEmpty(csvRow.oldCaseNo)) {
+                csvRow.oldCaseNo = csvRow.oldCaseNo.trim();
+                if (!csvRow.oldCaseNo.matches(caseNumberFormat)) {
+                    errorMessageBuilder.append("Old Case number is not in the correct format.");
+                }
             }
         }
 

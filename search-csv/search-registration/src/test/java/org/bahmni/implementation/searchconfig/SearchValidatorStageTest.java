@@ -177,6 +177,10 @@ public class SearchValidatorStageTest {
         row.age = "25";
         validationResult = validatorStage.execute(Arrays.asList(row));
         assertEquals(0, validationResult.getFailureCount());
+
+        row.age = "6 m";
+        validationResult = validatorStage.execute(Arrays.asList(row));
+        assertEquals(0, validationResult.getFailureCount());
     }
 
     @Test
