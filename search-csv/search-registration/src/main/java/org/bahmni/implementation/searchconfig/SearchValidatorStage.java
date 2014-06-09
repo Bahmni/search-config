@@ -43,14 +43,34 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
         validateVisitDate(csvRow, errorMessageBuilder);
         validateAge(csvRow, errorMessageBuilder);
         validateGender(csvRow, errorMessageBuilder);
-        validateRegistrationFee(csvRow, errorMessageBuilder);
+        validateAndSanitizeRegistrationFee(csvRow, errorMessageBuilder);
         return errorMessageBuilder.toString();
     }
 
-    private void validateRegistrationFee(SearchCSVRow csvRow, StringBuilder errorMessageBuilder) {
-        if (StringUtils.isNotEmpty(csvRow.fees) && !csvRow.fees.matches("\\d+")) {
-            errorMessageBuilder.append("Fee should be a number.");
+    private void validateAndSanitizeRegistrationFee(SearchCSVRow csvRow, StringBuilder errorMessageBuilder) {
+        if(StringUtils.isEmpty(csvRow.fees))
+            return;
+        if (IsNotDigitsOrFree(csvRow)) {
+            errorMessageBuilder.append("Fee should be a number or 'free'.");
         }
+        sanitizeRegistrationFee(csvRow);
+    }
+
+    private void sanitizeRegistrationFee(SearchCSVRow csvRow) {
+        if(isFree(csvRow)){
+            csvRow.fees = "0";
+        }
+    }
+
+    private boolean IsNotDigitsOrFree(SearchCSVRow csvRow) {
+        boolean isDigits = csvRow.fees.matches("\\d+");
+        if(!isDigits)
+            return false;
+        return isFree(csvRow);
+    }
+
+    private boolean isFree(SearchCSVRow csvRow) {
+        return csvRow.fees.trim().replaceAll(" ", "").equalsIgnoreCase("free");
     }
 
     private void validateGender(SearchCSVRow csvRow, StringBuilder errorMessageBuilder) {

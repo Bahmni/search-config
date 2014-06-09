@@ -23,14 +23,14 @@ public class VisitRequestMapper {
         registrationFeeConceptUuid = RegistrationFeeConceptUuid;
     }
 
-    public BahmniEncounterTransaction mapVisitRequest(String patientUuid, String encounterTypeUuid, Date visitDateTime, SearchCSVRow csvRow) throws java.text.ParseException {
+    public BahmniEncounterTransaction mapVisitRequest(String patientUuid, String encounterTypeUuid, Date visitDateTime, SearchCSVRow csvRow, boolean fromOldCaseNumber) throws java.text.ParseException {
         BahmniEncounterTransaction bahmniEncounterTransaction = new BahmniEncounterTransaction();
         bahmniEncounterTransaction.setEncounterTypeUuid(encounterTypeUuid);
         bahmniEncounterTransaction.setProviders(getMigratorProviders());
         bahmniEncounterTransaction.setPatientUuid(patientUuid);
         bahmniEncounterTransaction.setVisitTypeUuid(opdVisitTypeUuid);
         bahmniEncounterTransaction.setEncounterDateTime(visitDateTime);
-        if(encounterTypeUuid.equals(registrationEncounterTypeUuid)){
+        if(encounterTypeUuid.equals(registrationEncounterTypeUuid) && !fromOldCaseNumber){
             addObservations(bahmniEncounterTransaction, csvRow);
         }
         return bahmniEncounterTransaction;

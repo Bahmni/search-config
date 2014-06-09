@@ -232,4 +232,11 @@ public class SearchValidatorStageTest {
         validationResult = validatorStage.execute(Arrays.asList(row));
         assertEquals(0, validationResult.getFailureCount());
     }
+
+    @Test
+    public void shouldValidateRegistrationFee() {
+        row.fees = "10";
+        validationResult = validatorStage.execute(Arrays.asList(row));
+        assertEquals(0, validationResult.getFailureCount());
+    }
 }

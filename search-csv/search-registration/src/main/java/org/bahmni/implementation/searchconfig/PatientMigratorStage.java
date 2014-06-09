@@ -103,24 +103,22 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
         ArrayList<FailedRowResult<SearchCSVRow>> failedRowResults = new ArrayList<FailedRowResult<SearchCSVRow>>();
         JSONObject patientResponseJson;
         for (SearchCSVRow csvRow : csvEntityList) {
-            Date visitDate = DateMapper.getDateFromVisitDate(csvRow);
-
             if (isNewPatient(csvRow)) {
                 patientResponseJson = createNewPatient(csvRow, false, failedRowResults);
                 //create visit with reg and opd encounter for visit_date
-                createVisit(patientResponseJson, visitDate, failedRowResults, csvRow);
+                createVisit(patientResponseJson, failedRowResults, csvRow, false);
             } else {
                 PatientResponse patientResponse = getPatientFromOpenmrs("SEA" + csvRow.oldCaseNo);
                 if (patientResponse != null) {
                     patientResponseJson = updatePatient(csvRow, patientResponse, failedRowResults);
                     //create visit with opd and reg encounter for visit_date
-                    createVisit(patientResponseJson, visitDate, failedRowResults, csvRow);
+                    createVisit(patientResponseJson, failedRowResults, csvRow, false);
                 } else {
                     patientResponseJson = createNewPatient(csvRow, true, failedRowResults);
                     //create visit with reg and opd encounter for patient created date
-                    createVisit(patientResponseJson, DateMapper.getDateFromOldCaseNumber(csvRow), failedRowResults, csvRow);
+                    createVisit(patientResponseJson, failedRowResults, csvRow, true);
                     //create opd and reg encounter for visit_date
-                    createVisit(patientResponseJson, visitDate, failedRowResults, csvRow);
+                    createVisit(patientResponseJson, failedRowResults, csvRow, false);
                 }
             }
         }
@@ -128,8 +126,10 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
         return new StageResult(getName(), failedRowResults, csvEntityList);
     }
 
-    private void createVisit(JSONObject patientResponse, Date visitDate, List failedRowResults, SearchCSVRow csvRow) {
+    private void createVisit(JSONObject patientResponse, List<FailedRowResult<SearchCSVRow>> failedRowResults,
+                             SearchCSVRow csvRow, boolean fromOldCaseNumber) {
         List<String> encounterTypeUuids = Arrays.asList(opdEncounterTypeUuid, registrationEncounterTypeUuid);
+        Date visitDate = getVisitDate(csvRow, fromOldCaseNumber);
         if (patientResponse == null) {
             return;
         }
@@ -140,7 +140,8 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
         try {
             String visitUuid = "";
             for (String encounterTypeUuid : encounterTypeUuids) {
-                BahmniEncounterTransaction bahmniEncounterTransaction = visitRequestMapper.mapVisitRequest(savedPatientUuid, encounterTypeUuid, visitDate, csvRow);
+                BahmniEncounterTransaction bahmniEncounterTransaction =
+                        visitRequestMapper.mapVisitRequest(savedPatientUuid, encounterTypeUuid, visitDate, csvRow, fromOldCaseNumber);
                 JSONObject visitResponse = postToOpenmrs(getEncounterTransactionUrl(), bahmniEncounterTransaction);
                 visitUuid = (String) visitResponse.get("visitUuid");
             }
@@ -157,6 +158,13 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
             logger.error("Failed to process a visit", e);
             failedRowResults.add(new FailedRowResult<SearchCSVRow>(csvRow, e));
         }
+    }
+
+    private Date getVisitDate(SearchCSVRow csvRow, boolean fromOldCaseNumber) {
+        if(fromOldCaseNumber){
+            return DateMapper.getDateFromVisitDate(csvRow);
+        }
+        return DateMapper.getDateFromVisitDate(csvRow);
     }
 
     private JSONObject createNewPatient(SearchCSVRow csvRow, Boolean fromOldCaseNumber, ArrayList<FailedRowResult<SearchCSVRow>> failedRowResults) {
