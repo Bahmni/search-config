@@ -99,4 +99,19 @@
         </sql>
     </changeSet>
 
+    <changeSet id="SEARCH-OMRS-V-011" author="tw">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM visit_type where name = 'EMERGENCY';
+            </sqlCheck>
+        </preConditions>
+        <comment>Create new visit type for Emergency</comment>
+        <insert tableName="visit_type">
+            <column name="name" value="EMERGENCY" />
+            <column name="description" value="Emergency patient visit" />
+            <column name="creator" value="1" />
+            <column name="uuid" valueComputed="uuid()" />
+            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
+        </insert>
+    </changeSet>
 </databaseChangeLog>
