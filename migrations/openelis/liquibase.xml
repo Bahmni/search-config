@@ -132,4 +132,15 @@
             update site_information set value = '/home/bahmni' where name = 'parentOfUploadedFilesDirectory';
         </sql>
     </changeSet>
+    <changeSet id="SEARCH-ELIS-14" author="tw" context="search">
+        <preConditions onFail="CONTINUE">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM HEALTH_CENTER where name like 'SEA';
+            </sqlCheck>
+        </preConditions>
+        <comment>Update SEA health center</comment>
+        <sql>
+            update HEALTH_CENTER set allow_patient_creation='t' where name='SEA';
+        </sql>
+    </changeSet>
 </databaseChangeLog>
