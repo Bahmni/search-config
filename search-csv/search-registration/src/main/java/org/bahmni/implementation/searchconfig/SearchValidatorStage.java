@@ -85,6 +85,7 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
                 if (age > 100 || age < 0) {
                     errorMessageBuilder.append("Age cannot be larger than 100 or lesser than 0.");
                 }
+                csvRow.age = csvRow.age + "y";
             } catch (NumberFormatException ex) {
                 errorMessageBuilder.append("Age is not in required format.");
             }

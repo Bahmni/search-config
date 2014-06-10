@@ -147,7 +147,7 @@ public class PatientRequestMapper {
 
 
     private static void mapAddress(SearchCSVRow csvRow, Person person, PersonResponse personResponse, Properties TAHSIL_TO_DISTRICT) {
-        String address3 = csvRow.tehsil;
+        String address3 = WordUtils.capitalizeFully(csvRow.tehsil);
         String cityVillage = csvRow.village;
         String countyDistrict = "";
         if (TAHSIL_TO_DISTRICT != null) {
