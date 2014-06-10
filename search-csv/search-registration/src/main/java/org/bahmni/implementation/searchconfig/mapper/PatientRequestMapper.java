@@ -1,6 +1,7 @@
 package org.bahmni.implementation.searchconfig.mapper;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.bahmni.implementation.searchconfig.SearchCSVRow;
@@ -150,7 +151,7 @@ public class PatientRequestMapper {
         String cityVillage = csvRow.village;
         String countyDistrict = "";
         if (TAHSIL_TO_DISTRICT != null) {
-            countyDistrict = TAHSIL_TO_DISTRICT.getProperty(csvRow.tehsil);
+            countyDistrict = TAHSIL_TO_DISTRICT.getProperty(WordUtils.capitalizeFully(csvRow.tehsil));
         }
         String country = "";
         String stateProvince = "";
