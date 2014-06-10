@@ -34,7 +34,7 @@
         <dependency>
             <groupId>org.bahmni.module</groupId>
             <artifactId>bahmnicore-api</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>5.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
