@@ -1,5 +1,6 @@
 package org.bahmni.implementation.searchconfig;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -28,5 +29,14 @@ public class DateUtils {
         builder.append(diffSeconds + " seconds.");
 
         return builder.toString();
+    }
+
+    public static boolean isInvalidDate(String visit_date) {
+        try {
+            org.apache.commons.lang.time.DateUtils.parseDateStrictly(visit_date, new String[]{"dd/M/yyyy"});
+            return false;
+        } catch (ParseException e) {
+            return true;
+        }
     }
 }

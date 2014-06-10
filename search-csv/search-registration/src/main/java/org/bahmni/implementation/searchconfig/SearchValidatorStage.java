@@ -2,6 +2,7 @@ package org.bahmni.implementation.searchconfig;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.log4j.Logger;
 import org.bahmni.csv.FailedRowResult;
 import org.bahmni.csv.SimpleStage;
 import org.bahmni.csv.StageResult;
@@ -13,6 +14,8 @@ import java.util.Date;
 import java.util.List;
 
 public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
+    private static Logger logger = org.apache.log4j.Logger.getLogger(SearchValidatorStage.class);
+
     @Override
     public String getName() {
         return "SEARCH_VALIDATOR";
@@ -142,7 +145,7 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
                 errorMessage.append("visit_date must be in the past.");
             }
         } catch (ParseException e) {
-            errorMessage.append("visit_date is not valid.");
+            logger.info("visit_date is in invalid format: " + csvRow.visit_date);
         }
     }
 

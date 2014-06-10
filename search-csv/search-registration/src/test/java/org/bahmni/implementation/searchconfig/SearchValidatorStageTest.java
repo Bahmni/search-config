@@ -23,27 +23,6 @@ public class SearchValidatorStageTest {
     }
 
     @Test
-    public void validate_shouldFailFor_InvalidDateFormatForVisitDate() throws Exception {
-        row.visit_date = "33/01/2012";
-        validationResult = validatorStage.execute(Arrays.asList(row));
-        assertEquals(1, validationResult.getFailureCount());
-        FailedRowResult<SearchCSVRow> failedRowResult = validationResult.getFailedCSVEntities().get(0);
-        assertEquals(stageName + "visit_date is not valid.", failedRowResult.getErrorMessage());
-
-        row.visit_date = "1-01/2012";
-        validationResult = validatorStage.execute(Arrays.asList(row));
-        assertEquals(1, validationResult.getFailureCount());
-        failedRowResult = validationResult.getFailedCSVEntities().get(0);
-        assertEquals(stageName + "visit_date is not valid.", failedRowResult.getErrorMessage());
-
-        row.visit_date = "31-01-2012";
-        validationResult = validatorStage.execute(Arrays.asList(row));
-        assertEquals(1, validationResult.getFailureCount());
-        failedRowResult = validationResult.getFailedCSVEntities().get(0);
-        assertEquals(stageName +"visit_date is not valid.", failedRowResult.getErrorMessage());
-    }
-
-    @Test
     public void validate_shouldFailFor_FutureVisitDate(){
         row.visit_date = "31/01/20012";
         validationResult = validatorStage.execute(Arrays.asList(row));

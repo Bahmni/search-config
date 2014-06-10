@@ -97,26 +97,31 @@ public class PatientRequestMapper {
     private static void mapBirthDate(SearchCSVRow csvRow, Person person) {
         if (StringUtils.isEmpty(csvRow.age))
             return;
-        String[] split = csvRow.age.split("(?<=[ymd])\\s*");
-        Integer years = 0, months = 0, days = 0;
-        for (String s : split) {
-            if (s.endsWith("y")) {
-                years = Integer.parseInt(s.replace('y', ' ').trim());
-            } else if (s.endsWith("m")) {
-                months = Integer.parseInt(s.replace('m', ' ').trim());
+        try {
+            String[] split = csvRow.age.split("(?<=[ymd])\\s*");
+            Integer years = 0, months = 0, days = 0;
+            for (String s : split) {
+                if (s.endsWith("y")) {
+                    years = Integer.parseInt(s.replace('y', ' ').trim());
+                } else if (s.endsWith("m")) {
+                    months = Integer.parseInt(s.replace('m', ' ').trim());
+                }
+                if (s.endsWith("d")) {
+                    days = Integer.parseInt(s.replace('d', ' ').trim());
+                }
             }
-            if (s.endsWith("d")) {
-                days = Integer.parseInt(s.replace('d', ' ').trim());
-            }
-        }
-        Date dateOfBirth = DateMapper.getDateFromVisitDate(csvRow);
-        dateOfBirth = DateUtils.addDays(dateOfBirth, -days);
-        dateOfBirth = DateUtils.addMonths(dateOfBirth, -months);
-        dateOfBirth = DateUtils.addYears(dateOfBirth, -years);
+            Date dateOfBirth = DateMapper.getDateFromVisitDate(csvRow);
+            dateOfBirth = DateUtils.addDays(dateOfBirth, -days);
+            dateOfBirth = DateUtils.addMonths(dateOfBirth, -months);
+            dateOfBirth = DateUtils.addYears(dateOfBirth, -years);
 
-        String birthDateString = org.bahmni.implementation.searchconfig.DateUtils.stringify(dateOfBirth);
-        person.setBirthdate(org.bahmni.implementation.searchconfig.DateUtils.truncateTimeComponent(birthDateString));
-        person.setBirthdateEstimated(true);
+            String birthDateString = org.bahmni.implementation.searchconfig.DateUtils.stringify(dateOfBirth);
+            person.setBirthdate(org.bahmni.implementation.searchconfig.DateUtils.truncateTimeComponent(birthDateString));
+            person.setBirthdateEstimated(true);
+        } catch (Exception e) {
+            logger.debug("Not setting birthDate for : " + csvRow.newCaseNo + "|" + csvRow.oldCaseNo);
+        }
+
     }
 
     private static Date getDateCreated(SearchCSVRow csvRow, boolean fromOldCaseNumber) throws ParseException {
@@ -144,7 +149,7 @@ public class PatientRequestMapper {
         String address3 = csvRow.tehsil;
         String cityVillage = csvRow.village;
         String countyDistrict = "";
-        if(TAHSIL_TO_DISTRICT !=null){
+        if (TAHSIL_TO_DISTRICT != null) {
             countyDistrict = TAHSIL_TO_DISTRICT.getProperty(csvRow.tehsil);
         }
         String country = "";
