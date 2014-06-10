@@ -42,7 +42,6 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
         validateName(csvRow, errorMessageBuilder);
         validateVisitDate(csvRow, errorMessageBuilder);
         validateAge(csvRow, errorMessageBuilder);
-        validateGender(csvRow, errorMessageBuilder);
         validateAndSanitizeRegistrationFee(csvRow, errorMessageBuilder);
         return errorMessageBuilder.toString();
     }
@@ -71,18 +70,6 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
 
     private boolean isFree(SearchCSVRow csvRow) {
         return csvRow.fees.trim().replaceAll(" ", "").equalsIgnoreCase("free");
-    }
-
-    private void validateGender(SearchCSVRow csvRow, StringBuilder errorMessageBuilder) {
-        csvRow.gender = csvRow.gender.trim();
-        if (StringUtils.isEmpty(csvRow.gender)) {
-            errorMessageBuilder.append("Gender is mandatory.");
-            return;
-        }
-        if (csvRow.gender.equalsIgnoreCase("M") || csvRow.gender.equalsIgnoreCase("F") || csvRow.gender.equalsIgnoreCase("O")) {
-            return;
-        }
-        errorMessageBuilder.append("Gender in invalid.");
     }
 
     private void validateAge(SearchCSVRow csvRow, StringBuilder errorMessageBuilder) {

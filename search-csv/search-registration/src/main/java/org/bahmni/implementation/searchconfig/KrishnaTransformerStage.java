@@ -26,10 +26,11 @@ public class KrishnaTransformerStage implements SimpleStage<SearchCSVRow> {
         List<FailedRowResult<SearchCSVRow>> failedRowResults = new ArrayList<FailedRowResult<SearchCSVRow>>();
         for (SearchCSVRow csvRow : csvEntityList) {
             try{
-                csvRow.prefix = transformer.krishnaToUnicode(csvRow.prefix);
-                csvRow.firstName = transformer.krishnaToUnicode(csvRow.firstName);
-                csvRow.middleName = transformer.krishnaToUnicode(csvRow.middleName);
-                csvRow.lastName = transformer.krishnaToUnicode(csvRow.lastName);
+                csvRow.prefix = transformer.krishnaToUnicode(csvRow.prefix.trim().replaceAll(" ", ""));
+                csvRow.firstName = transformer.krishnaToUnicode(csvRow.firstName.trim().replaceAll(" ", ""));
+                csvRow.middleName = transformer.krishnaToUnicode(csvRow.middleName.trim().replaceAll(" ", ""));
+                csvRow.lastName = transformer.krishnaToUnicode(csvRow.lastName.trim().replaceAll(" ", ""));
+                csvRow.village = transformer.krishnaToUnicode(csvRow.village.trim().replaceAll(" ", ""));
             }catch (Exception e){
                 failedRowResults.add(new FailedRowResult<SearchCSVRow>(csvRow, e.getMessage()));
             }

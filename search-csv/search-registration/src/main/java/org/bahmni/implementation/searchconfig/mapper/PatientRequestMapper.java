@@ -82,13 +82,15 @@ public class PatientRequestMapper {
     }
 
     private static void mapGender(SearchCSVRow csvRow, Person person) {
-        if (csvRow.gender.equalsIgnoreCase("M")) {
+        String sanitizedGender = csvRow.gender.trim().toUpperCase();
+        if (sanitizedGender.equalsIgnoreCase("M")) {
             person.setGender("M");
-        } else if (csvRow.gender.equalsIgnoreCase("F")) {
+        } else if (sanitizedGender.equalsIgnoreCase("F")) {
             person.setGender("F");
-        }
-        if (csvRow.gender.equalsIgnoreCase("O")) {
+        } else if (sanitizedGender.equalsIgnoreCase("O")) {
             person.setGender("O");
+        } else {
+            person.setGender(".");
         }
     }
 
