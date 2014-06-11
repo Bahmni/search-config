@@ -1,5 +1,6 @@
 package org.bahmni.implementation.searchconfig.mapper;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.bahmni.implementation.searchconfig.SearchCSVRow;
 
@@ -23,6 +24,8 @@ public class DateMapper {
             cal.set(Calendar.MILLISECOND, 0);
             return cal.getTime();
         } catch (ParseException e) {
+            if(csvRow.visit_date.trim().equals("00/01/1900"))
+                return getVisitDateFromCaseNumber(StringUtils.isNotEmpty(csvRow.oldCaseNo) ? csvRow.oldCaseNo : csvRow.newCaseNo);
             return null;
         }
 
@@ -47,7 +50,11 @@ public class DateMapper {
         String[] caseNumberParts = caseNo.split("/");
         String yearOfRegistrationString;
         if(caseNumberParts[1].length() == 2){
-            yearOfRegistrationString = "20" + caseNumberParts[1];
+            if(Integer.parseInt(caseNumberParts[1]) > 14){
+                yearOfRegistrationString = "19" + caseNumberParts[1];
+            }else{
+                yearOfRegistrationString = "20" + caseNumberParts[1];
+            }
         } else {
             yearOfRegistrationString = "200" + caseNumberParts[1];
         }

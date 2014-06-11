@@ -56,7 +56,7 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
 
             else{
                 if (isNewPatient(csvRow)) {
-                    patientResponseJson = patientPersister.createNewPatient(csvRow, false, failedRowResults);
+                    patientResponseJson = patientPersister.createNewPatient(csvRow, null, failedRowResults);
                     visitPersister.createVisit(patientResponseJson, failedRowResults, csvRow, false);
                 } else {
                     PatientResponse patientResponse = persistenceHelper.getPatientFromOpenmrs("SEA" + csvRow.oldCaseNo);
@@ -64,7 +64,7 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
                         patientResponseJson = patientPersister.updatePatient(csvRow, patientResponse, failedRowResults);
                         visitPersister.createVisit(patientResponseJson, failedRowResults, csvRow, false);
                     } else {
-                        patientResponseJson = patientPersister.createNewPatient(csvRow, true, failedRowResults);
+                        patientResponseJson = patientPersister.createNewPatient(csvRow, csvRow.oldCaseNo, failedRowResults);
                         visitPersister.createVisit(patientResponseJson, failedRowResults, csvRow, true);
                         visitPersister.createVisit(patientResponseJson, failedRowResults, csvRow, false);
                     }
@@ -78,13 +78,13 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
     private void handleCreatingPatientAndVisitForInvalidDate(SearchCSVRow csvRow, ArrayList<FailedRowResult<SearchCSVRow>> failedRowResults) {
         JSONObject patientResponseJson;
         if(isNewPatient(csvRow)){
-            patientResponseJson = patientPersister.createNewPatient(csvRow, false, failedRowResults);
+            patientResponseJson = patientPersister.createNewPatient(csvRow, csvRow.newCaseNo, failedRowResults);
             visitPersister.createVisitFromCaseNumber(patientResponseJson, failedRowResults, csvRow, csvRow.newCaseNo);
         }
         else{
             PatientResponse patientResponse = persistenceHelper.getPatientFromOpenmrs("SEA" + csvRow.oldCaseNo);
             if(patientResponse == null){
-                patientResponseJson = patientPersister.createNewPatient(csvRow, true, failedRowResults);
+                patientResponseJson = patientPersister.createNewPatient(csvRow, csvRow.oldCaseNo, failedRowResults);
                 visitPersister.createVisitFromCaseNumber(patientResponseJson, failedRowResults, csvRow, csvRow.oldCaseNo);
             }
         }

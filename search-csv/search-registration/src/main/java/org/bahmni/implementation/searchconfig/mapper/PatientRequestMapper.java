@@ -26,25 +26,27 @@ import java.util.Properties;
 public class PatientRequestMapper {
     private static Logger logger = Logger.getLogger(PatientRequestMapper.class.getName());
 
-    public static PatientProfileRequest mapPatient(SearchCSVRow csvRow, boolean fromOldCaseNumber, AllPatientAttributeTypes allPatientAttributeTypes, Properties TAHSIL_TO_DISTRICT) throws ParseException {
-        Person person = mapPerson(csvRow, null, allPatientAttributeTypes, TAHSIL_TO_DISTRICT);
-        person.setPersonDateCreated(getDateCreated(csvRow, fromOldCaseNumber));
+    public static PatientProfileRequest mapPatient(SearchCSVRow csvRow, String caseNumber, AllPatientAttributeTypes allPatientAttributeTypes, Properties TAHSIL_TO_DISTRICT) throws ParseException {
+        Person person = new Person();
+        person.setPersonDateCreated(getDateCreated(csvRow, caseNumber));
+        mapPerson(csvRow, null, allPatientAttributeTypes, TAHSIL_TO_DISTRICT, person);
         List<PatientIdentifier> identifiers;
-        identifiers = mapPatientIdentifier(csvRow, fromOldCaseNumber);
+        identifiers = mapPatientIdentifier(csvRow, caseNumber);
         Patient patient = new Patient(person, identifiers);
         return new PatientProfileRequest(patient);
     }
 
     public static PatientProfileRequest mapPatientForUpdate(SearchCSVRow csvRow, PatientResponse patientResponse, AllPatientAttributeTypes allPatientAttributeTypes, Properties TAHSIL_TO_DISTRICT) {
-        Person person = mapPerson(csvRow, patientResponse.getPerson(), allPatientAttributeTypes, TAHSIL_TO_DISTRICT);
+        Person person = new Person();
+        mapPerson(csvRow, patientResponse.getPerson(), allPatientAttributeTypes, TAHSIL_TO_DISTRICT, person);
         List<PatientIdentifier> identifiers;
         identifiers = getIdentifiers(csvRow.oldCaseNo);
         Patient patient = new Patient(person, identifiers);
         return new PatientProfileRequest(patient);
     }
 
-    private static Person mapPerson(SearchCSVRow csvRow, PersonResponse personResponse, AllPatientAttributeTypes allPatientAttributeTypes, Properties TAHSIL_TO_DISTRICT) {
-        Person person = mapName(csvRow, personResponse);
+    private static Person mapPerson(SearchCSVRow csvRow, PersonResponse personResponse, AllPatientAttributeTypes allPatientAttributeTypes, Properties TAHSIL_TO_DISTRICT, Person person) {
+        mapName(csvRow, personResponse, person);
         if (personResponse != null) {
             person.setUuid(personResponse.getUuid());
         }
@@ -121,23 +123,28 @@ public class PatientRequestMapper {
             person.setBirthdateEstimated(true);
         } catch (Exception e) {
             logger.debug("Not setting birthDate for : " + csvRow.newCaseNo + "|" + csvRow.oldCaseNo);
+//            Date birthDate = person.getPersonDateCreatedAsDate();
+//            int years = Integer.parseInt(csvRow.age);
+//            birthDate = DateUtils.addYears(birthDate, -years);
+//            String birthDateString = org.bahmni.implementation.searchconfig.DateUtils.stringify(birthDate);
+//            person.setBirthdate(org.bahmni.implementation.searchconfig.DateUtils.truncateTimeComponent(birthDateString));
+//            person.setBirthdateEstimated(true);
         }
-
     }
 
-    private static Date getDateCreated(SearchCSVRow csvRow, boolean fromOldCaseNumber) throws ParseException {
-        if (fromOldCaseNumber) {
-            return DateMapper.getDateFromOldCaseNumber(csvRow);
+    private static Date getDateCreated(SearchCSVRow csvRow, String caseNumber) throws ParseException {
+        if (caseNumber != null) {
+            return DateMapper.getVisitDateFromCaseNumber(caseNumber);
 
         } else {
             return DateMapper.getDateFromVisitDate(csvRow);
         }
     }
 
-    private static List<PatientIdentifier> mapPatientIdentifier(SearchCSVRow csvRow, boolean fromOldCaseNumber) {
+    private static List<PatientIdentifier> mapPatientIdentifier(SearchCSVRow csvRow, String caseNumber) {
         List<PatientIdentifier> identifiers;
-        if (fromOldCaseNumber) {
-            identifiers = getIdentifiers(csvRow.oldCaseNo);
+        if (caseNumber != null) {
+            identifiers = getIdentifiers(caseNumber);
 
         } else {
             identifiers = getIdentifiers(csvRow.newCaseNo);
@@ -169,8 +176,7 @@ public class PatientRequestMapper {
         return Arrays.asList(new PatientIdentifier("SEA" + caseNumber, new IdentifierType("Bahmni Id"), true));
     }
 
-    private static Person mapName(SearchCSVRow csvRow, PersonResponse personResponse) {
-        Person person = new Person();
+    private static Person mapName(SearchCSVRow csvRow, PersonResponse personResponse, Person person) {
         Name patientName;
         String prefix = csvRow.prefix;
         String firstName = csvRow.firstName;

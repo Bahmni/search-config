@@ -32,10 +32,10 @@ public class PatientPersister {
         initializeTahsilToDistrictMappingFromProperties();
     }
 
-    public JSONObject createNewPatient(SearchCSVRow csvRow, Boolean fromOldCaseNumber, ArrayList<FailedRowResult<SearchCSVRow>> failedRowResults) {
+    public JSONObject createNewPatient(SearchCSVRow csvRow, String caseNumber, ArrayList<FailedRowResult<SearchCSVRow>> failedRowResults) {
         PatientIdentifier patientIdentifier = null;
         try {
-            PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, fromOldCaseNumber, allPatientAttributeTypes, TAHSIL_TO_DISTRICT);
+            PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, caseNumber, allPatientAttributeTypes, TAHSIL_TO_DISTRICT);
             patientIdentifier = patientProfileRequest.getPatient().getIdentifiers().get(0);
             String patientUrl = openMRSRESTConnection.getRestApiUrl() + "patientprofile";
             JSONObject jsonResponse = persistenceHelper.postToOpenmrs(patientUrl, patientProfileRequest);
