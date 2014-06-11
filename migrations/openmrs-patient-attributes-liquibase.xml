@@ -12,6 +12,11 @@
 
     <changeSet id="SEARCH-OMRS-PA-001" author="tw">
         <comment>Add patient attribute: givenNameLocal</comment>
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM person_attribute_type where name = 'givenNameLocal';
+            </sqlCheck>
+        </preConditions>
         <insert tableName="person_attribute_type">
             <column name="name" value="givenNameLocal" />
             <column name="description" value="मरीज़ का नाम" />
@@ -27,6 +32,11 @@
 
     <changeSet id="SEARCH-OMRS-PA-002" author="tw">
         <comment>Add patient attribute: familyNameLocal</comment>
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM person_attribute_type where name = 'familyNameLocal';
+            </sqlCheck>
+        </preConditions>
         <insert tableName="person_attribute_type">
             <column name="name" value="familyNameLocal" />
             <column name="description" value="मरीज़ का उपनाम" />
@@ -58,6 +68,11 @@
 
     <changeSet id="SEARCH-OMRS-PA-004" author="tw">
         <comment>Add patient attribute: middleNameLocal</comment>
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM person_attribute_type where name = 'middleNameLocal';
+            </sqlCheck>
+        </preConditions>
         <insert tableName="person_attribute_type">
             <column name="name" value="middleNameLocal" />
             <column name="description" value="मरीज़ का मध्यनाम " />
