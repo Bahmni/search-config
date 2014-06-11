@@ -11,15 +11,13 @@ import org.bahmni.openmrsconnector.OpenMRSRESTConnection;
 import org.json.simple.JSONObject;
 import org.springframework.web.client.HttpServerErrorException;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Properties;
 
 public class PatientPersister {
     private static Logger logger = org.apache.log4j.Logger.getLogger(PatientPersister.class);
-    private static Properties TAHSIL_TO_DISTRICT = new Properties();
 
     private OpenMRSRESTConnection openMRSRESTConnection;
+    private PatientRequestMapper patientRequestMapper;
     private PersistenceHelper persistenceHelper;
     private AllPatientAttributeTypes allPatientAttributeTypes;
     private String stageName;
@@ -29,13 +27,13 @@ public class PatientPersister {
         this.persistenceHelper = persistenceHelper;
         this.allPatientAttributeTypes = allPatientAttributeTypes;
         this.stageName = stageName;
-        initializeTahsilToDistrictMappingFromProperties();
+        patientRequestMapper = new PatientRequestMapper();
     }
 
     public JSONObject createNewPatient(SearchCSVRow csvRow, String caseNumber, ArrayList<FailedRowResult<SearchCSVRow>> failedRowResults) {
         PatientIdentifier patientIdentifier = null;
         try {
-            PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatient(csvRow, caseNumber, allPatientAttributeTypes, TAHSIL_TO_DISTRICT);
+            PatientProfileRequest patientProfileRequest = patientRequestMapper.mapPatient(csvRow, caseNumber, allPatientAttributeTypes);
             patientIdentifier = patientProfileRequest.getPatient().getIdentifiers().get(0);
             String patientUrl = openMRSRESTConnection.getRestApiUrl() + "patientprofile";
             JSONObject jsonResponse = persistenceHelper.postToOpenmrs(patientUrl, patientProfileRequest);
@@ -56,7 +54,7 @@ public class PatientPersister {
     }
 
     public JSONObject updatePatient(SearchCSVRow csvRow, PatientResponse patientResponse, ArrayList<FailedRowResult<SearchCSVRow>> failedRowResults) {
-        PatientProfileRequest patientProfileRequest = PatientRequestMapper.mapPatientForUpdate(csvRow, patientResponse, allPatientAttributeTypes, TAHSIL_TO_DISTRICT);
+        PatientProfileRequest patientProfileRequest = patientRequestMapper.mapPatientForUpdate(csvRow, patientResponse, allPatientAttributeTypes);
         PatientIdentifier patientIdentifier = patientProfileRequest.getPatient().getIdentifiers().get(0);
         try {
             String patientUuid = patientResponse.getUuid();
@@ -75,13 +73,5 @@ public class PatientPersister {
             failedRowResults.add(new FailedRowResult<SearchCSVRow>(csvRow, e));
         }
         return null;
-    }
-
-    private void initializeTahsilToDistrictMappingFromProperties() {
-        try {
-            TAHSIL_TO_DISTRICT.load(getClass().getClassLoader().getResourceAsStream("tahsilDistrictMapping.properties"));
-        } catch (IOException e) {
-            logger.error("Could not load tahsil to district mapping file.", e);
-        }
     }
 }

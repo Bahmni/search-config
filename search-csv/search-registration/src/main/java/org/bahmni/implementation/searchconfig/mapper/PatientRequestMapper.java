@@ -17,6 +17,7 @@ import org.bahmni.implementation.searchconfig.response.PatientResponse;
 import org.bahmni.implementation.searchconfig.response.PersonResponse;
 import org.bahmni.openmrsconnector.AllPatientAttributeTypes;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
@@ -26,31 +27,49 @@ import java.util.Properties;
 public class PatientRequestMapper {
     private static Logger logger = Logger.getLogger(PatientRequestMapper.class.getName());
 
-    public static PatientProfileRequest mapPatient(SearchCSVRow csvRow, String caseNumber, AllPatientAttributeTypes allPatientAttributeTypes, Properties TAHSIL_TO_DISTRICT) throws ParseException {
+    protected static Properties TAHSIL_TO_DISTRICT = new Properties();
+    protected static Properties DISTRICT_TO_STATE = new Properties();
+    protected static Properties TAHSIL_KRISHNA_TO_ENGLISH = new Properties();
+
+    public PatientRequestMapper() {
+        initializeProperties();
+    }
+
+    private void initializeProperties() {
+        try {
+            TAHSIL_TO_DISTRICT.load(getClass().getClassLoader().getResourceAsStream("tahsilDistrictMapping.properties"));
+            DISTRICT_TO_STATE.load(getClass().getClassLoader().getResourceAsStream("districtStateMapping.properties"));
+            TAHSIL_KRISHNA_TO_ENGLISH.load(getClass().getClassLoader().getResourceAsStream("tehsilKrishnaToEnglish.properties"));
+        } catch (IOException e) {
+            logger.error("Could not load tahsil to district mapping file.", e);
+        }
+    }
+
+    public PatientProfileRequest mapPatient(SearchCSVRow csvRow, String caseNumber, AllPatientAttributeTypes allPatientAttributeTypes) throws ParseException {
         Person person = new Person();
         person.setPersonDateCreated(getDateCreated(csvRow, caseNumber));
-        mapPerson(csvRow, null, allPatientAttributeTypes, TAHSIL_TO_DISTRICT, person);
+        mapPerson(csvRow, null, allPatientAttributeTypes, person);
         List<PatientIdentifier> identifiers;
         identifiers = mapPatientIdentifier(csvRow, caseNumber);
         Patient patient = new Patient(person, identifiers);
         return new PatientProfileRequest(patient);
     }
 
-    public static PatientProfileRequest mapPatientForUpdate(SearchCSVRow csvRow, PatientResponse patientResponse, AllPatientAttributeTypes allPatientAttributeTypes, Properties TAHSIL_TO_DISTRICT) {
+    public PatientProfileRequest mapPatientForUpdate(SearchCSVRow csvRow, PatientResponse patientResponse, AllPatientAttributeTypes allPatientAttributeTypes) {
         Person person = new Person();
-        mapPerson(csvRow, patientResponse.getPerson(), allPatientAttributeTypes, TAHSIL_TO_DISTRICT, person);
+        mapPerson(csvRow, patientResponse.getPerson(), allPatientAttributeTypes, person);
         List<PatientIdentifier> identifiers;
         identifiers = getIdentifiers(csvRow.oldCaseNo);
         Patient patient = new Patient(person, identifiers);
         return new PatientProfileRequest(patient);
     }
 
-    private static Person mapPerson(SearchCSVRow csvRow, PersonResponse personResponse, AllPatientAttributeTypes allPatientAttributeTypes, Properties TAHSIL_TO_DISTRICT, Person person) {
+    private static Person mapPerson(SearchCSVRow csvRow, PersonResponse personResponse, AllPatientAttributeTypes allPatientAttributeTypes, Person person) {
         mapName(csvRow, personResponse, person);
         if (personResponse != null) {
             person.setUuid(personResponse.getUuid());
         }
-        mapAddress(csvRow, person, personResponse, TAHSIL_TO_DISTRICT);
+        mapAddress(csvRow, person, personResponse);
         mapBirthDate(csvRow, person);
         mapGender(csvRow, person);
         mapAttributes(csvRow, person, allPatientAttributeTypes);
@@ -123,12 +142,6 @@ public class PatientRequestMapper {
             person.setBirthdateEstimated(true);
         } catch (Exception e) {
             logger.debug("Not setting birthDate for : " + csvRow.newCaseNo + "|" + csvRow.oldCaseNo);
-//            Date birthDate = person.getPersonDateCreatedAsDate();
-//            int years = Integer.parseInt(csvRow.age);
-//            birthDate = DateUtils.addYears(birthDate, -years);
-//            String birthDateString = org.bahmni.implementation.searchconfig.DateUtils.stringify(birthDate);
-//            person.setBirthdate(org.bahmni.implementation.searchconfig.DateUtils.truncateTimeComponent(birthDateString));
-//            person.setBirthdateEstimated(true);
         }
     }
 
@@ -153,21 +166,37 @@ public class PatientRequestMapper {
     }
 
 
-    private static void mapAddress(SearchCSVRow csvRow, Person person, PersonResponse personResponse, Properties TAHSIL_TO_DISTRICT) {
-        String address3 = WordUtils.capitalizeFully(csvRow.tehsil);
+    private static void mapAddress(SearchCSVRow csvRow, Person person, PersonResponse personResponse) {
         String cityVillage = csvRow.village;
+        String tehsil = "";
         String countyDistrict = "";
+        String stateProvince = "";
+        if (TAHSIL_KRISHNA_TO_ENGLISH != null){
+            tehsil = org.apache.commons.lang3.StringUtils.isNotEmpty(csvRow.tehsil) ? csvRow.tehsil.trim() : "";
+            tehsil = TAHSIL_KRISHNA_TO_ENGLISH.getProperty(tehsil);
+            if(tehsil == null){
+                tehsil = "";
+            }
+        }
         if (TAHSIL_TO_DISTRICT != null) {
-            countyDistrict = TAHSIL_TO_DISTRICT.getProperty(WordUtils.capitalizeFully(csvRow.tehsil));
+            countyDistrict = TAHSIL_TO_DISTRICT.getProperty(WordUtils.capitalizeFully(tehsil));
+            if(countyDistrict == null){
+                countyDistrict = "";
+            }
+        }
+        if (DISTRICT_TO_STATE != null) {
+            stateProvince = DISTRICT_TO_STATE.getProperty(WordUtils.capitalizeFully(countyDistrict));
+            if(stateProvince == null){
+                stateProvince = "";
+            }
         }
         String country = "";
-        String stateProvince = "";
         PatientAddress patientAddress;
         if (personResponse != null && personResponse.getPreferredAddress() != null) {
             String personAddressUuid = personResponse.getPreferredAddress().getUuid();
-            patientAddress = new PatientAddress(personAddressUuid, address3, cityVillage, countyDistrict, stateProvince, country);
+            patientAddress = new PatientAddress(personAddressUuid, tehsil, cityVillage, countyDistrict, stateProvince, country);
         } else {
-            patientAddress = new PatientAddress(address3, cityVillage, countyDistrict, stateProvince, country);
+            patientAddress = new PatientAddress(tehsil, cityVillage, countyDistrict, stateProvince, country);
         }
         person.setAddresses(Arrays.asList(patientAddress));
     }
