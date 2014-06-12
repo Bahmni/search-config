@@ -4,18 +4,18 @@
     .registration-card {
       width: 530px;
       height: 422px;
-      font-size: 12pt;
+      font-size: 14pt;
       font-family: arial, sans-serif;
     }
     .patient-details {
-      margin-top: 175px;
+      margin-top: 215px;
       margin-left: 64px;
     }
     .patient-details li {
       list-style-type: none;
       font-weight: bold;
-      margin-bottom: 23px;
+      margin-bottom: 40px;
     }
     .patient-details li .patient-id {
-      margin-left: 115px;
+      margin-left: 150px;
     }
