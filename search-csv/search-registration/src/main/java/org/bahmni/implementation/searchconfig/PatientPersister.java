@@ -21,19 +21,21 @@ public class PatientPersister {
     private PersistenceHelper persistenceHelper;
     private AllPatientAttributeTypes allPatientAttributeTypes;
     private String stageName;
+    private boolean shouldRunTransform;
 
-    public PatientPersister(OpenMRSRESTConnection openMRSRESTConnection, PersistenceHelper persistenceHelper, AllPatientAttributeTypes allPatientAttributeTypes, String stageName) {
+    public PatientPersister(OpenMRSRESTConnection openMRSRESTConnection, PersistenceHelper persistenceHelper, AllPatientAttributeTypes allPatientAttributeTypes, String stageName, boolean shouldRunTransform) {
         this.openMRSRESTConnection = openMRSRESTConnection;
         this.persistenceHelper = persistenceHelper;
         this.allPatientAttributeTypes = allPatientAttributeTypes;
         this.stageName = stageName;
+        this.shouldRunTransform = shouldRunTransform;
         patientRequestMapper = new PatientRequestMapper();
     }
 
     public JSONObject createNewPatient(SearchCSVRow csvRow, String caseNumber, ArrayList<FailedRowResult<SearchCSVRow>> failedRowResults) {
         PatientIdentifier patientIdentifier = null;
         try {
-            PatientProfileRequest patientProfileRequest = patientRequestMapper.mapPatient(csvRow, caseNumber, allPatientAttributeTypes);
+            PatientProfileRequest patientProfileRequest = patientRequestMapper.mapPatient(csvRow, caseNumber, allPatientAttributeTypes, shouldRunTransform);
             patientIdentifier = patientProfileRequest.getPatient().getIdentifiers().get(0);
             String patientUrl = openMRSRESTConnection.getRestApiUrl() + "patientprofile";
             JSONObject jsonResponse = persistenceHelper.postToOpenmrs(patientUrl, patientProfileRequest);
@@ -53,8 +55,8 @@ public class PatientPersister {
         return null;
     }
 
-    public JSONObject updatePatient(SearchCSVRow csvRow, PatientResponse patientResponse, ArrayList<FailedRowResult<SearchCSVRow>> failedRowResults) {
-        PatientProfileRequest patientProfileRequest = patientRequestMapper.mapPatientForUpdate(csvRow, patientResponse, allPatientAttributeTypes);
+    public JSONObject updatePatient(SearchCSVRow csvRow, PatientResponse patientResponse, ArrayList<FailedRowResult<SearchCSVRow>> failedRowResults, boolean shouldRunTransform) {
+        PatientProfileRequest patientProfileRequest = patientRequestMapper.mapPatientForUpdate(csvRow, patientResponse, allPatientAttributeTypes, shouldRunTransform);
         PatientIdentifier patientIdentifier = patientProfileRequest.getPatient().getIdentifiers().get(0);
         try {
             String patientUuid = patientResponse.getUuid();

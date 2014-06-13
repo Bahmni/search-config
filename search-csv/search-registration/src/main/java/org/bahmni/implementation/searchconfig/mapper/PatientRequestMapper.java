@@ -45,51 +45,52 @@ public class PatientRequestMapper {
         }
     }
 
-    public PatientProfileRequest mapPatient(SearchCSVRow csvRow, String caseNumber, AllPatientAttributeTypes allPatientAttributeTypes) throws ParseException {
+    public PatientProfileRequest mapPatient(SearchCSVRow csvRow, String caseNumber, AllPatientAttributeTypes allPatientAttributeTypes, boolean shouldRunTransform) throws ParseException {
         Person person = new Person();
         person.setPersonDateCreated(getDateCreated(csvRow, caseNumber));
-        mapPerson(csvRow, null, allPatientAttributeTypes, person);
+        mapPerson(csvRow, null, allPatientAttributeTypes, person, shouldRunTransform);
         List<PatientIdentifier> identifiers;
         identifiers = mapPatientIdentifier(csvRow, caseNumber);
         Patient patient = new Patient(person, identifiers);
         return new PatientProfileRequest(patient);
     }
 
-    public PatientProfileRequest mapPatientForUpdate(SearchCSVRow csvRow, PatientResponse patientResponse, AllPatientAttributeTypes allPatientAttributeTypes) {
+    public PatientProfileRequest mapPatientForUpdate(SearchCSVRow csvRow, PatientResponse patientResponse, AllPatientAttributeTypes allPatientAttributeTypes, Boolean shouldRunTransform) {
         Person person = new Person();
-        mapPerson(csvRow, patientResponse.getPerson(), allPatientAttributeTypes, person);
+        mapPerson(csvRow, patientResponse.getPerson(), allPatientAttributeTypes, person, shouldRunTransform);
         List<PatientIdentifier> identifiers;
         identifiers = getIdentifiers(csvRow.oldCaseNo);
         Patient patient = new Patient(person, identifiers);
         return new PatientProfileRequest(patient);
     }
 
-    private static Person mapPerson(SearchCSVRow csvRow, PersonResponse personResponse, AllPatientAttributeTypes allPatientAttributeTypes, Person person) {
+    private static Person mapPerson(SearchCSVRow csvRow, PersonResponse personResponse, AllPatientAttributeTypes allPatientAttributeTypes, Person person, boolean shouldRunTransform) {
         mapName(csvRow, personResponse, person);
         if (personResponse != null) {
             person.setUuid(personResponse.getUuid());
         }
-        mapAddress(csvRow, person, personResponse);
+        mapAddress(csvRow, person, personResponse, shouldRunTransform);
         mapBirthDate(csvRow, person);
         mapGender(csvRow, person);
-        mapAttributes(csvRow, person, allPatientAttributeTypes);
+        mapAttributes(csvRow, person, allPatientAttributeTypes, shouldRunTransform);
         return person;
     }
 
-    private static void mapAttributes(SearchCSVRow csvRow, Person person, AllPatientAttributeTypes allPatientAttributeTypes) {
+    private static void mapAttributes(SearchCSVRow csvRow, Person person, AllPatientAttributeTypes allPatientAttributeTypes, boolean shouldRunTransform) {
         if (allPatientAttributeTypes == null) {
             logger.error("No patient attributes found");
             return;
         }
-        Name preferredName = person.getNames().get(0);
-        String givenNameLocal = preferredName.getGivenName();
-        String middleNameLocal = preferredName.getMiddleName();
-        String familyNameLocal = preferredName.getFamilyName();
+        if(shouldRunTransform){
+            Name preferredName = person.getNames().get(0);
+            String givenNameLocal = preferredName.getGivenName();
+            String middleNameLocal = preferredName.getMiddleName();
+            String familyNameLocal = preferredName.getFamilyName();
+            addPersonAttribute(person, allPatientAttributeTypes, givenNameLocal, "givenNameLocal");
+            addPersonAttribute(person, allPatientAttributeTypes, middleNameLocal, "middleNameLocal");
+            addPersonAttribute(person, allPatientAttributeTypes, familyNameLocal, "familyNameLocal");
+        }
         String mobileNumber = csvRow.mobileNumber;
-
-        addPersonAttribute(person, allPatientAttributeTypes, givenNameLocal, "givenNameLocal");
-        addPersonAttribute(person, allPatientAttributeTypes, middleNameLocal, "middleNameLocal");
-        addPersonAttribute(person, allPatientAttributeTypes, familyNameLocal, "familyNameLocal");
         addPersonAttribute(person, allPatientAttributeTypes, mobileNumber, "Mobile");
     }
 
@@ -99,6 +100,8 @@ public class PatientRequestMapper {
         if (StringUtils.isEmpty(attributeUUID)) {
             logger.error("Patient attribute type not found for: " + attributeTypeName);
         } else {
+            if(StringUtils.isEmpty(attributeValue))
+                return;
             person.addAttribute(new PatientAttribute(attributeUUID, attributeValue));
         }
     }
@@ -166,13 +169,12 @@ public class PatientRequestMapper {
     }
 
 
-    private static void mapAddress(SearchCSVRow csvRow, Person person, PersonResponse personResponse) {
+    private static void mapAddress(SearchCSVRow csvRow, Person person, PersonResponse personResponse, boolean shouldRunTransform) {
         String cityVillage = csvRow.village;
-        String tehsil = "";
+        String tehsil = org.apache.commons.lang3.StringUtils.isNotEmpty(csvRow.tehsil) ? csvRow.tehsil.trim() : "";
         String countyDistrict = "";
         String stateProvince = "";
-        if (TAHSIL_KRISHNA_TO_ENGLISH != null){
-            tehsil = org.apache.commons.lang3.StringUtils.isNotEmpty(csvRow.tehsil) ? csvRow.tehsil.trim() : "";
+        if (shouldRunTransform && TAHSIL_KRISHNA_TO_ENGLISH != null){
             tehsil = TAHSIL_KRISHNA_TO_ENGLISH.getProperty(tehsil);
             if(tehsil == null){
                 tehsil = "";
@@ -197,6 +199,10 @@ public class PatientRequestMapper {
             patientAddress = new PatientAddress(personAddressUuid, tehsil, cityVillage, countyDistrict, stateProvince, country);
         } else {
             patientAddress = new PatientAddress(tehsil, cityVillage, countyDistrict, stateProvince, country);
+        }
+        if (StringUtils.isEmpty(tehsil) || StringUtils.isEmpty(cityVillage)
+                || StringUtils.isEmpty(countyDistrict) || StringUtils.isEmpty(cityVillage)) {
+            logger.info("Some of the address fields are empty for: " + csvRow.newCaseNo + "|" + csvRow.oldCaseNo);
         }
         person.setAddresses(Arrays.asList(patientAddress));
     }

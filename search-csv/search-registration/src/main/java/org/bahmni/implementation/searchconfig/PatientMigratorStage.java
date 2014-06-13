@@ -23,14 +23,16 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
     private final PatientPersister patientPersister;
     private final VisitPersister visitPersister;
     private boolean runInParallel = false;
+    private boolean shouldRunTransform;
 
-    public PatientMigratorStage(OpenMRSRESTConnection openMRSRESTConnection, OpenMRSRestService openMRSRestService, boolean runInParallel) {
+    public PatientMigratorStage(OpenMRSRESTConnection openMRSRESTConnection, OpenMRSRestService openMRSRestService, boolean runInParallel, boolean shouldRunTransform) {
         this.openMRSRESTConnection = openMRSRESTConnection;
         this.openMRSRestService = openMRSRestService;
         this.runInParallel = runInParallel;
+        this.shouldRunTransform = shouldRunTransform;
 
         persistenceHelper = new PersistenceHelper(openMRSRESTConnection, openMRSRestService);
-        patientPersister = new PatientPersister(openMRSRESTConnection, persistenceHelper, openMRSRestService.getAllPatientAttributeTypes(), getName());
+        patientPersister = new PatientPersister(openMRSRESTConnection, persistenceHelper, openMRSRestService.getAllPatientAttributeTypes(), getName(), shouldRunTransform);
         visitPersister = new VisitPersister(openMRSRESTConnection, openMRSRestService, persistenceHelper, getName());
     }
 
@@ -61,7 +63,7 @@ public class PatientMigratorStage implements SimpleStage<SearchCSVRow> {
                 } else {
                     PatientResponse patientResponse = persistenceHelper.getPatientFromOpenmrs("SEA" + csvRow.oldCaseNo);
                     if (patientResponse != null) {
-                        patientResponseJson = patientPersister.updatePatient(csvRow, patientResponse, failedRowResults);
+                        patientResponseJson = patientPersister.updatePatient(csvRow, patientResponse, failedRowResults, shouldRunTransform);
                         visitPersister.createVisit(patientResponseJson, failedRowResults, csvRow, false);
                     } else {
                         patientResponseJson = patientPersister.createNewPatient(csvRow, csvRow.oldCaseNo, failedRowResults);

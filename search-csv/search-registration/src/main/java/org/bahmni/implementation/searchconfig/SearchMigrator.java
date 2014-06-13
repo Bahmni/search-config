@@ -29,12 +29,14 @@ public class SearchMigrator {
         String openmrsUsername = args[3];
         String openmrsPassword = args[4];
         String runMigratorInParallel = args[5];
-        new SearchMigrator().process(csvParentFolderPath, csvFileName, hostname, openmrsUsername, openmrsPassword, runMigratorInParallel);
+        String shouldRunTransform = args[6];
+        new SearchMigrator().process(csvParentFolderPath, csvFileName, hostname, openmrsUsername, openmrsPassword, runMigratorInParallel, shouldRunTransform);
         System.exit(0);
     }
 
 
-    public void process(String csvParentFolderPath, String csvFileName, String hostname, String openmrsUsername, String openmrsPassword, String runMigratorInParallel){
+    public void process(String csvParentFolderPath, String csvFileName, String hostname, String openmrsUsername, String openmrsPassword, String runMigratorInParallel, String shouldTransform){
+        boolean shouldRunTransform = Boolean.parseBoolean(shouldTransform);
         Date startTime = new Date();
         CSVFile<SearchCSVRow> registrationCSVFile = new CSVFile<SearchCSVRow>(csvParentFolderPath, csvFileName, SearchCSVRow.class);
 
@@ -42,8 +44,10 @@ public class SearchMigrator {
 
         MultiStageMigrator multiStageMigrator = new MultiStageMigrator<SearchCSVRow>();
         multiStageMigrator.addStage(new SearchValidatorStage());
-        multiStageMigrator.addStage(new KrishnaTransformerStage());
-        multiStageMigrator.addStage(new PatientMigratorStage(openMRSRESTConnection, openMRSRestService, Boolean.parseBoolean(runMigratorInParallel)));
+        if(shouldRunTransform){
+            multiStageMigrator.addStage(new KrishnaTransformerStage());
+        }
+        multiStageMigrator.addStage(new PatientMigratorStage(openMRSRESTConnection, openMRSRestService, Boolean.parseBoolean(runMigratorInParallel), shouldRunTransform));
         List<StageResult<SearchCSVRow>> migrationResult = multiStageMigrator.migrate(registrationCSVFile, SearchCSVRow.class);
         Date endTime = new Date();
 
