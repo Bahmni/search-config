@@ -56,9 +56,12 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
     }
 
     private void validateAge(SearchCSVRow csvRow, StringBuilder errorMessageBuilder) {
-        if (StringUtils.isEmpty(csvRow.age))
+        csvRow.age = org.apache.commons.lang3.StringUtils.isEmpty(csvRow.age) ? csvRow.age : csvRow.age.trim().replaceAll(" ", "");
+
+        if (StringUtils.isEmpty(csvRow.age) || csvRow.age.trim().replaceAll(" ", "").isEmpty()) {
             return;
-        csvRow.age = csvRow.age.trim().replaceAll(" ", "");
+        }
+
         if (!csvRow.age.matches("(?:\\d+[ymd]\\s*)+")) {
             try {
                 int age = Integer.parseInt(csvRow.age);

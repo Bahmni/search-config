@@ -8,9 +8,6 @@ public class SearchCSVRow extends CSVEntity {
     @CSVHeader(name = "Visit Date")
     public String visit_date;
 
-    @CSVHeader(name = "ANC no")
-    public String anc_no;
-
     @CSVHeader(name = "New case no")
     public String newCaseNo;
 

@@ -19,7 +19,7 @@ public class SearchMigrator {
     public static void main(String[] args){
         if(args.length < 6) {
             System.out.println("Incorrect command usage.");
-            System.out.println(String.format("Usage %s reg-csv-file-path reg-csv-file-name hostname openmrs-user openmrs-password runInParallel[true|false]", SearchMigrator.class.getName()));
+            System.out.println(String.format("Usage %s reg-csv-file-path reg-csv-file-name hostname openmrs-user openmrs-password runInParallel[true|false] shouldRunTransform[true|false]", SearchMigrator.class.getName()));
             System.exit(1);
         }
 
