@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!-- 
+        This Liquibase file is meant to contain changesets for SEARCH CUSTOM Tables 
+        which are needed by REPORTS in SEARCH. These would usually be simple lookup
+        tables maintained by Customer.
+     -->
+        
+    <changeSet id="SEARCH-CUSTOM-REPORT-001" author="tw">
+        <comment>Master table which holds all Caste Names and their types</comment>
+        <sql>
+            CREATE TABLE IF NOT EXISTS SEARCH_Caste (
+                 caste_id   INT(11) AUTO_INCREMENT, 
+                 caste_name VARCHAR(50) not null,
+                 caste_type VARCHAR(50) not null,
+                 last_updated_on  TIMESTAMP not null default CURRENT_TIMESTAMP,
+                 PRIMARY KEY (caste_id),
+                 CONSTRAINT UC_ UNIQUE (caste_name)
+                );
+        </sql>
+    </changeSet>
+
+    <changeSet id="SEARCH-CUSTOM-REPORT-002" author="tw">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM SEARCH_Caste;
+            </sqlCheck>
+        </preConditions>
+        <comment>Adding Castes into SEARCH_Caste table since none were found</comment>
+        <sqlFile path="SEARCH_Caste_Data.sql"/>
+    </changeSet>
+
+
+</databaseChangeLog>

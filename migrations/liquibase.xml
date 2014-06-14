@@ -16,5 +16,6 @@
     <include file = "openmrs-misc-config-liquibase.xml"/>
     <include file = "atomfeed-config-liquibase.xml"/>
     <include file = "search-location-categorization-liquibase.xml"/>
+    <include file = "search-reports-custom-tables-liquibase.xml"/>
 
 </databaseChangeLog>
