@@ -1,1 +1,4 @@
-return true;
+if(healthCentre.equals("SEA"))
+	return true;
+else
+	return false;
