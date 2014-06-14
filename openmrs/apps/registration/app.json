@@ -31,6 +31,8 @@
             "identifierPattern": "[1-9][0-9]{0,5}/[0-9]{2}",
             "identifierPatternDescription":  "number/yy e.g. 1234/12",
             "hideFields": ["Height", "Weight", "BMI", "BMI_Status"],
+            "visitFormSubmitOnEnter": true,
+            "minRegistrationFee": "-20",
             "registrationCardPrintLayout": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/print.html",
             "localNameSearch": true,
             "localNameLabel": "रुग्णाचे नाव",
