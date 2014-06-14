@@ -1,4 +1,4 @@
-if(healthCentre.equals("SEA"))
+if(healthCenter.equals("SEA"))
 	return true;
 else
 	return false;
