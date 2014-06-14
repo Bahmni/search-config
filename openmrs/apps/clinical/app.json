@@ -41,12 +41,24 @@
             },
             "patientDashboardSections": [
                 {
-                    "description": "Vitals",
-                    "name": "vitals"
+                    "description": "Diagnosis",
+                    "name": "diagnosis"
                 },
                 {
                     "description": "Active Treatments",
                     "name": "treatment"
+                },
+                {
+                    "description": "Radiology",
+                    "name": "radiology"
+                },
+                {
+                    "description": "Lab Orders",
+                    "name": "labOrders"
+                },
+                {
+                    "description": "Vitals",
+                    "name": "vitals"
                 }
             ]
         }
