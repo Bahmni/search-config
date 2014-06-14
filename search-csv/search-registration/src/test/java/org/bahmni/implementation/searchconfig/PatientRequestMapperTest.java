@@ -8,6 +8,7 @@ import org.bahmni.implementation.searchconfig.request.PatientProfileRequest;
 import org.bahmni.implementation.searchconfig.request.Person;
 import org.bahmni.implementation.searchconfig.response.PatientResponse;
 import org.bahmni.implementation.searchconfig.response.PersonResponse;
+import org.bahmni.openmrsconnector.AllPatientAttributeTypes;
 import org.junit.Test;
 
 import java.text.ParseException;
@@ -153,5 +154,20 @@ public class PatientRequestMapperTest {
         csvRow.prefix = "prefix";
         PatientProfileRequest patientProfileRequest = new PatientRequestMapper().mapPatient(csvRow, null, null, false);
         assertEquals("prefix", patientProfileRequest.getPatient().getPerson().getNames().get(0).getPrefix());
+    }
+
+    @Test
+    public void shouldNotMapNullValueOfPersonAttribute() throws ParseException {
+        SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
+        csvRow.middleName = "";
+        csvRow.mobileNumber = null;
+        AllPatientAttributeTypes allPatientAttributeTypes = new AllPatientAttributeTypes();
+        allPatientAttributeTypes.addPersonAttributeType("givenNameLocal", "givenNameLocal-uuid");
+        allPatientAttributeTypes.addPersonAttributeType("middleNameLocal", "middleNameLocal-uuid");
+        allPatientAttributeTypes.addPersonAttributeType("familyNameLocal", "familyNameLocal-uuid");
+        allPatientAttributeTypes.addPersonAttributeType("Mobile", "Mobile-uuid");
+        PatientProfileRequest patientProfileRequest = new PatientRequestMapper().mapPatient(csvRow, null, allPatientAttributeTypes, true);
+
+        assertEquals(2, patientProfileRequest.getPatient().getPerson().getAttributes().size());
     }
 }

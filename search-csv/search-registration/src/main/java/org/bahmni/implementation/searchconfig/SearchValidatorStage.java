@@ -45,34 +45,14 @@ public class SearchValidatorStage implements SimpleStage<SearchCSVRow> {
         validateName(csvRow, errorMessageBuilder);
         validateVisitDate(csvRow, errorMessageBuilder);
         validateAge(csvRow, errorMessageBuilder);
-        validateAndSanitizeRegistrationFee(csvRow, errorMessageBuilder);
+        sanitizeRegistrationFee(csvRow);
         return errorMessageBuilder.toString();
     }
 
-    private void validateAndSanitizeRegistrationFee(SearchCSVRow csvRow, StringBuilder errorMessageBuilder) {
-        if(StringUtils.isEmpty(csvRow.fees))
-            return;
-        if (IsNotDigitsOrFree(csvRow)) {
-            errorMessageBuilder.append("Fee should be a number or 'free'.");
-        }
-        sanitizeRegistrationFee(csvRow);
-    }
-
     private void sanitizeRegistrationFee(SearchCSVRow csvRow) {
-        if(isFree(csvRow)){
+        if(StringUtils.isEmpty(csvRow.fees) || !csvRow.fees.matches("\\d+")){
             csvRow.fees = "0";
         }
-    }
-
-    private boolean IsNotDigitsOrFree(SearchCSVRow csvRow) {
-        boolean isDigits = csvRow.fees.matches("\\d+");
-        if(!isDigits)
-            return false;
-        return isFree(csvRow);
-    }
-
-    private boolean isFree(SearchCSVRow csvRow) {
-        return csvRow.fees.trim().replaceAll(" ", "").equalsIgnoreCase("free");
     }
 
     private void validateAge(SearchCSVRow csvRow, StringBuilder errorMessageBuilder) {

@@ -184,9 +184,26 @@ public class SearchValidatorStageTest {
     }
 
     @Test
-    public void shouldValidateRegistrationFee() {
+    public void shouldSanitizeFee() {
         row.fees = "10";
         validationResult = validatorStage.execute(Arrays.asList(row));
         assertEquals(0, validationResult.getFailureCount());
+        assertEquals("10", row.fees);
+
+        row.fees = "free";
+        validationResult = validatorStage.execute(Arrays.asList(row));
+        assertEquals(0, validationResult.getFailureCount());
+        assertEquals("0", row.fees);
+
+        row.fees = "ksajdhsalkjdh";
+        validationResult = validatorStage.execute(Arrays.asList(row));
+        assertEquals(0, validationResult.getFailureCount());
+        assertEquals("0", row.fees);
+
+        row.fees = "345";
+        validationResult = validatorStage.execute(Arrays.asList(row));
+        assertEquals(0, validationResult.getFailureCount());
+        assertEquals("345", row.fees);
     }
+
 }
