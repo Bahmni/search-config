@@ -1,22 +1,26 @@
- body {
-      margin: 0;
-    }
-    .registration-card {
-      width: 530px;
-      height: 422px;
-      font-size: 14pt;
-      font-family: arial, sans-serif;
-    }
-    .patient-details {
-      margin-top: 207px;
-      margin-left: 64px;
-    }
-    .patient-details li {
-      list-style-type: none;
-      font-weight: bold;
-      font-size: 17pt;
-      margin-bottom: 35px;
-    }
-    .patient-details li .patient-id {
-      margin-left: 150px;
-    }
+body {
+    margin: 0;
+}
+
+.registration-card {
+    width: 530px;
+    height: 422px;
+    font-size: 14pt;
+    font-family: arial, sans-serif;
+}
+
+.patient-details {
+    margin-top: 190px;
+    margin-left: 55px;
+}
+
+.patient-details li {
+    list-style-type: none;
+    font-weight: bold;
+    font-size: 17pt;
+    margin-bottom: 30px;
+}
+
+.patient-details li .patient-id {
+    margin-left: 150px;
+}
