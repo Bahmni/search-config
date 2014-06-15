@@ -8,10 +8,6 @@
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <!-- This Liquibase file is meant to contain changesets for Patient Attributes Only -->
-        
-
-
-
 
     <changeSet id="SEARCH-OMRS-PA-003" author="tw">
         <comment>Add patient attribute: Caste</comment>
@@ -24,26 +20,6 @@
             <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
             <column name="retired" valueNumeric="0" />
             <column name="sort_weight" valueNumeric="3" />
-            <column name="uuid" valueComputed="uuid()" />
-        </insert>
-    </changeSet>
-
-    <changeSet id="SEARCH-OMRS-PA-004" author="tw">
-        <comment>Add patient attribute: middleNameLocal</comment>
-        <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0">
-                SELECT COUNT(*) FROM person_attribute_type where name = 'middleNameLocal';
-            </sqlCheck>
-        </preConditions>
-        <insert tableName="person_attribute_type">
-            <column name="name" value="middleNameLocal" />
-            <column name="description" value="मरीज़ का मध्यनाम " />
-            <column name="format" value="java.lang.String" />
-            <column name="searchable" valueNumeric="1" />
-            <column name="creator" valueNumeric="1" />
-            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
-            <column name="retired" valueNumeric="0" />
-            <column name="sort_weight" valueNumeric="2" />
             <column name="uuid" valueComputed="uuid()" />
         </insert>
     </changeSet>
@@ -287,12 +263,12 @@
         </sql>
     </changeSet>
     <changeSet id="SEARCH-OMRS-PA-016" author="tw">
-        <comment>Add patient attribute: givenNameLocal</comment>
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
                 SELECT COUNT(*) FROM person_attribute_type where name = 'givenNameLocal';
             </sqlCheck>
         </preConditions>
+        <comment>Add patient attribute: givenNameLocal</comment>
         <insert tableName="person_attribute_type">
             <column name="name" value="givenNameLocal" />
             <column name="description" value="मरीज़ का नाम" />
@@ -307,12 +283,12 @@
     </changeSet>
 
     <changeSet id="SEARCH-OMRS-PA-017" author="tw">
-        <comment>Add patient attribute: familyNameLocal</comment>
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
                 SELECT COUNT(*) FROM person_attribute_type where name = 'familyNameLocal';
             </sqlCheck>
         </preConditions>
+        <comment>Add patient attribute: familyNameLocal</comment>
         <insert tableName="person_attribute_type">
             <column name="name" value="familyNameLocal" />
             <column name="description" value="मरीज़ का उपनाम" />
@@ -325,4 +301,25 @@
             <column name="uuid" valueComputed="uuid()" />
         </insert>
     </changeSet>
+
+    <changeSet id="SEARCH-OMRS-PA-018" author="tw">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM person_attribute_type where name = 'middleNameLocal';
+            </sqlCheck>
+        </preConditions>
+        <comment>Add patient attribute: middleNameLocal</comment>
+        <insert tableName="person_attribute_type">
+            <column name="name" value="middleNameLocal" />
+            <column name="description" value="मरीज़ का मध्यनाम " />
+            <column name="format" value="java.lang.String" />
+            <column name="searchable" valueNumeric="1" />
+            <column name="creator" valueNumeric="1" />
+            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
+            <column name="retired" valueNumeric="0" />
+            <column name="sort_weight" valueNumeric="2" />
+            <column name="uuid" valueComputed="uuid()" />
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>
