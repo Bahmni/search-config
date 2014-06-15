@@ -7,9 +7,9 @@ while read fromName toName
 do
 from=\'$fromName\' 
 to=\'$toName\' 
-	
-mysql -uopenmrs-user -ppassword -Dopenmrs <<END_SQL
-  	update person_name set given_name = $to where given_name =$from;
+
+cat << EOF >> correct_unicode.sql
+	update person_name set given_name = $to where given_name =$from;
 	update person_name set middle_name = $to where middle_name =$from;
 	update person_name set family_name = $to where family_name =$from;
 	update person_attribute set value = $to where value =$from;
@@ -17,7 +17,10 @@ mysql -uopenmrs-user -ppassword -Dopenmrs <<END_SQL
 	update person_address set county_district = $to where county_district = $from;
 	update person_address set state_province = $to where state_province = $from;
 	update person_address set city_village = $to where city_village = $from;
-END_SQL
+EOF
 
 done < $NAME_LOOKUP_FILE
+
+mysql -v -uopenmrs-user -ppassword openmrs < correct_unicode.sql
+
 echo "All set"
