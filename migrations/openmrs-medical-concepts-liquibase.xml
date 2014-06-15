@@ -138,7 +138,7 @@
             set @concept_name_short_id = 0;
             set @concept_name_full_id = 0;
 
-            select concept_id, concept_name_id into @concept_id, @concept_name_full_id from concept_name where name = 'REGISTRATION FEES' and concept_name_type = 'FULLY_SPECIFIED'
+            select concept_id, concept_name_id into @concept_id, @concept_name_full_id from concept_name where name = 'REGISTRATION FEES' and concept_name_type = 'FULLY_SPECIFIED';
             call add_concept_word(@concept_id, @concept_name_full_id, 'REGISTRATION', 1);
             call add_concept_word(@concept_id, @concept_name_full_id, 'FEES', 1);
         </sql>
@@ -150,7 +150,7 @@
             set @concept_name_short_id = 0;
             set @concept_name_full_id = 0;
 
-            select concept_id, concept_name_id into @concept_id, @concept_name_full_id from concept_name where name = 'WEIGHT' and concept_name_type = 'FULLY_SPECIFIED'
+            select concept_id, concept_name_id into @concept_id, @concept_name_full_id from concept_name where name = 'WEIGHT' and concept_name_type = 'FULLY_SPECIFIED';
             call add_concept_word(@concept_id, @concept_name_full_id, 'WEIGHT', 1);
         </sql>
     </changeSet>
@@ -161,7 +161,7 @@
             set @concept_name_short_id = 0;
             set @concept_name_full_id = 0;
 
-            select concept_id, concept_name_id into @concept_id, @concept_name_full_id from concept_name where name = 'HEIGHT' and concept_name_type = 'FULLY_SPECIFIED'
+            select concept_id, concept_name_id into @concept_id, @concept_name_full_id from concept_name where name = 'HEIGHT' and concept_name_type = 'FULLY_SPECIFIED';
             call add_concept_word(@concept_id, @concept_name_full_id, 'HEIGHT', 1);
         </sql>
     </changeSet>
@@ -172,7 +172,7 @@
             set @concept_name_short_id = 0;
             set @concept_name_full_id = 0;
 
-            select concept_id, concept_name_id into @concept_id, @concept_name_full_id from concept_name where name = 'COMMENT' and concept_name_type = 'FULLY_SPECIFIED'
+            select concept_id, concept_name_id into @concept_id, @concept_name_full_id from concept_name where name = 'COMMENT' and concept_name_type = 'FULLY_SPECIFIED';
             call add_concept_word(@concept_id, @concept_name_full_id, 'COMMENT', 1);
         </sql>
     </changeSet>
