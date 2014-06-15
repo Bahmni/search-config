@@ -10,45 +10,7 @@
     <!-- This Liquibase file is meant to contain changesets for Patient Attributes Only -->
         
 
-    <changeSet id="SEARCH-OMRS-PA-001" author="tw">
-        <comment>Add patient attribute: givenNameLocal</comment>
-        <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0">
-                SELECT COUNT(*) FROM person_attribute_type where name = 'givenNameLocal';
-            </sqlCheck>
-        </preConditions>
-        <insert tableName="person_attribute_type">
-            <column name="name" value="givenNameLocal" />
-            <column name="description" value="मरीज़ का नाम" />
-            <column name="format" value="java.lang.String" />
-            <column name="searchable" valueNumeric="1" />
-            <column name="creator" valueNumeric="1" />
-            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
-            <column name="retired" valueNumeric="0" />
-            <column name="sort_weight" valueNumeric="1" />
-            <column name="uuid" valueComputed="uuid()" />
-        </insert>
-    </changeSet>
 
-    <changeSet id="SEARCH-OMRS-PA-002" author="tw">
-        <comment>Add patient attribute: familyNameLocal</comment>
-        <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0">
-                SELECT COUNT(*) FROM person_attribute_type where name = 'familyNameLocal';
-            </sqlCheck>
-        </preConditions>
-        <insert tableName="person_attribute_type">
-            <column name="name" value="familyNameLocal" />
-            <column name="description" value="मरीज़ का उपनाम" />
-            <column name="format" value="java.lang.String" />
-            <column name="searchable" valueNumeric="1" />
-            <column name="creator" valueNumeric="1" />
-            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
-            <column name="retired" valueNumeric="0" />
-            <column name="sort_weight" valueNumeric="2" />
-            <column name="uuid" valueComputed="uuid()" />
-        </insert>
-    </changeSet>
 
 
     <changeSet id="SEARCH-OMRS-PA-003" author="tw">
@@ -323,5 +285,44 @@
         <sql>
             update person_attribute_type set description = 'आडनाव' where name = 'familyNameLocal';
         </sql>
+    </changeSet>
+    <changeSet id="SEARCH-OMRS-PA-016" author="tw">
+        <comment>Add patient attribute: givenNameLocal</comment>
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM person_attribute_type where name = 'givenNameLocal';
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="person_attribute_type">
+            <column name="name" value="givenNameLocal" />
+            <column name="description" value="मरीज़ का नाम" />
+            <column name="format" value="java.lang.String" />
+            <column name="searchable" valueNumeric="1" />
+            <column name="creator" valueNumeric="1" />
+            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
+            <column name="retired" valueNumeric="0" />
+            <column name="sort_weight" valueNumeric="1" />
+            <column name="uuid" valueComputed="uuid()" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="SEARCH-OMRS-PA-017" author="tw">
+        <comment>Add patient attribute: familyNameLocal</comment>
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM person_attribute_type where name = 'familyNameLocal';
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="person_attribute_type">
+            <column name="name" value="familyNameLocal" />
+            <column name="description" value="मरीज़ का उपनाम" />
+            <column name="format" value="java.lang.String" />
+            <column name="searchable" valueNumeric="1" />
+            <column name="creator" valueNumeric="1" />
+            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
+            <column name="retired" valueNumeric="0" />
+            <column name="sort_weight" valueNumeric="2" />
+            <column name="uuid" valueComputed="uuid()" />
+        </insert>
     </changeSet>
 </databaseChangeLog>
