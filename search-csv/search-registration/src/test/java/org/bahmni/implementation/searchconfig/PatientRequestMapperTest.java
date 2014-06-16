@@ -14,6 +14,7 @@ import org.junit.Test;
 import java.text.ParseException;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 public class PatientRequestMapperTest {
 
@@ -169,5 +170,23 @@ public class PatientRequestMapperTest {
         PatientProfileRequest patientProfileRequest = new PatientRequestMapper().mapPatient(csvRow, null, allPatientAttributeTypes, true);
 
         assertEquals(2, patientProfileRequest.getPatient().getPerson().getAttributes().size());
+    }
+
+    @Test
+    public void shouldMapBirthdateFromPersonResponseIfUpdatingPatientHasNullBirthdate() {
+        String birthdate = "2013-06-10T00:00:00.000+0530";
+        Boolean birthdateEstimated = true;
+        SearchCSVRow csvRow = TestUtils.searchCsvBuilder();
+        csvRow.age = "";
+        PatientResponse patientResponse = new PatientResponse();
+        PersonResponse person = new PersonResponse();
+        person.setBirthdate(birthdate);
+        person.setBirthdateEstimated(birthdateEstimated);
+        patientResponse.setPerson(person);
+
+        PatientProfileRequest patientProfileRequest = new PatientRequestMapper().mapPatientForUpdate(csvRow, patientResponse, null, true);
+
+        assertEquals(birthdate, patientProfileRequest.getPatient().getPerson().getBirthdate());
+        assertTrue(patientProfileRequest.getPatient().getPerson().isBirthdateEstimated());
     }
 }

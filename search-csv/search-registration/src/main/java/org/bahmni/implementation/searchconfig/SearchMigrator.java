@@ -30,9 +30,14 @@ public class SearchMigrator {
         String openmrsPassword = args[4];
         String runMigratorInParallel = args[5];
         String shouldRunTransform = args[6];
-        System.out.println("Running migration for :" + csvFileName);
+        System.out.println("Running migration for :" + csvFileName + " at:" + new Date());
         System.out.println("Thread mode :" + (Boolean.parseBoolean(runMigratorInParallel) ? "Multithreaded" : "Single Threaded"));
         System.out.println("Transformation mode :" + (Boolean.parseBoolean(shouldRunTransform) ? "with transformation" : "without transformation"));
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            System.exit(1);
+        }
         new SearchMigrator().process(csvParentFolderPath, csvFileName, hostname, openmrsUsername, openmrsPassword, runMigratorInParallel, shouldRunTransform);
         System.exit(0);
     }

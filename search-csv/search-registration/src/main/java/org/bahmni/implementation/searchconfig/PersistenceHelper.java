@@ -32,7 +32,7 @@ public class PersistenceHelper {
     }
 
     public PatientResponse getPatientFromOpenmrs(String patientIdentifier) {
-        String representation = "custom:(uuid,person:(uuid,preferredAddress:(uuid,preferred),preferredName:(uuid)))";
+        String representation = "custom:(uuid,person:(uuid,birthdate,birthdateEstimated,preferredAddress:(uuid,preferred),preferredName:(uuid)))";
         String url = openMRSRESTConnection.getRestApiUrl() + "patient?q=" + patientIdentifier + "&v=" + representation;
         ResponseEntity<String> response = getFromOpenmrs(url);
         PatientListResponse patientListResponse = new Gson().fromJson(response.getBody(), PatientListResponse.class);

@@ -9,6 +9,8 @@ public class PersonResponse {
     String uuid;
     PersonFieldResponse preferredAddress;
     PersonFieldResponse preferredName;
+    String birthdate;
+    Boolean birthdateEstimated;
 
     public void setPreferredNameUuid(String uuid){
         PersonFieldResponse personFieldResponse = new PersonFieldResponse();

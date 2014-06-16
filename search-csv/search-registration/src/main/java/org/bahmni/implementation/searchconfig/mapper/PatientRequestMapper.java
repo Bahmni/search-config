@@ -70,7 +70,7 @@ public class PatientRequestMapper {
             person.setUuid(personResponse.getUuid());
         }
         mapAddress(csvRow, person, personResponse, shouldRunTransform);
-        mapBirthDate(csvRow, person);
+        mapBirthDate(csvRow, person, personResponse);
         mapGender(csvRow, person);
         mapAttributes(csvRow, person, allPatientAttributeTypes, shouldRunTransform);
         return person;
@@ -119,9 +119,14 @@ public class PatientRequestMapper {
         }
     }
 
-    private static void mapBirthDate(SearchCSVRow csvRow, Person person) {
-        if (StringUtils.isEmpty(csvRow.age))
+    private static void mapBirthDate(SearchCSVRow csvRow, Person person, PersonResponse personResponse) {
+        if (StringUtils.isEmpty(csvRow.age) && (personResponse == null || StringUtils.isEmpty(personResponse.getBirthdate())))
             return;
+        if (StringUtils.isEmpty(csvRow.age) && StringUtils.isNotEmpty(personResponse.getBirthdate())){
+            person.setBirthdate(personResponse.getBirthdate());
+            person.setBirthdateEstimated(personResponse.getBirthdateEstimated());
+            return;
+        }
         try {
             String[] split = csvRow.age.split("(?<=[ymd])\\s*");
             Integer years = 0, months = 0, days = 0;
