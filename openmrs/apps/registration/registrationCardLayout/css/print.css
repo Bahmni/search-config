@@ -5,22 +5,22 @@ body {
 .registration-card {
     width: 530px;
     height: 422px;
-    font-size: 14pt;
+    font-size: 12pt;
     font-family: arial, sans-serif;
 }
 
 .patient-details {
-    margin-top: 190px;
+    margin-top: 167px;
     margin-left: 55px;
 }
 
 .patient-details li {
     list-style-type: none;
     font-weight: bold;
-    font-size: 17pt;
-    margin-bottom: 30px;
+    font-size: 14pt;
+    margin-bottom: 24px;
 }
 
 .patient-details li .patient-id {
-    margin-left: 150px;
+    margin-left: 130px;
 }
