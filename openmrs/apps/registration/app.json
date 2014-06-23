@@ -34,6 +34,12 @@
             "visitFormSubmitOnEnter": true,
             "minRegistrationFee": "-20",
             "registrationCardPrintLayout": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/print.html",
+            "allowPrintingSupplementalPaper": true,
+            "supplementalPaperPrintLayout": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet.html",
+            "supplementalPaperPrintButton": {
+                "label": "Print <u>C</u>ase Sheet",
+                "shortcutKey": "c"
+            },
             "localNameSearch": true,
             "localNameLabel": "रुग्णाचे नाव",
             "localNamePlaceholder": "रुग्णाचे नाव",
