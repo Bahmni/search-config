@@ -35,7 +35,7 @@
             "minRegistrationFee": "-20",
             "registrationCardPrintLayout": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/print.html",
             "allowPrintingSupplementalPaper": true,
-            "supplementalPaperPrintLayout": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet.html",
+            "supplementalPaperPrintLayout": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/casePaperPrint.html",
             "supplementalPaperPrintButton": {
                 "label": "Print <u>C</u>ase Sheet",
                 "shortcutKey": "c"

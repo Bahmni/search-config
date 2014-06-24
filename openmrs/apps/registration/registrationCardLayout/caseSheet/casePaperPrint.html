@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SEARCH - Case Paper</title>
+    <link rel="stylesheet" href="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/casePaperPrint.css">
+</head>
+<body>
+    <main>
+        <header class="header">
+            <img class="logo" src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/SEARCH_logo.jpg" alt="search-logo">
+            <div class="title">
+                <h1>सर्च</h1>
+                <h2>माँ दंतेश्वरी दवाखाना,</h2>
+                <h2>शोधग्राम, चातगाव</h2>
+            </div>
+            <div class="primary-details">
+                <ul>
+                    <li>
+                        <label for="">केस नं.</label>
+                        <span class="value">{{patient.identifier}}</span>
+                    </li>
+                    <li>
+                        <label for="">जात:</label>
+                        <span class="value">{{patient.caste}}</span>
+                    </li>
+                </ul>
+            </div>
+        </header>
+        <div class="patient-info">
+            <ul>
+                <li>
+                    <span class="label">नाव :</span>
+                    <span class="value name">{{patient.fullNameLocal()}}</span>
+                </li>
+                <li>
+                    <span class="label">गाव :</span>
+                    <span class="value">{{patient.address.cityVillage}}</span>
+                </li>          
+                <li>
+                    <span class="label">तालुका:</span>
+                    <span class="value">{{patient.address.address3}}</span>
+                </li>          
+                <li>
+                    <span class="label">जिल्हा :</span>
+                    <span class="value">{{patient.address.countyDistrict}}</span>
+                </li>
+                <li>
+                    <span class="label">वय:</span>
+                    <span class="value">{{patient.patientAge()}}</span>
+                </li>
+                <li>
+                    <span class="label">Ph.No./Mobile No.</span>
+                    <span class="value mobile">{{patient.Mobile}}</span>
+                </li>
+                <li class="education">
+                    <span class="label">Education 
+                    <span class="female">स्त्री</span> <span class="male">पुरुष</span></span>
+                    <img src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/branch.png" alt="line">
+                    <span class="value-line">{{patient.patientAttribute('Education Details')}}</span>
+                </li>
+                <li class="education">
+                    <span class="lable">व्यवसाय 
+                    <span class="female">स्त्री</span> <span class="male">पुरुष</span></span>
+                    <img src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/branch.png" alt="line">
+                    <span class="value-line">{{patient.patientAttribute('Occupation')}}</span>
+                </li>
+                <li class="last-child">
+                    <span class="lable">सोबत कोण आहे ?</span>
+                    <span class="value-line"></span>
+                </li>
+            </ul>
+        </div>
+        <div class="case-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>तारीख</th>
+                        <th>रोग लक्षणे व तपासणी</th>
+                        <th>विशेष तपासण्या</th>
+                        <th>उपचार</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="tree">
+                            <ul>
+                                <li><span class="primary">तंबाखू</span>
+                                    <img src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/pri-branch.png" alt="lines" />
+                                    <ul>
+                                        <li><span class="secondary">रूग्ण</span>
+                                            <img class="one" src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/sec-branch.png" alt="lines" />
+                                            <ul class="triary">
+                                                <li>नस / गुल</li>
+                                                <li>खर्रा</li>
+                                                <li>तंबाखू</li>
+                                                <li>गुटखा</li>
+                                            </ul>
+                                        </li>
+                                        <li><span class="secondary">जोडीदार</span>
+                                            <img class="two" src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/sec-branch.png" alt="lines" />
+                                            <ul class="triary">
+                                                <li>नस / गुल</li>
+                                                <li>खर्रा</li>
+                                                <li>तंबाखू</li>
+                                                <li>गुटखा</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>    
+                    <tr>
+                        <td class="tree-two">
+                            <ul>
+                                <li><span class="primary">दारू – नवर</span>
+                                    <img src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/branch.png" alt="lines" />
+                                    <ul>
+                                        <li><span class="secondary">व्यसनी</span>
+                                        </li>
+                                        <li><span class="secondary">एखाद वेळ</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>                
+                    <tr>
+                        <td class="vitals">Wt.</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>                    
+                    <tr>
+                        <td class="vitals">Ht.</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="vitals">Ac.</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <table class="page-two">
+                <thead>
+                    <tr>
+                        <th>तारीख</th>
+                        <th>रोग लक्षणे व तपासणी</th>
+                        <th>विशेष तपासण्या</th>
+                        <th>उपचार</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>                    
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>                    
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>
