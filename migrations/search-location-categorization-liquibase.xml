@@ -75,4 +75,27 @@
         </sql>
     </changeSet>
 
+    <changeSet id="SEARCH-LOCATION-CAT-008" author="tw">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM SEARCH_LOCATION_CATEGORY_TYPE where Name = 'NON-TRIBAL';
+            </sqlCheck>
+        </preConditions>        
+        <comment>Change Non-Tribal to Rural</comment>
+        <sql>
+            UPDATE SEARCH_LOCATION_CATEGORY_TYPE SET Name = 'RURAL', Description = 'Rural area' WHERE Name = 'NON-TRIBAL';
+        </sql>
+    </changeSet>
+
+    <changeSet id="SEARCH-LOCATION-CAT-009" author="tw">
+        <preConditions onFail="MARK_RAN">
+            <not><columnExists columnName="State" tableName="SEARCH_LOCATION_CATEGORY"/></not>
+        </preConditions>
+        <comment>Add column State</comment>
+        <sql>
+            ALTER TABLE `SEARCH_LOCATION_CATEGORY` ADD COLUMN `State` varchar(50) ;
+        </sql>
+    </changeSet>
+
+
 </databaseChangeLog>
