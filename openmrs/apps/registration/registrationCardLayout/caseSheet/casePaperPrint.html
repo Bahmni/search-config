@@ -10,13 +10,13 @@
         <header class="header">
             <img class="logo" src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/SEARCH_logo.jpg" alt="search-logo">
             <div class="title">
-                <h1>सर्च</h1>
-                <h2>माँ दंतेश्वरी दवाखाना,</h2>
-                <h2>शोधग्राम, चातगाव</h2>
+                <h2>सर्च</h2>
+                <h3>माँ दंतेश्वरी दवाखाना,</h3>
+                <h3>शोधग्राम, चातगाव</h3>
             </div>
             <div class="primary-details">
                 <ul>
-                    <li>
+                    <li class="caseNo">
                         <label for="">केस नं.</label>
                         <span class="value">{{patient.identifier}}</span>
                     </li>
@@ -31,7 +31,14 @@
             <ul>
                 <li>
                     <span class="label">नाव :</span>
-                    <span class="value name">{{patient.fullNameLocal()}}</span>
+                    <span class="value name">{{patient.fullNameLocal()}} <span ng-switch on="patient.gender">
+                        <span ng-switch-when="M">
+                            (पुरुष)
+                        </span>
+                        <span ng-switch-when="F">
+                            (स्त्री)
+                        </span>
+                    </span></span>
                 </li>
                 <li>
                     <span class="label">गाव :</span>
@@ -54,19 +61,32 @@
                     <span class="value mobile">{{patient.Mobile}}</span>
                 </li>
                 <li class="education">
-                    <span class="label">Education 
-                    <span class="female">स्त्री</span> <span class="male">पुरुष</span></span>
-                    <img src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/branch.png" alt="line">
-                    <span class="value-line">{{patient.patientAttribute('Education Details')}}</span>
-                </li>
-                <li class="education">
-                    <span class="lable">व्यवसाय 
-                    <span class="female">स्त्री</span> <span class="male">पुरुष</span></span>
-                    <img src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/branch.png" alt="line">
-                    <span class="value-line">{{patient.patientAttribute('Occupation')}}</span>
+                    <span class="label">Education: </span>
+                    <!--<span class="female">स्त्री</span> <span class="male">पुरुष</span></span>-->
+                    <!--<img src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/branch.png" alt="line">-->
+                    <span class="value"><span ng-switch on="patient.gender">
+                        <span ng-switch-when="M">(पुरुष)</span>
+                        <span ng-switch-when="F">(स्त्री)</span>
+                    </span> {{patient.patientAttribute('Education Details')}}
+                    </span>
                 </li>
                 <li class="last-child">
-                    <span class="lable">सोबत कोण आहे ?</span>
+                    <span class="label">व्यवसाय: </span>
+                    <!--<span class="female">स्त्री</span> <span class="male">पुरुष</span></span>-->
+                    <!--<img src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/branch.png" alt="line">-->
+                    <span class="value"><span ng-switch on="patient.gender">
+                        <span ng-switch-when="M">(पुरुष)</span>
+                        <span ng-switch-when="F">(स्त्री)</span>
+                    </span> {{patient.patientAttribute('Occupation')}}</span>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </span>
+
+                    <span class="label">सोबत कोण आहे ?</span>
                     <span class="value-line"></span>
                 </li>
             </ul>
@@ -122,6 +142,7 @@
                                     <ul>
                                         <li><span class="secondary">व्यसनी</span>
                                         </li>
+                                        <br/>
                                         <li><span class="secondary">एखाद वेळ</span>
                                         </li>
                                     </ul>
@@ -146,37 +167,6 @@
                     </tr>
                     <tr>
                         <td class="vitals">Ac.</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
-            <br />
-            <table class="page-two">
-                <thead>
-                    <tr>
-                        <th>तारीख</th>
-                        <th>रोग लक्षणे व तपासणी</th>
-                        <th>विशेष तपासण्या</th>
-                        <th>उपचार</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>                    
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>                    
-                    <tr>
-                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>

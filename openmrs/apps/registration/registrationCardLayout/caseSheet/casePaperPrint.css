@@ -1,10 +1,10 @@
 @charset "UTF-8";
 
 @page{
-  margin-left: 0.2cm;
-  margin-right: 0.2cm;
-  margin-top: 0.2cm;
-  margin-bottom: 0.2cm;
+  margin-left: .3cm;
+  margin-right: 0.3cm;
+  margin-top: 0.3cm;
+  margin-bottom: 0.3cm;
 }
 
 p,h1,h2,h3,table,tr,td,div,span,ul,li{
@@ -14,6 +14,7 @@ p,h1,h2,h3,table,tr,td,div,span,ul,li{
 h1,h2,h3{
   text-align: center;
   line-height: 1;
+  font-family: "Arial Unicode";
 }
 .print-center{
   text-align:center;
@@ -27,6 +28,9 @@ table {
     width: 100%;
     margin-bottom: 1%;
     border-bottom: 1px solid #666;
+}
+body {
+    margin: 20px;
 }
 table th {
     width: 25%;
@@ -48,22 +52,28 @@ input.number {
     width: 180px;
 }
 .logo {
-    width: 7%;
+    width: 5%;
     float: left;
 }
 .title {
+    margin-top: 10px;
     width: 70%;
 /*    margin: 0 auto;*/
     float: left;
 }
 .primary-details {
-    width: 23%;
+    width: 25%;
     float: right;
-    text-align: right;
+    text-align: center;
 }
 .primary-details ul li {
     margin-bottom: 5px;
+    font-weight: 900;
 }
+.primary-details ul li.caseNo {
+    border: 1px solid #666;
+}
+
 .header {
     clear: both;
     overflow: auto;
@@ -77,9 +87,13 @@ input.number {
     margin-right: 5px;
     margin-bottom: 5px;
 }
+.patient-info ul li .label{
+    font-weight: 900;
+}
+
 .patient-info ul li .value {
     border-bottom: 0px;
-    /*width: 130px;*/
+    width: 130px;
     display: inline-block;
 }
 
@@ -93,19 +107,25 @@ input.number {
 }
 .patient-info ul li .value.mobile {
     width: 217px;
+    font-weight: 900;
 }
 .patient-info ul li.last-child {
-    float: right;
+    float: left;
     margin-top: 5px;
 }
 .tree .primary, .tree-two .primary{
     position: relative;
     top: 100px;
+    left: -10px;
+}
+.tree .primary ul, .tree-two .primary ul{
+    margin-top: 100px;
 }
 .tree .secondary, .tree-two .secondary {
     position: relative;
     left: 70px;
     top: 20px;
+    font-size: 16px;
 }
 .tree .primary + img {
     position: absolute;
@@ -124,7 +144,12 @@ input.number {
 .tree .triary {
     position: relative;
     left: 185px;
-    top: -48px;
+    top: -40px;
+    margin-top: 5px;
+}
+.tree .triary li {
+    padding-bottom: 8px;
+    font-size: 14px;
 }
 .tree-two .primary {
     top: 0;
@@ -136,8 +161,14 @@ input.number {
 table td.vitals {
     padding: 5px 10px;
 }
+table thead tr th {
+    text-align: center;
+}
 .education {
-    margin-top: -5px;
+    /*margin-left: -35px;*/
+}
+.occupation {
+    display: block;
 }
 .education .female {
     position: relative;
