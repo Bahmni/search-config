@@ -41,12 +41,15 @@
             },
             "patientDashboardSections": [
                 {
-                    "description": "Vitals",
-                    "name": "vitals"
+                    "title": "Vitals",
+                    "name": "vitals",
+                    "conceptNames": ["Vitals", "BMI", "BMI STATUS", "HEIGHT", "WEIGHT"],
+                    "numberOfVisits": 2
                 },
                 {
-                    "description": "Active Treatments",
-                    "name": "treatment"
+                    "title": "Treatments",
+                    "name": "treatment",
+                    "numberOfVisits": 1
                 }
             ]
         }
