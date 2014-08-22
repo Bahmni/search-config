@@ -2,7 +2,7 @@ package org.bahmni.implementation.searchconfig.mapper;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bahmni.implementation.searchconfig.SearchCSVRow;
-import org.bahmni.module.bahmnicore.contract.encounter.request.BahmniEncounterTransaction;
+import org.openmrs.module.bahmniemrapi.encountertransaction.contract.BahmniEncounterTransaction;
 import org.openmrs.module.emrapi.encounter.domain.EncounterTransaction;
 
 import java.util.Date;

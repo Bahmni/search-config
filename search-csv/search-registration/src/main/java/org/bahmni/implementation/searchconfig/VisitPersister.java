@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.bahmni.csv.FailedRowResult;
 import org.bahmni.implementation.searchconfig.mapper.DateMapper;
 import org.bahmni.implementation.searchconfig.mapper.VisitRequestMapper;
-import org.bahmni.module.bahmnicore.contract.encounter.request.BahmniEncounterTransaction;
+import org.openmrs.module.bahmniemrapi.encountertransaction.contract.BahmniEncounterTransaction;
 import org.bahmni.openmrsconnector.OpenMRSRESTConnection;
 import org.bahmni.openmrsconnector.OpenMRSRestService;
 import org.json.simple.JSONObject;

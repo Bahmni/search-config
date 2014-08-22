@@ -36,6 +36,12 @@
             <artifactId>bahmnicore-api</artifactId>
             <version>5.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.bahmni.module</groupId>
+            <artifactId>bahmni-emr-api</artifactId>
+            <version>5.1-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
     <build>
