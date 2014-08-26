@@ -36,7 +36,7 @@ public class SearchMigrator {
 
     public void process(String csvParentFolderPath, String csvFileName, String hostname, String openmrsUsername, String openmrsPassword, String runMigratorInParallel){
         Date startTime = new Date();
-        CSVFile<SearchCSVRow> registrationCSVFile = new CSVFile<SearchCSVRow>(csvParentFolderPath, csvFileName, SearchCSVRow.class);
+        CSVFile<SearchCSVRow> registrationCSVFile = new CSVFile<SearchCSVRow>(csvParentFolderPath, csvFileName);
 
         getOpenmrsRestConnection(hostname, openmrsUsername, openmrsPassword);
 
