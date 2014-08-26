@@ -132,4 +132,11 @@
             update site_information set value = '/home/bahmni' where name = 'parentOfUploadedFilesDirectory';
         </sql>
     </changeSet>
+
+    <changeSet id="SEARCH-ELIS-201408261051" author="D3">
+        <comment>Convert urls in import_status to relative urls</comment>
+        <sql>
+            UPDATE import_status SET saved_file_name = REPLACE(saved_file_name, '/home/bahmni/uploaded-files/mrs/', ''), error_file_name = REPLACE(error_file_name, '/home/bahmni/uploaded-files/mrs/', '');
+        </sql>
+    </changeSet>
 </databaseChangeLog>
