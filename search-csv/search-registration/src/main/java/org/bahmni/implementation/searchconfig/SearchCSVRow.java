@@ -2,7 +2,7 @@ package org.bahmni.implementation.searchconfig;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.bahmni.csv.CSVEntity;
-import org.bahmni.csv.CSVHeader;
+import org.bahmni.csv.annotation.CSVHeader;
 
 public class SearchCSVRow extends CSVEntity {
     @CSVHeader(name = "Visit Date")

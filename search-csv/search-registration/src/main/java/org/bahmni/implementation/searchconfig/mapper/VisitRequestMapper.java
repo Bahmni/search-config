@@ -3,6 +3,7 @@ package org.bahmni.implementation.searchconfig.mapper;
 import org.apache.commons.lang3.StringUtils;
 import org.bahmni.implementation.searchconfig.SearchCSVRow;
 import org.openmrs.module.bahmniemrapi.encountertransaction.contract.BahmniEncounterTransaction;
+import org.openmrs.module.bahmniemrapi.encountertransaction.contract.BahmniObservation;
 import org.openmrs.module.emrapi.encounter.domain.EncounterTransaction;
 
 import java.util.Date;
@@ -40,7 +41,7 @@ public class VisitRequestMapper {
         if(StringUtils.isNotEmpty(csvRow.fees)){
             EncounterTransaction.Concept registrationFeeConcept = new EncounterTransaction.Concept();
             registrationFeeConcept.setUuid(registrationFeeConceptUuid);
-            EncounterTransaction.Observation observation = new EncounterTransaction.Observation();
+            BahmniObservation observation = new BahmniObservation();
             observation.setConcept(registrationFeeConcept);
             observation.setValue(csvRow.fees);
             bahmniEncounterTransaction.addObservation(observation);
