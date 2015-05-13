@@ -5,7 +5,7 @@
         "type": "link",
         "label": "Investigations",
         "url": "investigation",
-        "icon": "icon-user-md",
+        "icon": "fa-user-md",
         "order": 1,
         "requiredPrivilege": "app:clinical"
     },
@@ -15,7 +15,7 @@
         "type": "link",
         "label": "Diagnosis",
         "url": "diagnosis",
-        "icon": "icon-user-md",
+        "icon": "fa-user-md",
         "order": 2,
         "requiredPrivilege": "app:clinical"
     },
@@ -25,7 +25,7 @@
         "type": "link",
         "label": "Treatment",
         "url": "treatment",
-        "icon": "icon-user-md",
+        "icon": "fa-user-md",
         "order": 3,
         "requiredPrivilege": "app:clinical"
     },
@@ -35,7 +35,7 @@
         "type": "link",
         "label": "Disposition",
         "url": "disposition",
-        "icon": "icon-user-md",
+        "icon": "fa-user-md",
         "order": 4,
         "requiredPrivilege": "app:clinical"
     },
@@ -45,7 +45,7 @@
         "type": "link",
         "label": "Observations",
         "url": "concept-set-group/observations",
-        "icon": "icon-user-md",
+        "icon": "fa-user-md",
         "order": 6,
         "requiredPrivilege": "app:clinical"
     },
@@ -55,7 +55,7 @@
         "type": "link",
         "label": "Pending Orders",
         "url": "pendingOrders",
-        "icon": "icon-user-md",
+        "icon": "fa-user-md",
         "order": 7,
         "requiredPrivilege": "app:radiologyOrders"
     },
