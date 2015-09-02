@@ -139,4 +139,16 @@
             UPDATE import_status SET saved_file_name = REPLACE(saved_file_name, '/home/bahmni/uploaded-files/mrs/', ''), error_file_name = REPLACE(error_file_name, '/home/bahmni/uploaded-files/mrs/', '');
         </sql>
     </changeSet>
+    <changeSet id="SEARCH-ELIS-201509011514" author="Preethi,Hanisha">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from site_information where name='defaultOrganizationName';
+            </sqlCheck>
+        </preConditions>
+        <comment>Add default organization name for openelis</comment>
+        <sql>
+            INSERT INTO site_information(id, name, lastupdated, description, value, encrypted, value_type)  VALUES ( nextVal( 'site_information_seq' ) , 'defaultOrganizationName', now(), 'Default organization name for department to be synced from openmrs',  'SEARCH', 'f', 'text' );
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>
