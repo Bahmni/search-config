@@ -1,11 +1,11 @@
 [
-	{
+    {
         "id": "bahmni.docUpload.patients.search.allPatients",
         "extensionPointId": "org.bahmni.patient.search",
         "type": "config",
         "extensionParams": {
-            "display":"All patients",
-            "forwardUrl" : "#/patient/{{patientUuid}}/document"
+            "forwardUrl": "#/patient/{{patientUuid}}/document",
+            "translationKey": "All patients"
         },
         "label": "All patients",
         "order": 1,

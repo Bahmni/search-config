@@ -3,51 +3,51 @@
         "id": "bahmni.clinical.consultation.investigations",
         "extensionPointId": "org.bahmni.clinical.consultation.board",
         "type": "link",
-        "label": "Investigations",
         "url": "investigation",
         "icon": "fa-user-md",
         "order": 1,
-        "requiredPrivilege": "app:clinical"
+        "requiredPrivilege": "app:clinical",
+        "translationKey": "Investigations"
     },
     {
         "id": "bahmni.clinical.consultation.diagnosis",
         "extensionPointId": "org.bahmni.clinical.consultation.board",
         "type": "link",
-        "label": "Diagnosis",
         "url": "diagnosis",
         "icon": "fa-user-md",
         "order": 2,
-        "requiredPrivilege": "app:clinical"
+        "requiredPrivilege": "app:clinical",
+        "translationKey": "Diagnosis"
     },
     {
         "id": "bahmni.clinical.consultation.treatment",
         "extensionPointId": "org.bahmni.clinical.consultation.board",
         "type": "link",
-        "label": "Treatment",
         "url": "treatment",
         "icon": "fa-user-md",
         "order": 3,
-        "requiredPrivilege": "app:clinical"
+        "requiredPrivilege": "app:clinical",
+        "translationKey": "Treatment"
     },
     {
         "id": "bahmni.clinical.consultation.disposition",
         "extensionPointId": "org.bahmni.clinical.consultation.board",
         "type": "link",
-        "label": "Disposition",
         "url": "disposition",
         "icon": "fa-user-md",
         "order": 4,
-        "requiredPrivilege": "app:clinical"
+        "requiredPrivilege": "app:clinical",
+        "translationKey": "Disposition"
     },
     {
         "id": "bahmni.clinical.consultation.observations",
         "extensionPointId": "org.bahmni.clinical.consultation.board",
         "type": "link",
-        "label": "Observations",
         "url": "concept-set-group/observations",
         "icon": "fa-user-md",
         "order": 6,
-        "requiredPrivilege": "app:clinical"
+        "requiredPrivilege": "app:clinical",
+        "translationKey": "Observations"
     },
     {
         "id": "bahmni.clinical.orders.pending",
@@ -65,8 +65,8 @@
         "type": "config",
         "extensionParams": {
             "searchHandler": "emrapi.sqlSearch.activePatients",
-            "display":"Active Patients",
-            "forwardUrl" : "#/patient/{{patientUuid}}/dashboard"
+            "forwardUrl": "#/patient/{{patientUuid}}/dashboard",
+            "translationKey": "Active Patients"
         },
         "label": "Active Patients",
         "order": 1,
@@ -78,8 +78,8 @@
         "type": "config",
         "extensionParams": {
             "searchHandler": "emrapi.sqlSearch.patientsToAdmit",
-            "display":"To Be Admitted",
-            "forwardUrl" : "#/patient/{{patientUuid}}/dashboard"
+            "forwardUrl": "#/patient/{{patientUuid}}/dashboard",
+            "translationKey": "To Be Admitted"
         },
         "label": "To Be Admitted",
         "order": 2,
@@ -91,8 +91,8 @@
         "type": "config",
         "extensionParams": {
             "searchHandler": "emrapi.sqlSearch.admittedPatients",
-            "display":"Admitted",
-            "forwardUrl" : "#/patient/{{patientUuid}}/dashboard"
+            "forwardUrl": "#/patient/{{patientUuid}}/dashboard",
+            "translationKey": "Admitted"
         },
         "label": "Admitted",
         "order": 3,
@@ -104,8 +104,8 @@
         "type": "config",
         "extensionParams": {
             "searchHandler": "emrapi.sqlSearch.patientsToDischarge",
-            "display":"To Be Discharged",
-            "forwardUrl" : "#/patient/{{patientUuid}}/dashboard"
+            "forwardUrl": "#/patient/{{patientUuid}}/dashboard",
+            "translationKey": "To Be Discharged"
         },
         "label": "To Be Discharged",
         "order": 4,
@@ -117,8 +117,8 @@
         "type": "config",
         "extensionParams": {
             "searchHandler": "emrapi.sqlSearch.patientsHasPendingOrders",
-            "display":"Pending Non-Lab Orders",
-            "forwardUrl" : "../orders/#/patient/{{patientUuid}}/radiologyOrderType"
+            "forwardUrl": "../orders/#/patient/{{patientUuid}}/radiologyOrderType",
+            "translationKey": "Pending Non-Lab Orders"
         },
         "label": "Pending Non-Lab Orders",
         "order": 5,
@@ -129,8 +129,8 @@
         "extensionPointId": "org.bahmni.patient.search",
         "type": "config",
         "extensionParams": {
-            "display":"All patients",
-            "forwardUrl" : "#/patient/{{patientUuid}}/dashboard"
+            "forwardUrl": "#/patient/{{patientUuid}}/dashboard",
+            "translationKey": "All patients"
         },
         "label": "All patients",
         "order": 6,
@@ -142,10 +142,11 @@
         "type": "config",
         "extensionParams": {
             "conceptName": "VITALS_CONCEPT",
-            "showIf": [ "var visitTypes = [];",
-                         "if(visitTypes.length === 0) return true;",
-                         "var visitTypeName = context.visitType ? context.visitType.name : null;",
-                         "return visitTypes.indexOf(visitTypeName) !== -1;"
+            "showIf": [
+                "var visitTypes = [];",
+                "if(visitTypes.length === 0) return true;",
+                "var visitTypeName = context.visitType ? context.visitType.name : null;",
+                "return visitTypes.indexOf(visitTypeName) !== -1;"
             ]
         },
         "order": 1,

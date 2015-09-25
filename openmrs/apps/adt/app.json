@@ -19,12 +19,12 @@
                 "description": "Bahmni patient search, lookup Page"
             }
         ],
-        "contextModel": [ 
+        "contextModel": [
             "patientUuid",
             "encounterUuid",
             "visitUuid"
         ],
-        "config" : {
+        "config": {
             "onAdmissionForwardTo": "#/patient/search",
             "onTransferForwardTo": "#/patient/search",
             "onDischargeForwardTo": "#/patient/search",
