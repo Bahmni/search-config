@@ -1,5 +1,4 @@
-[
-    {
+{
         "id": "bahmni.registration",
         "instanceOf":"bahmni.template.registration",
         "description": "Bahmni Patient Registration App",
@@ -18,27 +17,83 @@
             "activeVisitUuid"
         ],
         "config" : {
+            "patientInformation": {
+                "additionalPatientInformation": {
+                    "title": "Additional Patient Information",
+                    "attributes": [
+                        "distanceFromCenter",
+                        "isUrban",
+                        "cluster",
+                        "RationCard",
+                        "familyIncome",
+                        "debt",
+                        "cluster"
+                    ]
+                },
+                "hidden": {
+                    "attributes": [
+                        "primaryContact"
+                    ]
+                },
+                "defaults":  {
+                    "class": "General",
+                    "landHolding": 2
+                }
+            },
+            "addressHierarchy": {
+                "showAddressFieldsTopDown": false,
+                "freeTextAddressFields": ["address2", "address1"]
+            },
+            "relationshipTypeMap": {
+                "Doctor":"provider",
+                "Parent":"patient"
+            },
+
             "autoCompleteFields":["familyName", "caste"],
             "defaultIdentifierPrefix": "SEA",
             "defaultVisitType": "OPD",
-            "searchByIdForwardUrl": "/patient/{{patientUuid}}?visitType=OPD",
-            "registrationConceptSet":"Visit Details",
+            "searchByIdForwardUrl": "/patient/{{patientUuid}}",
             "showMiddleName": true,
-            "fieldValidation": {"registrationNumber": {"pattern":"[1-9][0-9]{0,5}/[0-9]{2}", "errorMessage":"number/yy e.g. 1234/12"}},
-            "hideFields": ["Height", "Weight", "BMI", "BMI_Status"],
+            "showCasteSameAsLastNameCheckbox": false,
+            "printOptions": [
+                {
+                    "translationKey": "REGISTRATION_PRINT_REG_CARD_LOCAL_KEY",
+                    "templateUrl": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/print_local.html",
+                    "shortcutKey": "l"
+                },
+                {
+                    "translationKey": "REGISTRATION_PRINT_REG_CARD_KEY",
+                    "templateUrl": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/print.html",
+                    "shortcutKey": "p"
+                },
+                {
+                    "translationKey": "REGISTRATION_PRINT_SUPPLEMENTAL_PAPER",
+                    "templateUrl": "/bahmni_config/openmrs/apps/registration/supplementalPaperLayout/print.html",
+                    "shortcutKey": "r"
+                }
+            ],
+            "conceptSetUI": {
+            },
+            "fieldValidation" : {
+                "primaryContact" : {"pattern" : "[0-9]{8,10}", "errorMessage" : "Should be 12 characters starting with 91 (country code)"},
+                "landHolding" : {"pattern" : "[0-9]{0,3}", "errorMessage" : "Should be between 1 to 999 acres"},
+                "familyName" : {"pattern" : "[a-zA-Z]{0,}", "errorMessage" : "Should contain characters"},
+                "givenName" : {"pattern" : "[a-zA-Z]{0,}", "errorMessage" : "Should contain characters"},
+                "middleName" : {"pattern" : "[a-zA-Z]{0,}", "errorMessage" : "Should contain characters"},
+                "address1" : {"pattern" : "[a-zA-Z0-9]{3}", "errorMessage" : "Should contain 3 characters"},
+		"registrationNumber": {"pattern":"[1-9][0-9]{0,5}/[0-9]{2}", "errorMessage":"number/yy e.g. 1234/12"}
+		},
             "patientSearch": {
+                "address": {
+                    "label": "Rural Ward",
+                    "placeholder": "Enter ward",
+                    "field": "address2"
+                },
                 "customAttributes": {
                     "label": "रुग्णाचे नाव",
                     "placeholder": "रुग्णाचे नाव",
                     "fields": ["givenNameLocal", "middleNameLocal", "familyNameLocal"]
                 }
-            },
-            "conceptSetUI": {
-                "Special OPD": {
-                    "autocomplete": true,
-                    "required": true
-                }
             }
         }
-    }
-]
+}

@@ -1,65 +1,46 @@
-[
-    {
+{
+    "search":{
         "id": "bahmni.registration.navigation.patient.search",
         "extensionPointId": "org.bahmni.registration.navigation",
         "type": "link",
-        "label": "<u>S</u>earch",
+        "translationKey":"REGISTRATION_SEARCH_CONFIG_KEY",
         "url": "/search",
+        "shortcutKey": "REGISTRATION_SEARCH_CONFIG_ACCESS_KEY",
         "icon": "fa-search",
-        "shortcutKey": "s",
         "order": 1,
         "requiredPrivilege": "View Patients"
     },
-    {
+    "createNew":{
         "id": "bahmni.registration.navigation.patient.create",
         "extensionPointId": "org.bahmni.registration.navigation",
         "type": "link",
-        "label": "Create <u>N</u>ew",
-        "url": "/patient/new?visitType=OPD",
+        "translationKey": "REGISTRATION_CREATE_NEW_CONFIG_KEY",
+        "url": "/patient/new",
         "icon": "fa-plus",
-        "shortcutKey": "n",
+        "shortcutKey": "REGISTRATION_CREATE_NEW_CONFIG_ACCESS_KEY",
         "order": 2,
         "requiredPrivilege": "Add Patients"
     },
-    {
+    "view":{
         "id": "bahmni.patient.search.result.action.edit",
         "extensionPointId": "org.bahmni.registration.patient.search.result.action",
         "type": "link",
-        "label": "View",
-        "url": "/patient/{{patientUuid}}?visitType=OPD",
+        "translationKey": "REGISTRATION_VIEW_CONFIG_KEY",
+        "url": "/patient/{{patientUuid}}",
         "icon": "fa-patient-edit",
         "order": 1,
         "requiredPrivilege": "View Patients"
     },
-    {
-        "id": "bahmni.patient.registration.next",
-        "extensionPointId": "org.bahmni.registration.patient.next",
-        "type": "config",
-        "extensionParams" : {
-            "display": "Enter <u>C</u>onsultation",
-            "shortcutKey": "c",
-            "forwardUrl": "../clinical/#/patient/{{patientUuid}}/concept-set-group/observations"
-        },
-        "order": 1,
-        "requiredPrivilege": "RegisterAndConsult"
-    },
-    {
-        "id": "bahmni.registration.conceptSetGroup.observations.otherDetails",
+    "feeInformation":{
+        "id": "bahmni.registration.conceptSetGroup.feeInformation",
         "extensionPointId": "org.bahmni.registration.conceptSetGroup.observations",
         "type": "config",
         "extensionParams": {
-            "conceptName": "Other Details",
-            "required": true,
-            "showIf": [ "return context.visitType.name === 'Special OPD';"]
+            "conceptName": "Fee Information",
+            "translationKey": "FEE_INFORMATION_LOCALE_KEY",
+            "required":true
         },
-        "order": 1,
-        "requiredPrivilege": "app:registration"
-    },
-    {
-        "id": "bahmni.registration.printOptions.print",
-        "extensionPointId": "org.bahmni.registration.printOptions",
-        "type": "config",
-        "label": "Print Registration Card",
-        "templateUrl": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/print.html"
+        "order": 2,
+        "requiredPrivilege": "Edit Visits"
     }
-]
+}
