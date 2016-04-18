@@ -73,6 +73,9 @@
                 }
             ],
             "conceptSetUI": {
+		"Registration Fee":{
+			"dropdown": true
+			}
             },
             "fieldValidation" : {
                 "primaryContact" : {"pattern" : "[0-9]{8,10}", "errorMessage" : "Should be 12 characters starting with 91 (country code)"},
