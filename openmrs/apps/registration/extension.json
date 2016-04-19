@@ -40,7 +40,33 @@
             "translationKey": "FEE_INFORMATION_LOCALE_KEY",
             "required":true
         },
-        "order": 2,
+        "order": 6,
         "requiredPrivilege": "Edit Visits"
-    }
+    },
+     "nutritionalValues":{
+     "id": "bahmni.registration.conceptSetGroup.nutritionalLevels",
+     "extensionPointId": "org.bahmni.registration.conceptSetGroup.observations",
+     "type": "config",
+      "extensionParams": {
+            "conceptName": "Nutritional Values",
+            "conceptNames": ["Height", "Weight", "BMI Data", "BMI Status Data"],
+            "required":true,
+            "showLatest": true
+        },
+      "order": 4 
+     },
+    "extraInformation":{
+    "id": "bahmni.registration.conceptSetGroup.extraInformation",
+    "extensionPointId": "org.bahmni.registration.conceptSetGroup.observations",
+     "type": "config",
+      "extensionParams": {
+            "conceptName": "Other Information",
+            "conceptNames": ["Alcohol usage", "Tobacco usage"],
+            "required":true,
+            "showLatest": true
+        },
+      "order": 5
+     }
+
+
 }
