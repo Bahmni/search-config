@@ -412,8 +412,9 @@
                 "title": "Diabetes/Blood Sugar",
                 "config": {
                     "yAxisConcepts": [
-                        "Blood Sugar Fasting",
-                        "Blood Sugar P.P"
+                        "Blood Sugar (Fasting)",
+                        "Blood Sugar (Post Meal)",
+			"Blood Sugar (Random)"
                     ],
                     "xAxisConcept": "observationDateTime",
                     "numberOfVisits": 10
