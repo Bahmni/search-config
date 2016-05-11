@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Search Registeration</title>
+  <link rel="stylesheet" type="text/css" href="/bahmni_config/openmrs/apps/registration/registrationCardLayout/css/print.css">
+</head>
+<body>
+  <div class="registration-card">
+    <ul class="patient-details">
+      <li>
+        <span class="date">{{patient.registrationDate | date:'dd/MM/yyyy'}}</span><span class="patient-id">{{patient.identifier}}</span>
+      </li>
+      <li>{{patient.fullNameLocal()}}</li>
+      <li>{{patient.address.cityVillage}}</li>
+    </ul>
+  </div>
+</body>
+</html>
