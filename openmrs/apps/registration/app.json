@@ -71,9 +71,6 @@
 		"Registration Fee":{
 				"dropdown": true
 				},
-	         "Tobacco usage": {
-				"multiSelect": true
-                                 }, 
         	 "defaults": {
 				"Registration Fee": "Registration Fee, 10"    
 				}
