@@ -54,7 +54,7 @@
                 </li>
                 <li>
                     <span class="label">वय:</span>
-                    <span class="value">{{patient.patientAge()}}</span>
+                    <span class="value">{{patient.age | age}}</span>
                 </li>
                 <li>
                     <span class="label">Ph.No./Mobile No.</span>
@@ -67,7 +67,7 @@
                     <span class="value"><span ng-switch on="patient.gender">
                         <span ng-switch-when="M">(पुरुष)</span>
                         <span ng-switch-when="F">(स्त्री)</span>
-                    </span> {{patient.patientAttribute('Education Details')}}
+                    </span> {{patient['Education Details'].value}}
                     </span>
                 </li>
                 <li class="last-child">
@@ -77,7 +77,7 @@
                     <span class="value"><span ng-switch on="patient.gender">
                         <span ng-switch-when="M">(पुरुष)</span>
                         <span ng-switch-when="F">(स्त्री)</span>
-                    </span> {{patient.patientAttribute('Occupation')}}</span>
+                    </span> {{patient.['Occupation'].value}}</span>
                     <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
