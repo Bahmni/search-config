@@ -77,18 +77,6 @@
                     }
                 ]
             },
-            "radiologyOrders": {
-                "orderType": "Radiology Order",
-                "type": "ordersControl",
-                "translationKey": "DASHBOARD_TITLE_RADIOLOGY_ORDERS_KEY",
-                "displayOrder": 7,
-                "dashboardConfig": {
-                    "conceptNames": [
-                        "Summary"
-                    ],
-                    "numberOfVisits": 4
-                }
-            },
             "pacs": {
                 "orderType": "Radiology Order",
                 "type": "pacsOrders",
