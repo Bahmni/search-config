@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SEARCH - Case Paper</title>
+    <link rel="stylesheet" href="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/casePaperPrint.css">
+</head>
+<body>
+    <main>
+        <header class="header">
+            <img class="logo" src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/SEARCH_logo.jpg" alt="search-logo">
+            <div class="title">
+                <h2>सर्च</h2>
+                <h3>माँ दंतेश्वरी दवाखाना,</h3>
+                <h3>शोधग्राम, चातगाव</h3>
+            </div>
+            <div class="primary-details">
+                <ul>
+                    <li class="caseNo">
+                        <label for="">केस नं.</label>
+                        <span class="value">{{patient.identifier}}</span>
+                    </li>
+                    <li>
+                        <label for="">जात:</label>
+                        <span class="value">{{patient.caste}}</span>
+                    </li>
+                </ul>
+            </div>
+        </header>
+        <div class="patient-info">
+            <ul>
+                <li>
+                    <span class="label">नाव :</span>
+                    <span class="value name">{{patient.fullNameLocal()}} <span ng-switch on="patient.gender">
+                        <span ng-switch-when="M">
+                            (पुरुष)
+                        </span>
+                        <span ng-switch-when="F">
+                            (स्त्री)
+                        </span>
+                    </span></span>
+                </li>
+                <li>
+                    <span class="label">गाव :</span>
+                    <span class="value">{{patient.address.cityVillage}}</span>
+                </li>          
+                <li>
+                    <span class="label">तालुका:</span>
+                    <span class="value">{{patient.address.address3}}</span>
+                </li>          
+                <li>
+                    <span class="label">जिल्हा :</span>
+                    <span class="value">{{patient.address.countyDistrict}}</span>
+                </li>
+                <li>
+                    <span class="label">वय:</span>
+                    <span class="value">{{patient.age | age}}</span>
+                </li>
+                <li>
+                    <span class="label">Ph.No./Mobile No.</span>
+                    <span class="value mobile">{{patient.Mobile}}</span>
+                </li>
+                <li class="education">
+                    <span class="label">Education: </span>
+                    <!--<span class="female">स्त्री</span> <span class="male">पुरुष</span></span>-->
+                    <!--<img src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/branch.png" alt="line">-->
+                    <span class="value"><span ng-switch on="patient.gender">
+                        <span ng-switch-when="M">(पुरुष)</span>
+                        <span ng-switch-when="F">(स्त्री)</span>
+                    </span> {{patient['Education Details'].value}}
+                    </span>
+                </li>
+                <li class="last-child">
+                    <span class="label">व्यवसाय: </span>
+                    <!--<span class="female">स्त्री</span> <span class="male">पुरुष</span></span>-->
+                    <!--<img src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/branch.png" alt="line">-->
+                    <span class="value"><span ng-switch on="patient.gender">
+                        <span ng-switch-when="M">(पुरुष)</span>
+                        <span ng-switch-when="F">(स्त्री)</span>
+                    </span> {{patient['Occupation'].value}}</span>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </span>
+
+                    <span class="label">सोबत कोण आहे ?</span>
+                    <span class="value-line"></span>
+                </li>
+            </ul>
+        </div>
+	<div>
+	<ul>
+        <li> <td> <span class="custom-bold-text"><b><u>Alcohol Usage</u></b></span></td></li>
+        <li> <td> <span class="custom-bold-text"><b> दारू – नवर : रुग्ण </b></span> : <span ng-repeat="observation in ::obs['Alcohol usage, Self']">{{observation.shortName}}{{$last ? '' : ', '} </span></td></li>
+		<li> <td> <span class="custom-bold-text"><b> दारू – नवर : जोडीदार</b></span> : <span ng-repeat="observation in ::obs['Alcohol usage, Spouse']">{{observation.shortName}}{{$last ? '' : ', '} </span> </td></li>
+        <li> <td> <span class="custom-bold-text"><b><u>Tobacco Usage</u></b></span></td></li>
+        <li> <td> <span class="custom-bold-text"><b> तंबाखू : रुग्ण </b></span> : <span ng-repeat="observation in ::obs['Sick']">{{observation.shortName}}{{$last ? '' : ', '} </span></td></li>
+		<li> <td> <span class="custom-bold-text"><b> तंबाखू : जोडीदार </b></span> : <span ng-repeat="observation in ::obs['Partner']">{{observation.shortName}}{{$last ? '' : ', '}}</span></td></li>
+	</ul>
+	</div>
+	 <div class="case-table">
+            <table>
+                <thead>
+                <tr>
+                    <th>तारीख</th>
+                    <th>रोग लक्षणे व तपासणी</th>
+                    <th>विशेष तपासण्या</th>
+                    <th>उपचार</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="tree">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+</body>
+</html>

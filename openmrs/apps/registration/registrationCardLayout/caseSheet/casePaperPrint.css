@@ -1,0 +1,194 @@
+@charset "UTF-8";
+
+@page{
+  margin-left: .3cm;
+  margin-right: 0.3cm;
+  margin-top: 0.3cm;
+  margin-bottom: 0.3cm;
+}
+
+p,h1,h2,h3,table,tr,td,div,span,ul,li{
+  margin:0px;
+  padding:0px;
+}
+h1,h2,h3{
+  text-align: center;
+  line-height: 1;
+  font-family: "Arial Unicode";
+}
+.print-center{
+  text-align:center;
+}
+ul li {
+    list-style-type: none;
+}
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 1%;
+    border-bottom: 1px solid #666;
+}
+body {
+    margin: 20px;
+}
+table th {
+    width: 25%;
+}
+table th, table td{
+    border: 1px solid #666;
+    text-align: left;
+    padding: 5px 10px 0px 10px;
+}
+table td{
+    border-top-width: 0;
+    border-bottom-width: 0;
+}
+input {
+    border: 1px solid #666;
+    height: 30px;
+}
+input.number {
+    width: 180px;
+}
+.logo {
+    width: 5%;
+    float: left;
+}
+.title {
+    margin-top: 10px;
+    width: 70%;
+/*    margin: 0 auto;*/
+    float: left;
+}
+.primary-details {
+    width: 25%;
+    float: right;
+    text-align: center;
+}
+.primary-details ul li {
+    margin-bottom: 5px;
+    font-weight: 900;
+}
+.primary-details ul li.caseNo {
+    border: 1px solid #666;
+}
+
+.header {
+    clear: both;
+    overflow: auto;
+}
+.patient-info {
+    margin: 5px 0;
+    float: right;
+}
+.patient-info ul li {
+    float: left;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    width: auto;
+}
+.patient-info ul li .label{
+    font-weight: 900;
+}
+
+.patient-info ul li .value {
+    border-bottom: 0px;
+    width: auto;
+    display: inline-block;
+}
+
+.patient-info ul li .value-line {
+    border-bottom: 1px solid #666;
+    width: 130px;
+    display: inline-block;
+}
+.patient-info ul li .value.name {
+    width: 264px;
+}
+.patient-info ul li .value.mobile {
+    width: 217px;
+    font-weight: 900;
+}
+.patient-info ul li.last-child {
+    float: left;
+    margin-top: 5px;
+}
+.tree .primary, .tree-two .primary{
+    position: relative;
+    top: 100px;
+    left: -10px;
+}
+.tree .primary ul, .tree-two .primary ul{
+    margin-top: 100px;
+}
+.tree .secondary, .tree-two .secondary {
+    position: relative;
+    left: 70px;
+    top: 20px;
+    font-size: 16px;
+}
+.tree .primary + img {
+    position: absolute;
+    left: 65px;
+    margin-top: 73px;
+    width: 30px;
+    height: 93px;
+}
+.tree .secondary + img{
+    position: absolute;
+    left: 150px;
+    margin-top: -10px;
+    width: 50px;
+    height: 73px;
+}
+.tree .triary {
+    position: relative;
+    left: 185px;
+    top: -40px;
+    margin-top: 5px;
+}
+.tree .triary li {
+    padding-bottom: 8px;
+    font-size: 14px;
+}
+.tree-two .primary {
+    top: 0;
+}
+.tree-two .secondary {
+    left: 100px;
+    top: -40px;
+}
+table td.vitals {
+    padding: 5px 10px;
+}
+table thead tr th {
+    text-align: center;
+}
+.education {
+    /*margin-left: -35px;*/
+}
+.occupation {
+    display: block;
+}
+.education .female {
+    position: relative;
+    top: -5px;
+    left: 18px;
+}
+.education .male {
+    position: relative;
+    top: 14px;
+    left: -4px;
+    border-top: 1px solid #666;
+}
+.education img {
+    position: relative;
+    top: 10px;
+}
+table.page-two {
+    min-height: 700px;
+}
+.case-table td{
+height:500px;
+}
