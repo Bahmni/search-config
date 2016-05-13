@@ -86,6 +86,7 @@ input.number {
     float: left;
     margin-right: 5px;
     margin-bottom: 5px;
+    width: auto;
 }
 .patient-info ul li .label{
     font-weight: 900;
@@ -93,7 +94,7 @@ input.number {
 
 .patient-info ul li .value {
     border-bottom: 0px;
-    width: 130px;
+    width: auto;
     display: inline-block;
 }
 
