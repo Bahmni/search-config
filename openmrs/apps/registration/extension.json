@@ -63,7 +63,6 @@
             "conceptName": "Other Information",
             "conceptNames": ["Alcohol usage", "Tobacco usage"],
             "required":true,
-            "showLatest": true
         },
       "order": 5
      }
