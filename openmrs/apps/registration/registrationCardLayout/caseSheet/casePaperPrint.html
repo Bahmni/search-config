@@ -94,11 +94,11 @@
 	<div>
 	<ul>
         <li> <td> <span class="custom-bold-text"><b><u>Alcohol Usage</u></b></span></td></li>
-        <li> <td> <span class="custom-bold-text"><b> दारू – नवर : रुग्ण </b></span> : {{obs['Alcohol usage, Self'].shortName}} </td></li>
-		<li> <td> <span class="custom-bold-text"><b> दारू – नवर : जोडीदार</b></span> : {{obs['Alcohol usage, Spouse'].shortName}} </td></li>
+        <li> <td> <span class="custom-bold-text"><b> दारू – नवर : रुग्ण </b></span> : <span ng-repeat="observation in ::obs['Alcohol usage, Self']">{{observation.shortName}}{{$last ? '' : ', '} </span></td></li>
+		<li> <td> <span class="custom-bold-text"><b> दारू – नवर : जोडीदार</b></span> : <span ng-repeat="observation in ::obs['Alcohol usage, Spouse']">{{observation.shortName}}{{$last ? '' : ', '} </span> </td></li>
         <li> <td> <span class="custom-bold-text"><b><u>Tobacco Usage</u></b></span></td></li>
-        <li> <td> <span class="custom-bold-text"><b> तंबाखू : रुग्ण </b></span> : {{obs['Sick'].shortName}} </td></li>
-		<li> <td> <span class="custom-bold-text"><b> तंबाखू : जोडीदार </b></span> : {{obs['Partner'].shortName}} </td></li>
+        <li> <td> <span class="custom-bold-text"><b> तंबाखू : रुग्ण </b></span> : <span ng-repeat="observation in ::obs['Sick']">{{observation.shortName}}{{$last ? '' : ', '} </span></td></li>
+		<li> <td> <span class="custom-bold-text"><b> तंबाखू : जोडीदार </b></span> : <span ng-repeat="observation in ::obs['Partner']">{{observation.shortName}}{{$last ? '' : ', '}}</span></td></li>
 	</ul>
 	</div>
 	 <div class="case-table">
