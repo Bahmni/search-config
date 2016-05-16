@@ -218,5 +218,15 @@
     "drugOrderReport":{
         "name": "Drug Order report",
         "type":"DrugOrder"
+    },
+    "procedureandsurgeryReport": {
+        "name": "Total Number of Surgeries and Procedures",
+        "type": "obsCount",
+        "config": {
+            "ageGroupName": "All Ages",
+            "conceptNames": ["Procedure Type"],
+            "countOnlyClosedVisits":"false",
+            "countOncePerPatient":"false"
+        }
     }
 }
