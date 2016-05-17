@@ -102,6 +102,7 @@
                     "conceptNames": [
                         "History and Examination Notes",
                         "Discharge Summary",
+                        "Procedure Template",
                         "Lab Investigation Notes",
                         "Radiology Notes",
                         "Other Notes"
@@ -151,6 +152,48 @@
                     ],
                     "scope": "latest"
                 }
+            },
+            "dischargeSummary":{
+                "title": "Discharge Summary",
+                "translationKey": "Discharge Summary",
+                "isObservation": true,
+                "dashboardConfig": {
+                    "conceptNames": [
+                        "Discharge Summary"
+                    ],
+                    "numberOfVisits": 4
+                },
+                "expandedViewConfig": {
+                    "conceptNames": [
+                        "Discharge Summary"
+                    ],
+                    "numberOfVisits": 4,
+                    "showDetailsButton": true,
+                    "pivotTable": {}
+                },
+                "displayOrder": 9
+
+            },
+            "procedureTemplate":{
+                "title": "Procedure Template",
+                "translationKey": "Procedure Template",
+                "isObservation": true,
+                "dashboardConfig": {
+                    "conceptNames": [
+                       "Procedure Template"
+                    ],
+                    "numberOfVisits": 4
+                },
+                "expandedViewConfig": {
+                    "conceptNames": [
+                        "Procedure Template"
+                    ],
+                    "numberOfVisits": 4,
+                    "showDetailsButton": true,
+                    "pivotTable": {}
+                },
+                "displayOrder": 9
+
             }
         }
     },
