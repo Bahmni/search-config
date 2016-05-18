@@ -3,9 +3,9 @@
         "translationKey": "DASHBOARD_TAB_GENERAL_KEY",
         "displayByDefault": true,
         "printing": {
-            "title": "Bahmni",
+            "title": "SEARCH",
             "header": "Visit",
-            "logo": "../images/bahmniLogo.png"
+            "logo": "../images/SEARCH_logo.jpg"
         },
         "defaultSections": true,
         "sections": {
@@ -43,9 +43,9 @@
     "dischargeSummary":{
         "translationKey": "DASHBOARD_TAB_DISCHARGE_SUMMARY_KEY",
         "printing": {
-            "title": "Bahmni",
+            "title": "SEARCH",
             "header": "Discharge Summary",
-            "logo": "../images/bahmniLogo.png"
+            "logo": "../images/SEARCH_logo.jpg"
         },
         "sections": {
             "PatientInformation":{
@@ -146,9 +146,9 @@
                 "translationKey":"DISCHARGE_SUMMARY_ADVICE_ON_DISCHARGE_KEY",
                 "config": {
                     "conceptNames": [
-                        "Additional Advice on Discharge",
-                        "Follow up Date",
-                        "Discharge Summary, Plan for follow up"
+			"Treatment/Advice on discharge",
+                        "Additional Advice",
+                        "Follow up Date"
                     ],
                     "scope": "latest"
                 }
