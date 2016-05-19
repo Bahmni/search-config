@@ -5,7 +5,7 @@
         "printing": {
             "title": "SEARCH",
             "header": "Visit",
-            "logo": "../images/SEARCH_logo.jpg"
+            "logo": "/bahmni_config/openmrs/images/SEARCH_logo.jpg"
         },
         "defaultSections": true,
         "sections": {
@@ -45,7 +45,7 @@
         "printing": {
             "title": "SEARCH",
             "header": "Discharge Summary",
-            "logo": "../images/SEARCH_logo.jpg"
+            "logo": "/bahmni_config/openmrs/images/SEARCH_logo.jpg"
         },
         "sections": {
             "PatientInformation":{
