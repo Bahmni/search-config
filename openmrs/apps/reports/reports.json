@@ -219,6 +219,34 @@
         "name": "Drug Order report",
         "type":"DrugOrder"
     },
+    "discountpercentagereport": {
+        "name": "Distribution of IPD patients as per the discount given",
+        "type": "ERPGeneric",
+        "config": {
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/discountpercentage.sql"
+        }
+    },
+    "discountheadreport": {
+        "name": "Distribution of free patients",
+        "type": "ERPGeneric",
+        "config": {
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/discounthead.sql"
+        }
+    },
+    "discounttribereport": {
+        "name": "Free patients from SEARCH tribal area",
+        "type": "ERPGeneric",
+        "config": {
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/search_tribe_discount.sql"
+        }
+    },
+    "searchWorkersDiscount": {
+        "name": "SEARCH VHWs as free patients",
+        "type": "ERPGeneric",
+        "config": {
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/search_village_discount.sql"
+        }
+    },
     "procedureandsurgeryReport": {
         "name": "Total Number of Surgeries and Procedures",
         "type": "obsCount",
