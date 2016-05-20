@@ -256,5 +256,12 @@
             "countOnlyClosedVisits":"false",
             "countOncePerPatient":"false"
         }
+    },
+    "diagnosisReport": {
+        "name": "Diagnosis",
+        "type": "MRSGeneric",
+        "config": {
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/diagnosisCount.sql"
+        }
     }
 }
