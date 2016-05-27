@@ -271,6 +271,13 @@
             "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/equipmentuse.sql"
         }
     },
+  "xrayUsgreport": {
+    "name": "Total number of x rays, sonographies, ECGs",
+    "type": "ERPGeneric",
+    "config": {
+      "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/xray_usg_ecg.sql"
+    }
+  },
     "diagnosisReport": {
         "name": "Diagnosis",
         "type": "MRSGeneric",
