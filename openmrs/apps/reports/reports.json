@@ -278,6 +278,13 @@
       "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/xray_usg_ecg.sql"
     }
   },
+    "labVisits": {
+        "name": "Lab visits",
+        "type": "ElisGeneric",
+        "config": {
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/openelis_lab_report.sql"
+        }
+    },
     "diagnosisReport": {
         "name": "Diagnosis",
         "type": "MRSGeneric",
