@@ -62,7 +62,7 @@
       "extensionParams": {
             "conceptName": "Other Information",
             "conceptNames": ["Alcohol usage", "Tobacco usage"],
-            "required":true,
+            "required":true
         },
       "order": 5
      }
