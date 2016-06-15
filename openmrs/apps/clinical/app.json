@@ -1,122 +1,221 @@
 {
-    "id": "bahmni.clinical",
-    "extensionPoints": [
-        {
-            "id": "org.bahmni.clinical.consultation.board",
-            "description": "Bahmni Clinical Consultation Page"
-        },
-        {
-            "id": "org.bahmni.clinical.conceptSetGroup.*",
-            "description": "Define conceptsets part of a conceptset group"
-        },
-        {
-            "id": "org.bahmni.clinical.orders",
-            "description": "Bahmni Orders Page"
-        },
-        {
-            "id": "org.bahmni.patient.search",
-            "description": "Bahmni Patient search, lookups Page"
-        }
-    ],
-    "contextModel": [
-        "patientUuid",
-        "visitUuid"
-    ],
-    "config": {
-        "diagnosisStatus": "Inactive",
-        "program": {
-            "patientInformation": {
-                "ageLimit": 100
-            }
-        },
-        "obsIgnoreList": [
-            "REGISTRATION FEES",
-            "COMMENTS",
-            "Patient file"
-        ],
-        "otherInvestigationsMap": {
-            "Radiology": "Radiology Order",
-            "Endoscopy": "Endoscopy Order"
-        },
-        "allowConsultationWhenNoOpenVisit": false,
-        "defaultVisitType": "OPD",
-        "visitTypeForRetrospectiveEntries": "Special OPD",
-        "maxConceptSetLevels": 3,
-        "allowOnlyCodedDiagnosis": false,
-        "conceptSetUI": {
-            "Chief Complaint": {
-	        "answersConceptName": "Chief Complaint Answers",
-        	"codedConceptName":"Chief Complaint",
-        	"nonCodedConceptName":"Non-Coded Chief Complaint",
-       	 	"autocomplete": true,
-        	"durationRequired": false,
-        	"allowAddMore": true
-      	     }, 
-	    "Sick": {
-                "multiSelect": true
-            },
-	    "Partner": {
-                "multiSelect": true
-            },
-	    "Procedure Type": {
-                "autocomplete" : true,
-                "required" : true,
-                "answersConceptName" : "Procedure Type"
-                },
-	    "Posture": {
-                "buttonSelect": true
-            },
-            "P/A Presenting Part": {
-                "multiSelect": true
-            },
-            "FHS": {
-                "buttonSelect": true
-            },
-            "P/S (Per Speculum) - Cervix": {
-                "grid": true
-            },
-            "Anaemia, Stopped Since When": {
-                "conciseText": true
-            },
-            "Examination Notes": {
-                "conciseText": true
-            },
-            "Tuberculosis Intake Template": {
-                "computeDrugs": true
-            },
-            "Set1": {
-                "allowAddMore": true
-            },
-            "Set2": {
-                "allowAddMore": true
-            },
-            "Coded3": {
-                "multiSelect": true
-            },
-            "Image": {
-                "allowAddMore": true
-            },
-            "Gynaecology, Gravida": {
-                "stepper": true
-            },
-            "Accepted Family Planning methods": {
-                "multiSelect": true
-            },
-            "defaults": {
-                "Number of living children": 1,
-                "Accepted Family Planning methods": [
-                    "Condoms",
-                    "Pills"
-                ],
-                "Pain management given": true,
-                "Safe Abortion, Remarks": "Remarks",
-                "Malaria, Death Date": "2015-12-01"
-            }
-        },
-        "visitPage": {
-            "observationDisplay": {
-                "conceptNames": []
-            }
-        }
+  "id": "bahmni.clinical",
+  "extensionPoints": [
+    {
+      "id": "org.bahmni.clinical.consultation.board",
+      "description": "Bahmni Clinical Consultation Page"
+    },
+    {
+      "id": "org.bahmni.clinical.conceptSetGroup.*",
+      "description": "Define conceptsets part of a conceptset group"
+    },
+    {
+      "id": "org.bahmni.clinical.orders",
+      "description": "Bahmni Orders Page"
+    },
+    {
+      "id": "org.bahmni.patient.search",
+      "description": "Bahmni Patient search, lookups Page"
     }
+  ],
+  "contextModel": [
+    "patientUuid",
+    "visitUuid"
+  ],
+  "config": {
+    "diagnosisStatus": "Inactive",
+    "program": {
+      "patientInformation": {
+        "ageLimit": 100
+      }
+    },
+    "obsIgnoreList": [
+      "REGISTRATION FEES",
+      "COMMENTS",
+      "Patient file"
+    ],
+    "otherInvestigationsMap": {
+      "Radiology": "Radiology Order",
+      "Endoscopy": "Endoscopy Order"
+    },
+    "allowConsultationWhenNoOpenVisit": false,
+    "defaultVisitType": "OPD",
+    "visitTypeForRetrospectiveEntries": "Special OPD",
+    "maxConceptSetLevels": 3,
+    "allowOnlyCodedDiagnosis": false,
+    "conceptSetUI": {
+      "Chief Complaint": {
+        "answersConceptName": "Chief Complaint Answers",
+        "codedConceptName":"Chief Complaint",
+        "nonCodedConceptName":"Non-Coded Chief Complaint",
+        "autocomplete": true,
+        "durationRequired": false,
+        "allowAddMore": true
+      },
+      "Procedure Type": {
+        "autocomplete" : true,
+        "required" : true,
+        "answersConceptName" : "Procedure Type"
+      },
+      "Posture": {
+        "buttonSelect": true
+      },
+      "P/A Presenting Part": {
+        "multiSelect": true
+      },
+      "FHS": {
+        "buttonSelect": true
+      },
+      "P/S (Per Speculum) - Cervix": {
+        "grid": true
+      },
+      "Physical activity, Work":{
+        "isTabular":true
+      },
+      "Travel, Walking /cycling for travel": {
+        "isTabular":true
+      },
+      "Physical activity, Recreation": {
+        "isTabular":true
+      },
+      "Diabetes, Insulin": {
+        "isTabular":true
+      },
+      "Treatment, Gliclazide": {
+        "isTabular":true
+      },
+      "Treatment, Metformin": {
+        "isTabular":true
+      },
+      "Treatment, Pioglitazone": {
+        "isTabular":true
+      },
+      "Treatment, Glipizide": {
+        "isTabular":true
+      },
+      "Treatment, Glimeperide": {
+        "isTabular":true
+      },
+      "Treatment, Voglibose": {
+        "isTabular":true
+      },
+      "Treatment, Gliptins": {
+        "isTabular":true
+      },
+      "Treatment, Glibenclamide": {
+        "isTabular":true
+      },
+      "Treatment, Other": {
+        "isTabular":true
+      },
+      "BP medicines, Enalapril":{
+        "isTabular":true
+      },
+      "BP medicines, Losartan": {
+        "isTabular":true
+      },
+      "BP medicines, Atenolol": {
+        "isTabular":true
+      },
+      "BP medicines, Thiazide": {
+        "isTabular":true
+      },
+      "BP medicines, Amlodipine": {
+        "isTabular":true
+      },
+      "BP medicines, Other": {
+        "isTabular":true
+      },
+      "Diabetes, Side effect of drug":{
+        "multiSelect": true
+      },
+      "Diabetes, Associated diseases":{
+        "multiSelect": true
+      },
+      "Diabetes, Complication":{
+        "multiSelect": true
+      },
+      "Diabetes, Symptoms during diagnosis of Diabetes":{
+        "multiSelect": true
+      },
+      "Diseases, Diabetic":{
+        "multiSelect": true
+      },
+      "Diseases, BP":{
+        "multiSelect": true
+      },
+      "Diseases, Stroke":{
+        "multiSelect": true
+      },
+      "Diseases, Heart Diseases":{
+        "multiSelect": true
+      },
+      "Diabetes Follow Up, Complication":{
+        "multiSelect": true
+      },
+      "Diabetes Follow Up, Associated diseases":{
+        "multiSelect": true
+      },
+      "Diabetes Follow Up, Side effect of drug":{
+        "multiSelect": true
+      },
+      "Anaemia, Stopped Since When": {
+        "conciseText": true
+      },
+      "Diabetic, Rapid acting": {
+        "conciseText": true
+      },
+      "Diabetic, Mixtard(70/30)": {
+        "conciseText": true
+      },
+      "Diabetes, Mixtad(50/50)":{
+        "conciseText": true
+      },
+      "Diabetes, Isophane": {
+        "conciseText": true
+      },
+      "Diabetes, Lantus": {
+        "conciseText": true
+      },
+      "Examination Notes": {
+        "conciseText": true
+      },
+      "Tuberculosis Intake Template": {
+        "computeDrugs": true
+      },
+      "Set1": {
+        "allowAddMore": true
+      },
+      "Set2": {
+        "allowAddMore": true
+      },
+      "Coded3": {
+        "multiSelect": true
+      },
+      "Image": {
+        "allowAddMore": true
+      },
+      "Gynaecology, Gravida": {
+        "stepper": true
+      },
+      "Accepted Family Planning methods": {
+        "multiSelect": true
+      },
+      "defaults": {
+        "Number of living children": 1,
+        "Accepted Family Planning methods": [
+          "Condoms",
+          "Pills"
+        ],
+        "Pain management given": true,
+        "Safe Abortion, Remarks": "Remarks",
+        "Malaria, Death Date": "2015-12-01"
+      }
+    },
+    "visitPage": {
+      "observationDisplay": {
+        "conceptNames": []
+      }
+    }
+  }
 }
