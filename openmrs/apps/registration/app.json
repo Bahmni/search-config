@@ -69,9 +69,13 @@
             ],
             "conceptSetUI": {
 		"Registration Fee":{
-				"dropdown": true
+				"dropdown": true,
+				"required": true
 				},
-        	 "defaults": {
+		"Patients Category":{
+				"required": true
+        			},
+		 "defaults": {
 				"Registration Fee": "Registration Fee, 10"    
 				},
 		"Sick": {

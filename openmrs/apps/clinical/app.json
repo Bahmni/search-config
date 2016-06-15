@@ -52,6 +52,12 @@
         	"durationRequired": false,
         	"allowAddMore": true
       	     }, 
+	    "Sick": {
+                "multiSelect": true
+            },
+	    "Partner": {
+                "multiSelect": true
+            },
 	    "Procedure Type": {
                 "autocomplete" : true,
                 "required" : true,
