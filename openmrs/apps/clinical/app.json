@@ -186,6 +186,12 @@
       "Set1": {
         "allowAddMore": true
       },
+      "Sick": {
+        "multiSelect": true
+      },
+      "Partner": {
+        "multiSelect": true
+      },
       "Set2": {
         "allowAddMore": true
       },
