@@ -86,7 +86,6 @@ input.number {
     float: left;
     margin-right: 5px;
     margin-bottom: 5px;
-    width: auto;
 }
 .patient-info ul li .label{
     font-weight: 900;
@@ -94,7 +93,7 @@ input.number {
 
 .patient-info ul li .value {
     border-bottom: 0px;
-    width: auto;
+    width: 130px;
     display: inline-block;
 }
 
@@ -125,7 +124,7 @@ input.number {
 .tree .secondary, .tree-two .secondary {
     position: relative;
     left: 70px;
-    top: 20px;
+    top: 10px;
     font-size: 16px;
 }
 .tree .primary + img {
@@ -133,23 +132,23 @@ input.number {
     left: 65px;
     margin-top: 73px;
     width: 30px;
-    height: 93px;
+    height: 83px;
 }
 .tree .secondary + img{
     position: absolute;
     left: 150px;
     margin-top: -10px;
     width: 50px;
-    height: 73px;
+    height: 63px;
 }
 .tree .triary {
     position: relative;
-    left: 185px;
-    top: -40px;
+    left: 173px;
+    top: -55px;
     margin-top: 5px;
 }
 .tree .triary li {
-    padding-bottom: 8px;
+    padding-bottom: 4px;
     font-size: 14px;
 }
 .tree-two .primary {
@@ -186,9 +185,7 @@ table thead tr th {
     position: relative;
     top: 10px;
 }
-table.page-two {
-    min-height: 700px;
+.pagetwo-case-table td {
+   height: 675px;
 }
-.case-table td{
-height:500px;
 }

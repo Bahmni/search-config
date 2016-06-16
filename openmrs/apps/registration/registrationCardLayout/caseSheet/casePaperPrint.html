@@ -43,7 +43,11 @@
                 <li>
                     <span class="label">गाव :</span>
                     <span class="value">{{patient.address.cityVillage}}</span>
-                </li>          
+                </li> 
+                <li>
+                    <span class="label">पोष्ट / वार्ड :</span>
+                    <span class="value">{{patient.address.address2}}/{{patient.address.address1}}</span>
+                </li>         
                 <li>
                     <span class="label">तालुका:</span>
                     <span class="value">{{patient.address.address3}}</span>
@@ -54,7 +58,11 @@
                 </li>
                 <li>
                     <span class="label">वय:</span>
-                    <span class="value">{{patient.age | age}}</span>
+                    <span class="value">{{patient.age.years}}</span>
+                </li>
+                <li>
+                    <span class="label">जन्म तारीख:</span>
+                    <span class="value">{{patient.birthdate|bahmniDate}}</span>
                 </li>
                 <li>
                     <span class="label">Ph.No./Mobile No.</span>
@@ -67,7 +75,7 @@
                     <span class="value"><span ng-switch on="patient.gender">
                         <span ng-switch-when="M">(पुरुष)</span>
                         <span ng-switch-when="F">(स्त्री)</span>
-                    </span> {{patient['Education Details'].value}}
+                    </span> {{patient.patientAttribute('Education Details')}}
                     </span>
                 </li>
                 <li class="last-child">
@@ -77,7 +85,7 @@
                     <span class="value"><span ng-switch on="patient.gender">
                         <span ng-switch-when="M">(पुरुष)</span>
                         <span ng-switch-when="F">(स्त्री)</span>
-                    </span> {{patient['Occupation'].value}}</span>
+                    </span> {{patient.patientAttribute('Occupation')}}</span>
                     <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -91,37 +99,118 @@
                 </li>
             </ul>
         </div>
-	<div>
-	<ul>
-        <li> <td> <span class="custom-bold-text"><b><u>Alcohol Usage</u></b></span></td></li>
-        <li> <td> <span class="custom-bold-text"><b> दारू – नवर : रुग्ण </b></span> : <span ng-repeat="observation in ::obs['Alcohol usage, Self']">{{observation.shortName ? observation.shortName : observation.name}}{{$last ? '' : ', '}} </span></td></li>
-		<li> <td> <span class="custom-bold-text"><b> दारू – नवर : जोडीदार</b></span> : <span ng-repeat="observation in ::obs['Alcohol usage, Spouse']">{{observation.shortName ? observation.shortName : observation.name}}{{$last ? '' : ', '}} </span> </td></li>
-        <li> <td> <span class="custom-bold-text"><b><u>Tobacco Usage</u></b></span></td></li>
-        <li> <td> <span class="custom-bold-text"><b> तंबाखू : रुग्ण </b></span> : <span ng-repeat="observation in ::obs['Sick']">{{observation.shortName ? observation.shortName : observation.name}}{{$last ? '' : ', '}} </span></td></li>
-		<li> <td> <span class="custom-bold-text"><b> तंबाखू : जोडीदार </b></span> : <span ng-repeat="observation in ::obs['Partner']">{{observation.shortName ? observation.shortName : observation.name}}{{$last ? '' : ', '}}</span></td></li>
-	</ul>
-	</div>
-	 <div class="case-table">
+        <div class="case-table">
             <table>
                 <thead>
-                <tr>
-                    <th>तारीख</th>
-                    <th>रोग लक्षणे व तपासणी</th>
-                    <th>विशेष तपासण्या</th>
-                    <th>उपचार</th>
-                </tr>
+                    <tr>
+                        <th>तारीख</th>
+                        <th>रोग लक्षणे व तपासणी</th>
+                        <th>विशेष तपासण्या</th>
+                        <th>उपचार</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td class="tree">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                    <tr>
+                        <td class="tree">
+                            <ul>
+                                <li><span class="primary">तंबाखू</span>
+                                    <img src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/pri-branch.png" alt="lines" />
+                                    <ul>
+                                        <li><span class="secondary">रूग्ण</span>
+                                            <img class="one" src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/sec-branch.png" alt="lines" />
+                                            <ul class="triary">
+                                                <li>नस / गुल</li>
+                                                <li>खर्रा</li>
+                                                <li>तंबाखू</li>
+                                                <li>गुटखा</li>
+                                            </ul>
+                                        </li>
+                                        <li><span class="secondary">जोडीदार</span>
+                                            <img class="two" src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/sec-branch.png" alt="lines" />
+                                            <ul class="triary">
+                                                <li>नस / गुल</li>
+                                                <li>खर्रा</li>
+                                                <li>तंबाखू</li>
+                                                <li>गुटखा</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>    
+                    <tr>
+                        <td class="tree-two">
+                            <ul>
+                                <li><span class="primary">दारू – नवर</span>
+                                    <img src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/caseSheet/branch.png" alt="lines" />
+                                    <ul>
+                                        <li><span class="secondary">व्यसनी</span>
+                                        </li>
+                                        <br/>
+                                        <li><span class="secondary">एखाद वेळ</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>                
+                    <tr>
+                        <td class="vitals">Wt.</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>                    
+                    <tr>
+                        <td class="vitals">Ht.</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="vitals">Ac.</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
-
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </span>
+        <div class="pagetwo-case-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>तारीख</th>
+                        <th>रोग लक्षणे व तपासणी</th>
+                        <th>विशेष तपासण्या</th>
+                        <th>उपचार</th>
+                    </tr>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="tree">
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+           </table>
+         </div>
     </main>
 </body>
 </html>
