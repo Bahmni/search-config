@@ -184,6 +184,39 @@
               }
           }
       }
-
+    },
+    "referralform": {
+        "title": "Referral Form",
+        "printing": {
+            "title": "",
+            "header": "",
+            "logo": ""
+        },
+        "sections": {
+            "Referral Form": {
+                "type": "custom",
+                "displayOrder": 1,
+                "config": {
+                    "title": "Referral Form",
+                    "template": "<referral-form></referral-form>"
+                }
+            },
+            "labInvestigations": {
+                "type": "investigationResult",
+                "displayOrder": 4,
+                "config": {
+                    "title": "Lab Investigations",
+                    "translationKey": "LAB_INVESTIGATION",
+                    "showChart": true,
+                    "showTable": false,
+                    "showNormalLabResults": true,
+                    "showCommentsExpanded": true,
+                    "showAccessionNotes": true,
+                    "numberOfVisits": 10,
+                    "initialAccessionCount": 1,
+                    "latestAccessionCount": 1
+                }
+            }
+        }
     }
 }

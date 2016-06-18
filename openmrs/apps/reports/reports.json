@@ -291,5 +291,19 @@
         "config": {
             "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/diagnosisCount.sql"
         }
+    },
+    "hypertensionReport": {
+        "name": "Hypertension Report",
+        "type": "MRSGeneric",
+        "config": {
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/hypertension.sql"
+        }
+    },
+    "diabetesReport": {
+        "name": "Diabetes Report",
+        "type": "MRSGeneric",
+        "config": {
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/diabetes.sql"
+        }
     }
 }

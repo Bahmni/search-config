@@ -1,0 +1,65 @@
+<html>
+<head>
+    <link rel="stylesheet" href="/bahmni_config/openmrs/apps/customDisplayControl/css/cert.css" />
+</head>
+
+<body>
+<div class="referral-form-print-body">
+    <header class="header-page">
+        <br><br>
+
+        <table>
+            <tr>
+                <td class="logo">
+                    <p>
+                        <img src="/bahmni_config/openmrs/images/SEARCH_logo.jpg" style="width: 12mm; height: 12mm; "/>
+                    </p>
+                </td>
+                <td class="print-table-right-header">
+                    <h1>
+                        SEARCH
+                    </h1>
+                    <h3 class="print-center">Society for Education, Action and Research in Community Health</h3>
+                    <h3 class="print-center">Hospital and Research Center</h3>
+                    <h3 class="print-center">Shodhgram, PO & Dist Gadchiroli</h3>
+                    <h3 class="print-center">Maharashtra, India</h3>
+                    <h3 class="print-center">Pin:442605</h3>
+                    <h3 class="print-center">Phone: 07138-255410/255409 &nbsp;&nbsp; Fax:07138-255411</h3>
+                </td>
+            </tr>
+        </table>
+        <div>
+            <center><span class="custom-print-center"><h1><strong>Referral Letter </h1></strong><span><br>
+
+        </div>
+
+    </header>
+    </h2>
+    <div>
+        <span><strong>To,</strong></span><br>
+
+
+                <div class="container">
+                <div class="left">Dear Doctor : {{referralForm['Doctor\'s Name']}}</div>
+                </div>
+        <br style="clear:both" />
+
+            <div class="left">Patient's Name : {{patient.name}}</div><div class="right">Age/Sex: {{patient.gender}} </div>
+        <br style="clear:both" />
+            <div class="left">Provisional Diagnosis  : {{patient.name}}</div><div class="right">Date: {{date | date:'dd-MM-yyyy'}} </div>
+        <br style="clear:both" />
+
+    </div>
+    <br><br>
+    <div>
+        <span>Reason For Referral</span>
+        <br><br>
+        {{referralForm['Reason for Referral']}}
+    </div>
+    <br><br>
+
+
+
+</div>
+</body>
+</html>
