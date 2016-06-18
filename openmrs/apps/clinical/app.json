@@ -183,6 +183,15 @@
       "Tuberculosis Intake Template": {
         "computeDrugs": true
       },
+      "Follow up date": {
+        "allowFutureDates": true
+      },
+       "Provisional Surgery Date": {
+        "allowFutureDates": true
+      },
+      "Surgery Type": {
+        "multiselect": true
+      },
       "Set1": {
         "allowAddMore": true
       },

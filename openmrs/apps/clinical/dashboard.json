@@ -20,24 +20,24 @@
             },
    	   "Alcohol Usage": {
                 "title": "Alcohol Usage",
-		"type": "Alcohol Usage",
+		"type": "Alcohol usage, Self",
                 "isObservation": true,
                 "displayOrder": 1,
 	        "dashboardConfig": {
                     "conceptNames": [
-			"Alcohol usage"
+			"Alcohol usage, Self"
                     ],
                     "numberOfVisits": 1
                 },
                 "expandedViewConfig": {
                     "conceptNames": [
-			"Alcohol usage"
+			"Alcohol usage, Self"
                     ],
                     "numberOfVisits": 4,
                     "showDetailsButton": true,
                     "pivotTable": {}
                 },
-                "displayOrder": 6
+                "displayOrder": 7
             },
 	   "Tobacco Usage": {
                 "title": "Tobacco Usage",
@@ -70,11 +70,26 @@
                 "displayOrder": 3 
             },
 
-            "disposition": {
-                "translationKey" : "DASHBOARD_TITLE_DISPOSITION_KEY",
-                "type": "disposition",
-                "numberOfVisits": 1,
-                "displayOrder": 4
+           "Pre-surgery Cardiorespiratory Risk Assessment": {
+                "title": "Pre-surgery Cardiorespiratory Risk Assessment",
+		"type": "Pre-surgery Cardiorespiratory Risk Assessment",
+                "isObservation": true,
+                "displayOrder": 2, 
+                "dashboardConfig": {
+		     "conceptNames": [
+			"Pre-surgery Cardiorespiratory Risk Assessment"
+                    ],
+                    "numberOfVisits": 1 
+                },
+                "expandedViewConfig": {
+                    "conceptNames": [
+			"Pre-surgery Cardiorespiratory Risk Assessment"
+                    ],
+                    "numberOfVisits": 4,
+                    "showDetailsButton": true,
+                    "pivotTable": {}
+                },
+                "displayOrder": 8
             },
              "radiology": {
                 "translationKey": "DASHBOARD_TITLE_RADIOLOGY_KEY",
