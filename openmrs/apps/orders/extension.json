@@ -14,5 +14,57 @@
 	 "label": "Radiology Order",
 	 "order": 1,
 	 "requiredPrivilege": "app:orders"
+	 },
+
+	"bahmniClinicalPatientsSearchUSGOrderAllPatients":{
+	 "id": "bahmni.clinical.patients.search.USGOrderAllPatients",
+	 "extensionPointId": "org.bahmni.patient.search",
+	 "type": "config",
+	 "extensionParams": {
+	  "searchHandler": "emrapi.sqlSearch.USG",
+	  "display":"USG Orders",
+	   "translationKey": "MODULE_LABEL_USG_ORDERS_KEY",
+	  "forwardUrl" : "../orders/#/patient/{{patientUuid}}/fulfillment/USG Order",
+	  "forwardButtonTitle" : "View",
+	  "view":"tabular"
+	 },
+	 "label": "USG Order",
+	 "order": 2,
+	 "requiredPrivilege": "app:orders"
+	 },
+
+	"bahmniClinicalPatientsSearchProceduresOrderAllPatients":{
+	 "id": "bahmni.clinical.patients.search.ProcedureOrderAllPatients",
+	 "extensionPointId": "org.bahmni.patient.search",
+	 "type": "config",
+	 "extensionParams": {
+	  "searchHandler": "emrapi.sqlSearch.Procedures",
+	  "display":"Procedure Orders",
+	   "translationKey": "MODULE_LABEL_PROCEDURES_ORDERS_KEY",
+	  "forwardUrl" : "../orders/#/patient/{{patientUuid}}/fulfillment/Procedure Order",
+	  "forwardButtonTitle" : "View",
+	  "view":"tabular"
+	 },
+	 "label": "Procedure Order",
+	 "order": 3,
+	 "requiredPrivilege": "app:orders"
+	 },
+ 
+	"bahmniClinicalPatientsSearchDentalOrderAllPatients":{
+	 "id": "bahmni.clinical.patients.search.DentalOrderAllPatients",
+	 "extensionPointId": "org.bahmni.patient.search",
+	 "type": "config",
+	 "extensionParams": {
+	  "searchHandler": "emrapi.sqlSearch.Dental",
+	  "display":"Dental Orders",
+	   "translationKey": "MODULE_LABEL_DENTAL_ORDERS_KEY",
+	  "forwardUrl" : "../orders/#/patient/{{patientUuid}}/fulfillment/Dental Order",
+	  "forwardButtonTitle" : "View",
+	  "view":"tabular"
+	 },
+	 "label": "Dental Order",
+	 "order": 3,
+	 "requiredPrivilege": "app:orders"
 	 }
+
 }

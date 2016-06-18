@@ -16,13 +16,38 @@
           "multiSelect": true
         }
       },
-      "sections": {
+      "sectionsa": {
         "title": "Radiology Order FulFillment Form",
         "name": "Radiology Results",
         "isObservation": true,
         "conceptNames": ["Radiology Notes"],
         "numberOfVisits": 2,
         "scope": "latest"
+      },
+	"sectionsb": {
+        "title": "USG Order FulFillment Form",
+        "name": "USG Results",
+        "isObservation": true,
+        "conceptNames": ["USG Notes"],
+        "numberOfVisits": 2,
+        "scope": "latest"
+      },
+	"sectionsc": {
+        "title": "Procedure Order FulFillment Form",
+        "name": "Procedure Results",
+        "isObservation": true,
+        "conceptNames": ["Procedure Notes"],
+        "numberOfVisits": 2,
+        "scope": "latest"
+      },
+	"sectionsd": {
+        "title": "Dental Order FulFillment Form",
+        "name": "Dental Results",
+        "isObservation": true,
+        "conceptNames": ["Dental Notes"],
+        "numberOfVisits": 2,
+        "scope": "latest"
       }
+
     }
 }
