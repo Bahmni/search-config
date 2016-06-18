@@ -54,18 +54,6 @@
             "showLatest": true
         },
       "order": 4 
-     },
-    "extraInformation":{
-    "id": "bahmni.registration.conceptSetGroup.extraInformation",
-    "extensionPointId": "org.bahmni.registration.conceptSetGroup.observations",
-     "type": "config",
-      "extensionParams": {
-            "conceptName": "Other Information",
-            "conceptNames": ["Alcohol usage", "Tobacco usage"],
-            "required":true
-        },
-      "order": 5
      }
-
 
 }
