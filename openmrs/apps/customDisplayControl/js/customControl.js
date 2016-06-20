@@ -19,7 +19,7 @@ angular.module('bahmni.common.displaycontrol.custom')
     }]).directive('referralForm', ['$q', 'observationsService', 'visitService', 'bedService', 'appService', 'spinner', '$sce', function ($q, observationsService, visitService, bedService, appService, spinner, $sce) {
         var link = function ($scope) {
 
-            var conceptNames = ["Referral Form"];
+            var conceptNames = ["Referral Form Template"];
             spinner.forPromise(observationsService.fetch($scope.patient.uuid, conceptNames, "latest", undefined, $scope.visitUuid, undefined).then(function (response) {
                 $scope.observations = response.data[0];
                 $scope.referralForm = [];

@@ -124,14 +124,14 @@
         </sql>
     </changeSet>
 
-    <changeSet id="SEARCH-201606171717" author="sandeep">
+    <!--changeSet id="SEARCH-201606171717" author="sandeep">
         <sqlFile encoding="utf8"
                  path="sql/functions.sql"
-                 relativeToChangelogFile="true"
+                 relativeToChangelogFile="false"
                  splitStatements="false"
                  stripComments="false"
                  endDelimiter="\n$$"
                 />
-    </changeSet>
+    </changeSet-->
 
 </databaseChangeLog>
