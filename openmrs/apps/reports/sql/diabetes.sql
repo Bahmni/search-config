@@ -5,7 +5,7 @@ where name like '%Diabetes%' and date(visit_date_started) between '#startDate#' 
 from (SELECT person_id as pid from confirmed_diagnosis_view_new
 where name like '%Diabetes%' and date(visit_date_started) between '#startDate#' and '#endDate#') as x) as No_of_Patient_Visit_with_diabetes_incontrol,
 
-(SELECT (sum(isDiabetesInControl('#startDate#','#endDate#',  pid))/count(pid))*100 as Percent_of_Patient_Visit_with_diabetes_incontrol
+(SELECT concat(round((sum(isDiabetesInControl('#startDate#','#endDate#',  pid))/count(pid))*100,2), ' %') as Percent_of_Patient_Visit_with_diabetes_incontrol
 from (SELECT person_id as pid from confirmed_diagnosis_view_new
 where name like '%Diabetes%' and date(visit_date_started) between '#startDate#' and '#endDate#') as x) as Percent_of_Patient_Visit_with_diabetes_incontrol,
 
@@ -17,6 +17,6 @@ where name like '%Diabetes%' and date(visit_date_started) between '#startDate#' 
 from (SELECT person_id as pid from confirmed_diagnosis_view_new
 where name like '%Diabetes%' and date(visit_date_started) between '#startDate#' and '#endDate#') as x) as No_of_Distinct_Patient_with_diabetes_incontrol,
 
-(SELECT (sum(isDiabetesInControl('#startDate#','#endDate#',  pid))/count(pid))*100 as Percent_of_Distinct_Patient_with_diabetes_incontrol
+(SELECT concat(round((sum(isDiabetesInControl('#startDate#','#endDate#',  pid))/count(pid))*100,2), ' %') as Percent_of_Distinct_Patient_with_diabetes_incontrol
 from (SELECT person_id as pid from confirmed_diagnosis_view_new
 where name like '%Diabetes%' and date(visit_date_started) between '#startDate#' and '#endDate#') as x ) as Percent_of_Distinct_Patient_with_diabetes_incontrol)
