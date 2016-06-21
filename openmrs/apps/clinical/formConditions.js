@@ -72,5 +72,40 @@ Bahmni.ConceptSet.FormConditions.rules = {
                 disable: ["If, No"]
             }
         }
+    },'Hypertension, Currently Walking daily' : function (formName, formFieldValues) {
+        var walking = formFieldValues["Hypertension, Currently Walking daily"];
+        if (walking == true) {
+            return {
+                enable: ["Currently Walking daily, If yes"]
+            }
+        } else {
+            return {
+                disable: ["Currently Walking daily, If yes"]
+            }
+        }
     },
+    'Previously treated for Sugar Disease' : function (formName, formFieldValues) {
+        var out = formFieldValues["Previously treated for Sugar Disease"];
+        if (out == true) {
+            return {
+                enable: ["Previously treated for Sugar Disease, If Yes", "Diabetes, Treated Hospital"]
+            }
+        } else {
+            return {
+                disable: ["Previously treated for Sugar Disease, If Yes", "Diabetes, Treated Hospital"]
+            }
+        }
+    },
+    'Follow Up, Off Medication' : function (formName, formFieldValues) {
+        var followup = formFieldValues["Follow Up, Off Medication"];
+        if (followup == true) {
+            return {
+                enable: ["Diabetes Follow Up, If Yes"]
+            }
+        } else {
+            return {
+                disable: ["Diabetes Follow Up, If Yes"]
+            }
+        }
+    }
 };

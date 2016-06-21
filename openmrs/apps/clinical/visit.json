@@ -203,7 +203,7 @@
             },
             "labInvestigations": {
                 "type": "investigationResult",
-                "displayOrder": 4,
+                "displayOrder": 2,
                 "config": {
                     "title": "Lab Investigations",
                     "translationKey": "LAB_INVESTIGATION",
@@ -215,6 +215,32 @@
                     "numberOfVisits": 10,
                     "initialAccessionCount": 1,
                     "latestAccessionCount": 1
+                }
+            },
+            "footer": {
+                "type": "custom",
+                "displayOrder": 3,
+                "config": {
+                    "title": "",
+                    "template": "<referralfoot-form></referralfoot-form>"
+                }
+            }
+        }
+    },
+    "fitnesscert": {
+        "title": "Fitness Certificate",
+        "printing": {
+            "title": "",
+            "header": "",
+            "logo": ""
+        },
+        "sections": {
+            "Referral Form": {
+                "type": "custom",
+                "displayOrder": 1,
+                "config": {
+                    "title": "Referral Form",
+                    "template": "<fitness-cert></fitness-cert>"
                 }
             }
         }

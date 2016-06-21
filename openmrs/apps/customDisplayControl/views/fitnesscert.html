@@ -5,12 +5,12 @@
 
 <body>
 <div class="referral-form-print-body">
-    <div class="logo-container">
+    <div class="logo-container clearfix">
         <div class="fl">
             <img style="height: 154px;" src="/bahmni_config/openmrs/images/SEARCH_logo.jpg">
         </div>
         <div class="fl hospital-name">
-            <h1>SEARCH</h1>
+            <h1 style="font-size: 25px;">SEARCH</h1>
             <h3>
                 Society for Education, Action and Research in Community Health
             </h3>
@@ -27,25 +27,37 @@
     <hr>
     <br><br>
 
-    <div class="referal-form">
-        <h1></h1>
-        <b><h1 style="font-size: 30px;padding: 20px">Referral Letter</h1></b>
+    <b class="referal-form">
+        <b><h1 style="font-size: 30px;padding: 20px">Fitness/Sickness Certificate</h1></b>
     </div>
     <div class="referal-details clearfix">
-        <div class="fll">
-            <span><strong>To,</strong></span>
-            <div><b>Dear Doctor</b> : {{referralForm['Doctor\'s Name']}}</div>
-            <div><b>Patient's Name</b> : {{diagnosis}}</div>
-            <div><b>Provisional Diagnosis</b> : {{patient.name}}</div>
-        </div>
         <div class="frr">
-            <div><b>Age/Sex</b>: {{patient.gender}}  </div>
             <div><b>Date</b>: {{date | date:'dd-MM-yyyy'}} </div>
         </div>
     </div>
     <div class="referal-reson">
-        <div style="font-size: 20px"><b>Reason For Referral</b> : <p style="font: 20px;">  {{referralForm['Reason for Referral']}} </p> </div>
+        <div><p>This is to certify that Mr./Mrs.<b>{{patient.name}}</b> Reg No. <b>{{patient.identifier}}</b> is/was our outpatient/indoor
+        patient from/on <b>{{visitStartDate | bahmniDate}}</b> to <b>{{visitEndDate | bahmniDate}}</b> for <b>{{diagnosis}}</b> </p><p>
+            He/She is/was advised to take rest for _________________________<br>
+            He/She is fit to resume duty from _________________________<br>
+        </p> </div>
     </div>
 </div>
+<div>
+
+    <br><br>
+
+    <br><br>
+
+    <div class="referral-footer">
+        <br>
+        <br>
+        <div class="fr" style="font-size: 20px;">Medical Officer</div>
+    </div>
+    <br><br>
+</div>
+<br><br>
+
+
 </body>
 </html>

@@ -1,23 +1,23 @@
 @charset "UTF-8";
 
 @page{
-  margin-left: .3cm;
-  margin-right: 0.3cm;
-  margin-top: 0.3cm;
-  margin-bottom: 0.3cm;
+    margin-left: .3cm;
+    margin-right: 0.3cm;
+    margin-top: 0.3cm;
+    margin-bottom: 0.3cm;
 }
 
 p,h1,h2,h3,table,tr,td,div,span,ul,li{
-  margin:0px;
-  padding:0px;
+    margin:0px;
+    padding:0px;
 }
 h1,h2,h3{
-  text-align: center;
-  line-height: 1;
-  font-family: "Arial Unicode";
+    text-align: center;
+    line-height: 1;
+    font-family: "Arial Unicode";
 }
 .print-center{
-  text-align:center;
+    text-align:center;
 }
 ul li {
     list-style-type: none;
@@ -51,18 +51,26 @@ input {
 input.number {
     width: 180px;
 }
+.treelogo {
+    width: 80%;
+    float: left;
+}
 .logo {
-    width: 5%;
+    width: 25%;
+    float: left;
+}
+.logocont {
+    width: 20%;
     float: left;
 }
 .title {
     margin-top: 10px;
-    width: 70%;
-/*    margin: 0 auto;*/
+    width: 60%;
+    /*    margin: 0 auto;*/
     float: left;
 }
 .primary-details {
-    width: 25%;
+    width: 20%;
     float: right;
     text-align: center;
 }
@@ -70,7 +78,8 @@ input.number {
     margin-bottom: 5px;
     font-weight: 900;
 }
-.primary-details ul li.caseNo {
+.primary-details ul li.caseNo .value{
+    padding: 3px 10px;
     border: 1px solid #666;
 }
 
@@ -86,6 +95,7 @@ input.number {
     float: left;
     margin-right: 5px;
     margin-bottom: 5px;
+    height:35px;
 }
 .patient-info ul li .label{
     font-weight: 900;
@@ -93,8 +103,18 @@ input.number {
 
 .patient-info ul li .value {
     border-bottom: 0px;
-    width: 130px;
+    width: 110px;
     display: inline-block;
+}
+.patient-info ul li .value span.gender-wrap span{ display:block;font-size:12px; line-height:1;}
+.patient-info ul li .value span.gender-wrap span.gender-top{ position:relative;padding-top:7px;}
+.patient-info ul li .value span.gender-wrap span.gender-top:before{
+    content: "\2190";
+    display:block;
+    width:100%;
+    height:10px;
+    top:-3px;
+    position:absolute;
 }
 
 .patient-info ul li .value-line {
@@ -103,11 +123,11 @@ input.number {
     display: inline-block;
 }
 .patient-info ul li .value.name {
-    width: 264px;
+    width: 254px;
 }
 .patient-info ul li .value.mobile {
     width: 217px;
-    font-weight: 900;
+
 }
 .patient-info ul li.last-child {
     float: left;
@@ -183,9 +203,13 @@ table thead tr th {
 }
 .education img {
     position: relative;
-    top: 10px;
-}
+    top: 10px;}
 .pagetwo-case-table td {
-   height: 675px;
+    height: 675px;
 }
+.patient-info ul li.education .label , .patient-info ul li .label-last{
+    margin-top: 5px;
+    display: table;
+    float: left;
 }
+table{ height:520px;}

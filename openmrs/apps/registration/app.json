@@ -58,7 +58,7 @@
             "printOptions": [
                 {
                     "translationKey": "REGISTRATION_PRINT_REG_CARD_KEY",
-                    "templateUrl": "/bahmni_config/openmrs/apps/registration/supplementalPaperLayout/print.html",
+                    "templateUrl": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/print.html",
                     "shortcutKey": "r"
                 },
                 {
@@ -76,7 +76,8 @@
 				"required": true
         			},
 		 "defaults": {
-				"Registration Fee": "Registration Fee, 10"    
+				"Registration Fee": "Registration Fee, 10",
+             "Patients Category": "General Patient"
 				},
 		"Sick": {
         	        "multiSelect": true

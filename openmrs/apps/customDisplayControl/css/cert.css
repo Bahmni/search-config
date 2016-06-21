@@ -36,3 +36,89 @@ span.cert-entry{
     position: relative;
     width: 100%;
 }
+
+.referral-form-print-body .logo-container{
+    margin: 0;
+    width: 100%;
+}
+
+.hospital-name{
+    float: right;
+}
+.hospital-name h1{
+    font-size: 30px;
+    text-align: right;
+    margin-bottom: 20px;
+}
+.hospital-name p{
+    line-height: 1.3;
+    text-align: right;   
+}
+
+.fll{
+    float:left;
+}
+.fll div{
+    font-size: 20px;
+    padding: 5px;
+}
+.referral-footer div{
+    font-size: 20px;
+}
+.referral-footer span{
+    font-size: 20px;
+}
+.fll span{
+    font-size: 20px;
+    padding: 5px;
+}
+.frr {
+    float: right;
+}
+.frr div{
+    padding: 5px;
+    font-size: 20px;
+}
+.referral-footer span{
+    padding-bottom: 10px;
+}
+.referal-reson div p{
+    line-height: 1.5em;
+    font-size: 20px;
+
+    padding: 10px;
+}
+.referal-reson div p b{
+    text-decoration: underline;
+}
+.referal-reson div{
+    padding: 5px;
+}
+.referal-form{
+    margin-top: 10px;
+}
+.referal-form h1{
+    text-align:center;font-size: 25px;padding-top:25px
+}
+
+.logo-container div {
+    font-size: 12px;
+}
+
+@media print {
+    .referral-form-print-body .logo-container{
+        margin: 0;
+        width: 100%;
+    }
+
+    .hospital-name{
+        float: right;
+    }
+    .hospital-name h1{
+        text-align: right;
+        margin-bottom: 20px;
+    }
+    .hospital-name p{
+        line-height: 1.3
+    }
+}
