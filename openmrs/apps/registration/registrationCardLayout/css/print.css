@@ -10,17 +10,28 @@ body {
 }
 
 .patient-details {
-  margin-top: 167px;
-  margin-left: 55px;
+  margin-top: 155px;
+  margin-left: 65px;
 }
 
 .patient-details li {
   list-style-type: none;
   font-weight: bold;
   font-size: 14pt;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .patient-details li .patient-id {
-  margin-left: 130px;
+  margin-left: 139px;
+}
+@page {
+  size: A4;
+  margin: 0;
+}
+@media print {
+  html, body {
+    width: 120mm;
+    height: 80mm;
+  }
+  /* ... the rest of the rules ... */
 }

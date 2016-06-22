@@ -15,7 +15,7 @@
                     "address2",
                     "cityVillage",
                     "countryDistrict",
-		    "stateProvince"
+                    "stateProvince"
                 ]
             },
             "diagnosis": {
@@ -23,12 +23,12 @@
                 "type": "diagnosis",
                 "showCertainty": true,
                 "showOrder": true,
-                "displayOrder": 2
+                "displayOrder": 4
             },
             "labResults": {
                 "translationKey":"DASHBOARD_TITLE_LAB_RESULTS_KEY",
                 "type": "labOrders",
-                "displayOrder": 3,
+                "displayOrder": 1,
                 "dashboardConfig": {
                     "title": null,
                     "numberOfVisits": 1,
@@ -39,14 +39,14 @@
                     "latestAccessionCount": 1
                 },
                 "expandedViewConfig": {
-                    "numberOfVisits": 10
+                    "numberOfVisits": 1
                 }
             },
             "nutritionalValues": {
                 "translationKey":"DASHBOARD_TITLE_NUTRITIONAL_VALUES_KEY",
                 "type": "vitals",
                 "isObservation": true,
-                "displayOrder": 4,
+                "displayOrder": 2,
                 "dashboardConfig": {
                     "conceptNames": [
                         "HEIGHT",
@@ -68,31 +68,31 @@
                     "pivotTable": {}
                 }
             },
-   	   "Alcohol Usage": {
+            "Alcohol Usage": {
                 "title": "Alcohol/Tobacco Usage",
-		"type": "Alcohol usage, Self",
+                "type": "Alcohol usage, Self",
                 "isObservation": true,
-	        "dashboardConfig": {
+                "dashboardConfig": {
                     "conceptNames": [
-			"Alcohol usage, Self", "Tobacco Usage Info"
+                        "Alcohol usage, Self", "Tobacco Usage Info"
                     ],
                     "scope": "latest"
                 },
                 "expandedViewConfig": {
                     "conceptNames": [
-			"Alcohol usage, Self", "Tobacco Usage Info"
+                        "Alcohol usage, Self", "Tobacco Usage Info"
                     ],
-                    "numberOfVisits": 4,
+                    "numberOfVisits": 6,
                     "showDetailsButton": true,
                     "pivotTable": {}
                 },
-                "displayOrder": 5
+                "displayOrder": 6
             },
             "vitals": {
                 "translationKey": "DASHBOARD_TITLE_VITALS_KEY",
                 "type": "vitals",
                 "isObservation": true,
-                "displayOrder": 6,
+                "displayOrder": 3,
                 "dashboardConfig": {
                     "conceptNames": [
                         "Vitals"
@@ -117,16 +117,16 @@
                     }
                 }
             },
-             "radiology": {
+            "radiology": {
                 "translationKey": "DASHBOARD_TITLE_RADIOLOGY_KEY",
                 "type": "radiology",
-                "displayOrder": 7
+                "displayOrder": 5
             },
-           "historyAndExaminations": {
+            "historyAndExaminations": {
                 "translationKey": "DASHBOARD_TITLE_HISTORY_AND_EXAMINATIONS_KEY",
                 "type": "vitals",
                 "isObservation": true,
-                "displayOrder": 8,
+                "displayOrder": 7,
                 "dashboardConfig": {
                     "conceptNames": [
                         "History and Examination"
@@ -142,7 +142,7 @@
                     "pivotTable": {}
                 }
             },
-           "pacs": {
+            "pacs": {
                 "orderType": "Radiology Order",
                 "type": "pacsOrders",
                 "translationKey" : "DASHBOARD_TITLE_PACS_KEY",
@@ -152,25 +152,25 @@
                     "numberOfVisits": 4
                 }
             },
-           
-            
+
+
             "visits": {
                 "translationKey": "DASHBOARD_TITLE_VISITS_KEY",
                 "type": "visits",
-                "displayOrder": 10,
+                "displayOrder": 8,
                 "dashboardConfig": {
                     "title": null,
                     "maximumNoOfVisits": 8,
                     "groupByVisits": true
                 }
             },
-           "Pre-surgery Cardiorespiratory Risk Assessment": {
+            "Pre-surgery Cardiorespiratory Risk Assessment": {
                 "title": "Pre-surgery Cardiorespiratory Risk Assessment",
                 "type": "Pre-surgery Cardiorespiratory Risk Assessment",
                 "isObservation": true,
                 "displayOrder": 11,
                 "dashboardConfig": {
-                     "conceptNames": [
+                    "conceptNames": [
                         "Pre-surgery Cardiorespiratory Risk Assessment"
                     ],
                     "numberOfVisits": 1
@@ -184,9 +184,65 @@
                     "pivotTable": {}
                 }
             },
+            "treatments": {
+                "title": "Treatments",
+                "type": "treatment",
+                "dashboardConfig": {
+                    "showFlowSheet": false,
+                    "showListView": true,
+                    "showRoute": false,
+                    "showDrugForm": false,
+                    "numberOfVisits": 1,
+                    "showOtherActive": true,
+                    "showDetailsButton": false
+                },
+                "expandedViewConfig": {
+                    "title": "Treatments",
+                    "showFlowSheet": false,
+                    "showListView": true,
+                    "showRoute": true,
+                    "showDrugForm": true,
+                    "numberOfVisits": 10,
+                    "showOtherActive": true,
+                    "showDetailsButton": false
+                }
+            },
             "admissionDetails": {
                 "translationKey":"DASHBOARD_TITLE_ADMISSION_DETAILS_KEY",
                 "type": "admissionDetails"
+            },
+            "dentalOrdersControl": {
+                "orderType": "Dental Order",
+                "type": "ordersControl",
+                "title": "Dental Orders",
+                "dashboardConfig": {
+                    "conceptNames": ["Dental Findings"],
+                    "numberOfVisits": "4",
+                    "showHeader": true,
+                    "obsIgnoreList" : []
+                }
+            },
+            "procedureOrdersControl": {
+                "orderType": "Procedure Order",
+                "type": "ordersControl",
+                "title": "Procedure Orders",
+                "dashboardConfig": {
+                    "conceptNames": ["Procedure Notes"],
+                    "numberOfVisits": "4",
+                    "showHeader": true,
+                    "obsIgnoreList" : []
+                }
+            },
+            "USGOrdersControl": {
+                "orderType": "USG Order",
+                "type": "ordersControl",
+                "title": "USG Orders",
+                "dashboardConfig": {
+                    "conceptNames": ["Procedure Notes"],
+                    "numberOfVisits": "4",
+                    "showHeader": true,
+                    "obsIgnoreList" : []
+                }
             }
         }
     },
@@ -195,7 +251,7 @@
         "maxRecentlyViewedPatients": 10,
         "sections": {
             "patientInformation": {
-               "translationKey": "DASHBOARD_TITLE_PATIENT_INFORMATION_KEY",
+                "translationKey": "DASHBOARD_TITLE_PATIENT_INFORMATION_KEY",
 
                 "type": "patientInformation",
                 "patientAttributes": [
@@ -258,17 +314,31 @@
             },
             "diabetes/BloodSugar": {
                 "type": "observationGraph",
-                "title": "Diabetes/Blood Sugar",
+                "title": "Diabetes/Blood Sugar/Cholesterol",
                 "config": {
                     "yAxisConcepts": [
                         "Blood Sugar (Fasting)",
                         "Blood Sugar (Post Meal)",
-			"Blood Sugar (Random)"
+                        "Blood Sugar (Random)",
+                        "Total Cholesterol"
                     ],
                     "xAxisConcept": "observationDateTime",
                     "numberOfVisits": 10
                 },
                 "displayOrder": 4
+            },
+            "observationGraph": {
+                "type": "observationGraph",
+                "title": "Blood Urea/Creatinine",
+                "config": {
+                    "yAxisConcepts": [
+                        "Sr. Creatinine",
+                        "Blood Urea"
+                    ],
+                    "xAxisConcept": "observationDateTime",
+                    "numberOfVisits": 10
+                },
+                "displayOrder": 5
             },
             "observationGraph": {
                 "type": "observationGraph",
@@ -279,39 +349,6 @@
                     ],
                     "xAxisConcept": "observationDateTime",
                     "numberOfVisits": 10
-                },
-                "displayOrder": 5
-            },
-
-            "diabetes": {
-                "title": "Diabetes",
-                "templateName": "Diabetes, Progress",
-                "type": "diseaseTemplate",
-                "dashboardConfig": {
-                    "showOnly": []
-                },
-                "expandedViewConfig": {
-                    "showDetailsButton": true,
-                    "pivotTable": {
-                        "numberOfVisits": "10",
-                        "groupBy": "visits",
-                        "obsConcepts": [
-                            "Diabetes, Blood Pressure",
-                            "Diabetes, A1C",
-                            "Diabetes, LDL",
-                            "Diabetes, Ulcers on Feet",
-                            "Blood Sugar Fasting",
-                            "Blood Sugar PP"
-                        ],
-                        "labConcepts": [
-                            "RBS",
-                            "FBS",
-                            "PP2BS",
-                            "Hb1AC",
-                            "Creatinine",
-                            "Cholesterol"
-                        ]
-                    }
                 },
                 "displayOrder": 6
             }

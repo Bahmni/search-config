@@ -2,9 +2,9 @@
 
 @page{
     margin-left: .3cm;
-    margin-right: 0.3cm;
-    margin-top: 0.3cm;
-    margin-bottom: 0.3cm;
+    margin-right: .3cm;
+    margin-top: .3cm;
+    margin-bottom: .3cm;
 }
 
 p,h1,h2,h3,table,tr,td,div,span,ul,li{
@@ -50,18 +50,6 @@ input {
 }
 input.number {
     width: 180px;
-}
-.treelogo {
-    width: 80%;
-    float: left;
-}
-.logo {
-    width: 25%;
-    float: left;
-}
-.logocont {
-    width: 20%;
-    float: left;
 }
 .title {
     margin-top: 10px;
@@ -126,7 +114,11 @@ input.number {
     width: 254px;
 }
 .patient-info ul li .value.mobile {
-    width: 217px;
+    width: 180px;
+
+}
+.patient-info ul li .value.age {
+    width: 50px;
 
 }
 .patient-info ul li.last-child {
@@ -185,7 +177,7 @@ table thead tr th {
     text-align: center;
 }
 .education {
-    /*margin-left: -35px;*/
+    width: 250px;
 }
 .occupation {
     display: block;
@@ -203,13 +195,30 @@ table thead tr th {
 }
 .education img {
     position: relative;
-    top: 10px;}
-.pagetwo-case-table td {
-    height: 675px;
+    top: 10px;
 }
 .patient-info ul li.education .label , .patient-info ul li .label-last{
     margin-top: 5px;
     display: table;
     float: left;
 }
-table{ height:520px;}
+.case-table table{ height:auto}
+.pagetwo-case-table table{
+    height:680px;
+    padding-top:80px;
+}
+.pagetwo-case-table table{word-break: break-all;}
+.treelogo {
+    width: 100%
+}
+.pagebreak { page-break-before: always; }
+
+
+.logo {
+    width: 25%;
+    float: left;
+}
+.logocont {
+    width: 20%;
+    float: left;
+}

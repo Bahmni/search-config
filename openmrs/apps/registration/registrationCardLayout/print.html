@@ -11,7 +11,8 @@
         <li>
             <span class="date">{{patient.registrationDate | date:'dd/MM/yyyy'}}</span><span class="patient-id">{{patient.identifier}}</span>
         </li>
-        <li>{{patient.fullNameLocal()}}</li>
+        {{email}}{{$last ? '' : ', '}}
+        <li>{{patient.givenName}} &nbsp {{patient.middleName}} &nbsp {{patient.familyName}}</li>
         <li>{{patient.address.cityVillage}}</li>
     </ul>
 </div>

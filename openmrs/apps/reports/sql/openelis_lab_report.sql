@@ -9,5 +9,5 @@ FROM sample s
   INNER JOIN patient p ON p.id = sh.patient_id
   INNER JOIN patient_identity pi ON p.id = pi.patient_id and pi.identity_type_id=2
   INNER JOIN person pr ON pr.id = p.person_id
-GROUP BY pi.identity_data, s.accession_number, "Collected Date", "Name",
+GROUP BY pi.identity_data, s.accession_number, "Collected Date", "Name"
 ORDER BY "Collected Date";

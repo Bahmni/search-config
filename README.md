@@ -79,3 +79,10 @@ https://ci-bahmni.thoughtworks.com/go/files/Bahmni_MRS_Master/{Build_Number}/Bui
 
 ```
 
+0.81 Release local changes
+
+1) OpenERP
+    a) Removed Red color in sale order line for services
+    b) Sync of comments for other orders to ERP (bahmni-erp-connect and erp modules)
+2) CSS change for border color for buttons and input boxes (made border black)
+3) Added last visit date for registration page.

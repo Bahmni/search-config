@@ -25,7 +25,8 @@
     <div class="row">
         <div class="left">
             <span class="label">नाम:</span>
-            <span>{{patient.fullNameLocal() || patient.name}}</span>
+
+            <span>{{patient.givenName}} &nbsp {{patient.middleName}} &nbsp {{patient.familyName}}</span>
         </div>
         <div class="right">
             <span class="label">जिला:</span>
