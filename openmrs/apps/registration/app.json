@@ -96,14 +96,14 @@
 		},
             "patientSearch": {
                 "address": {
-                    "label": "Rural Ward",
-                    "placeholder": "Enter ward",
-                    "field": "address2"
+                    "label": "Village",
+                    "placeholder": "Enter village",
+                    "field": "city_village"
                 },
                 "customAttributes": {
-                    "label": "Secondary Id",
+                    "label": "Secondary ID / Mobile",
                     "placeholder": "Secondary ID",
-                    "fields": ["SecondaryID"]
+                    "fields": ["Mobile", "SecondaryID"]
                 }
             }
         }
