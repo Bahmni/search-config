@@ -24,10 +24,7 @@ body {
 .patient-details li .patient-id {
   margin-left: 139px;
 }
-@page {
-  size: A4;
-  margin: 0;
-}
+
 @media print {
   html, body {
     width: 120mm;

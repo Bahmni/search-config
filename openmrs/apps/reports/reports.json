@@ -29,12 +29,9 @@
     },
     "procedureandsurgeryReport": {
         "name": "Total Number of Surgeries and Procedures",
-        "type": "obsCount",
+        "type": "MRSGeneric",
         "config": {
-            "ageGroupName": "All Ages",
-            "conceptNames": ["Procedure Type"],
-            "countOnlyClosedVisits":"false",
-            "countOncePerPatient":"false"
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/order_count.sql"
         }
     },
     "patientlocation":{

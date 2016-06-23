@@ -1,9 +1,8 @@
-SELECT vt.name as 'Visit Type', diagnosis.name as Diagnosis, count(diagnosis.person_id) as 'Number of patients'
-FROM confirmed_diagnosis_view_new diagnosis
-INNER JOIN visit v
-on v.visit_id=diagnosis.visit_id
-  and cast(obs_datetime as DATE) BETWEEN '#startDate#' and '#endDate#'
-INNER JOIN visit_type vt ON
-                        vt.visit_type_id=v.visit_type_id
-GROUP BY diagnosis.name, vt.name
-ORDER BY vt.name;
+
+select name as Diagnosis,va.value_reference as 'Visit Type',u.username as doctor,count(cdvn.person_id) as 'Number of patients' from confirmed_diagnosis_view_new cdvn
+INNER JOIN encounter en on en.encounter_id=cdvn.encounter_id
+INNER JOIN visit_attribute va on va.visit_id=cdvn.visit_id and va.attribute_type_id=1
+INNER JOIN users u on u.user_id=en.creator
+  WHERE date(cdvn.encounter_datetime) between '#startDate#' and '#endDate#'
+GROUP BY name,va.value_reference,u.username
+;
