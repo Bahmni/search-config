@@ -82,5 +82,12 @@
         "config": {
             "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/diabetes.sql"
         }
-    }
+    },
+    "codedNonCodedDiagnosesEntered": {
+    	"name": "Coded Non coded Diagnoses entered",
+    	"type": "MRSGeneric",
+    	"config": {
+      		"sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/coded_noncoded_diagnoses.sql"
+    	}
+     }
 }
