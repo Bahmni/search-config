@@ -89,5 +89,14 @@
     	"config": {
       		"sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/coded_noncoded_diagnoses.sql"
     	}
-     }
+     },
+    "surgeryObsTemplateReport":{
+        "name": "Surgery Template Report",
+        "type": "obsTemplate",
+        "config": {
+            "templateName": "Refer for Surgery Camp",
+            "patientAttributes": [ "Mobile"],
+            "applyDateRangeFor": "encounterCreateDate"
+        }
+    }
 }

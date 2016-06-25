@@ -57,6 +57,19 @@
         "required" : true,
         "answersConceptName" : "Procedure Type"
       },
+      "Refer for Surgery, Surgical Diagnosis": {
+        "autocomplete": true,
+        "required": true
+      },
+      "Refer for Surgery, Surgery Camp Leader": {
+        "autocomplete": true
+      },  
+        "Refer for Surgery, Lab investigation done on": {
+        "required": true
+      },  
+       "Refer for Surgery, Surgery Camp Date": {
+        "allowFutureDates": true
+      },
       "Posture": {
         "buttonSelect": true
       },

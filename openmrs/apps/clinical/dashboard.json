@@ -216,7 +216,7 @@
                 "type": "ordersControl",
                 "title": "Dental Orders",
                 "dashboardConfig": {
-                    "conceptNames": ["Dental Findings"],
+                    "conceptNames": ["Dental Notes"],
                     "numberOfVisits": "4",
                     "showHeader": true,
                     "obsIgnoreList" : []
@@ -243,7 +243,18 @@
                     "showHeader": true,
                     "obsIgnoreList" : []
                 }
-            }
+            },
+            "EditableForms": {
+   			 "type": "forms",
+   			 "title": "Editable Forms",
+    		"dashboardConfig": {
+        			"title": "Editable Form",
+        			"maximumNoOfVisits": 5
+    				},
+   			 "formGroup":["Refer for Surgery Camp"],
+   			 
+    			"translationKey": "Editable Forms"
+			}
         }
     },
     "trends": {
