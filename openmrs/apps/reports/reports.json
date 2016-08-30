@@ -10,21 +10,21 @@
         "name": "Distribution of free patients",
         "type": "ERPGeneric",
         "config": {
-            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/discounthead.sql"
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/distribution_of_free_patients.sql"
         }
     },
     "discounttribereport": {
         "name": "Free patients from SEARCH tribal area",
         "type": "ERPGeneric",
         "config": {
-            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/search_tribe_discount.sql"
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/Free_patients_in_search_tribal_area.sql"
         }
     },
     "searchWorkersDiscount": {
         "name": "SEARCH VHWs as free patients",
         "type": "ERPGeneric",
         "config": {
-            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/search_village_discount.sql"
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/search_vhws_as_free_patients.sql"
         }
     },
     "procedureandsurgeryReport": {
