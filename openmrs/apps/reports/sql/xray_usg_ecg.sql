@@ -9,5 +9,5 @@ INNER JOIN product_template pt on pt.id=pp.product_tmpl_id
   INNER JOIN product_category pc on pt.categ_id=pc.id
                                   and pc.name in ('USG','Radiology','ECG')
   INNER JOIN sale_order so on so.id=sol.order_id
-where sol.state='confirmed') as xx
+where sol.state='confirmed' AND DATE(SO.date_confirm) BETWEEN '#startDate#' and '#endDate#') as xx
 GROUP BY xx.name
