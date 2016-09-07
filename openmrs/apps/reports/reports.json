@@ -34,6 +34,13 @@
             "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/order_count.sql"
         }
     },
+  "orderReport": {
+    "name": "Total Numbers of Orders",
+    "type": "MRSGeneric",
+    "config": {
+      "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/totalorder_count.sql"
+    }
+  },
     "patientlocation":{
         "name": "Distribution of IPD patients with patient location",
         "type": "MRSGeneric",
