@@ -105,5 +105,13 @@
             "patientAttributes": [ "Mobile"],
             "applyDateRangeFor": "encounterCreateDate"
         }
-    }
+    },
+    "registrationFeesReport": {
+        "name": "Registration Fees",
+        "type": "MRSGeneric",
+        "config": {
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/registration_fees.sql"
+        }
+     },
+
 }
