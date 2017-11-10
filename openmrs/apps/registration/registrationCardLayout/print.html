@@ -9,7 +9,7 @@
 <div class="registration-card">
     <ul class="patient-details">
         <li>
-            <span class="date">{{patient.registrationDate | date:'dd/MM/yyyy'}}</span><span class="patient-id">{{patient.identifier}}</span>
+            <span class="date">{{patient.registrationDate | date:'dd/MM/yyyy'}}</span><span class="patient-id">{{patient.primaryIdentifier.identifier}}</span>
         </li>
         {{email}}{{$last ? '' : ', '}}
         <li>{{patient.givenName}} &nbsp {{patient.middleName}} &nbsp {{patient.familyName}}</li>
