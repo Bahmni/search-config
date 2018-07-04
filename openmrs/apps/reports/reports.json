@@ -112,6 +112,5 @@
         "config": {
             "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/sql/registration_fees.sql"
         }
-     },
-
+     }
 }
